@@ -1,6 +1,6 @@
 - 👋 Hi, I’m @IdkwhatImD0ing
-- 👀 I’m interested in game programming in java and python.
-- 🌱 I’m currently learning C++ and pytorch
+- 👀 My main area of focus is Machine Learning using Tensorflow and Keras.
+- 🌱 I’m currently learning C++ and Tensorflow
 - 💞️ I’m looking to collaborate on beginner machine learning projects.
 - 📫 How to reach me billzhangsc@gmail.com
 
