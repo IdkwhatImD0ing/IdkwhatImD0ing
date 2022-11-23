@@ -1,7 +1,7 @@
 - 👋 Hi, I’m @IdkwhatImD0ing
-- 👀 My main area of focus is Machine Learning using Tensorflow and Keras.
-- 🌱 I’m currently learning C++ and Tensorflow
-- 💞️ I’m looking to collaborate on beginner machine learning projects.
+- 👀 My main area of focus is Machine Learning and Full-Stack Web Development.
+- 🌱 I’m currently learning Tensorflow and SQL
+- 💞️ I’m looking to collaborate on hackathons relating to my area of focus.
 - 📫 How to reach me billzhangsc@gmail.com
 
 <!---
