@@ -1,8 +1,8 @@
-## Hello! I'm Bill - but I also go by @IdkwhatImD0ing 👋
+# Hello! I'm Bill - but I also go by @IdkwhatImD0ing 👋
 ![](https://github.com/IdkwhatImD0ing/stats/blob/master/generated/overview.svg)
 ![](https://github.com/IdkwhatImD0ing/stats/blob/master/generated/languages.svg)
 
-### ⚡ Languages and Frameworks
+## ⚡ Languages and Frameworks
 <table>
   <tr>
     <td>Programming Languages</td>
@@ -77,6 +77,25 @@
      </td>
   </tr>
 </table>
+
+## 🏆 Hackathon Experiences
+I've participated in several hackathons, including:
+- [![cruzhacks_badge]](https://cruzhacks.com/)
+- [![lahacks_badge]](https://lahacks.com/)
+- [![citrushack_badge]](https://www.citrushack.com/)
+
+## 🤝 Join Me for Hackathons!
+If you're interested in teaming up for a hackathon, feel free to reach out to me! You can contact me on:
+- [![email_badge]](mailto:billzhangsc@gmail.com)
+- [![discord_badge]](https://discord.com/users/Art3m1s%230001)
+
+<!-- Badges -->
+[email_badge]: https://img.shields.io/badge/Email-D14836?style=flat-square&logo=gmail&logoColor=white
+[discord_badge]: https://img.shields.io/badge/Discord-7289DA?style=flat-square&logo=discord&logoColor=white
+[cruzhacks_badge]: https://img.shields.io/badge/CruzHacks%20🍌-%2347a2ff.svg?style=flat-square&logo=bookmark&logoColor=white
+[lahacks_badge]: https://img.shields.io/badge/LA%20Hacks%20🦆-%230065ff.svg?style=flat-square&logo=bookmark&logoColor=white
+[citrushack_badge]: https://img.shields.io/badge/Citrus%20Hack%20🍊-%23ff9900.svg?style=flat-square&logo=bookmark&logoColor=white
+
 
 ## 👀 Check out my...
 🌐 [Portfolio Website](https://art3m1s.me/)
