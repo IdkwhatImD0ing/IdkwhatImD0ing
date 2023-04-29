@@ -86,8 +86,9 @@ I've participated in several hackathons, including:
 
 ## 🤝 Join Me for Hackathons!
 If you're interested in teaming up for a hackathon, feel free to reach out to me! You can contact me on:
-- [![email_badge]](mailto:billzhangsc@gmail.com)
-- [![discord_badge]](https://discord.com/users/Art3m1s%230001)
+
+[![email_badge]](mailto:billzhangsc@gmail.com)
+[![discord_badge]](https://discord.com/users/Art3m1s%230001)
 
 <!-- Badges -->
 [email_badge]: https://img.shields.io/badge/Email-D14836?style=flat-square&logo=gmail&logoColor=white
@@ -96,8 +97,13 @@ If you're interested in teaming up for a hackathon, feel free to reach out to me
 [lahacks_badge]: https://img.shields.io/badge/LA%20Hacks%20🦆-%230065ff.svg?style=flat-square&logo=bookmark&logoColor=white
 [citrushack_badge]: https://img.shields.io/badge/Citrus%20Hack%20🍊-%23ff9900.svg?style=flat-square&logo=bookmark&logoColor=white
 
-
 ## 👀 Check out my...
-🌐 [Portfolio Website](https://art3m1s.me/)
-<br>📘 [LinkedIn](https://linkedin.com/in/bill-zhang1)
+
+[![portfolio_badge]](https://art3m1s.me/)
+[![linkedin_badge]](https://linkedin.com/in/bill-zhang1)
+
+<!-- Badges -->
+[portfolio_badge]: https://img.shields.io/badge/Portfolio%20Website-%230077B5.svg?style=flat-square&logo=buffer&logoColor=white
+[linkedin_badge]: https://img.shields.io/badge/LinkedIn-%230077B5.svg?style=flat-square&logo=linkedin&logoColor=white
+
 
