@@ -87,7 +87,7 @@ I've participated in several hackathons, including:
 ## 🤝 Join Me for Hackathons!
 If you're interested in teaming up for a hackathon, feel free to reach out to me! You can contact me on:
 
-[![email_badge]](mailto:billzhangsc@gmail.com)
+[![email_badge]](mailto:jzhang71@usc.edu)
 [![discord_badge]](https://discord.com/users/Art3m1s%230001)
 
 <!-- Badges -->
