@@ -1,4 +1,5 @@
 # Hello! I'm Bill - but I also go by @IdkwhatImD0ing 👋
+Last update: 2/26/2024
 ![](https://github.com/IdkwhatImD0ing/stats/blob/master/generated/overview.svg)
 ![](https://github.com/IdkwhatImD0ing/stats/blob/master/generated/languages.svg)
 
@@ -79,10 +80,24 @@
 </table>
 
 ## 🏆 Hackathon Experiences
-I've participated in several hackathons, including:
-- [![cruzhacks_badge]](https://cruzhacks.com/)
-- [![lahacks_badge]](https://lahacks.com/)
-- [![citrushack_badge]](https://www.citrushack.com/)
+I've participated in a variety of hackathons, applying my skills in machine learning, web development, and more to solve real-world problems. Here's a snapshot of my journey:
+
+For a detailed record of my hackathon participations and achievements, check out my profile here:
+
+[![Devpost](https://img.shields.io/badge/Devpost-Profile-003E54?style=flat-square&logo=devpost&logoColor=white)](https://devpost.com/IdkwhatImD0ing)
+
+- **20 Hackathon Wins**
+- **36 Hackathons Attended**
+
+**Frequently Used Technologies:**
+
+![React Badge](https://img.shields.io/badge/React-20232A?style=flat-square&logo=react&logoColor=61DAFB)
+![Next.js Badge](https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=next.js&logoColor=white)
+![FastAPI Badge](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)
+![TensorFlow Badge](https://img.shields.io/badge/TensorFlow-FF6F00?style=flat-square&logo=tensorflow&logoColor=white)
+![Python Badge](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=yellow)
+![Node.js Badge](https://img.shields.io/badge/Node.js-43853D?style=flat-square&logo=node.js&logoColor=white)
+
 
 ## 🤝 Join Me for Hackathons!
 If you're interested in teaming up for a hackathon, feel free to reach out to me! You can contact me on:
@@ -93,9 +108,6 @@ If you're interested in teaming up for a hackathon, feel free to reach out to me
 <!-- Badges -->
 [email_badge]: https://img.shields.io/badge/Email-D14836?style=flat-square&logo=gmail&logoColor=white
 [discord_badge]: https://img.shields.io/badge/Discord-7289DA?style=flat-square&logo=discord&logoColor=white
-[cruzhacks_badge]: https://img.shields.io/badge/CruzHacks%20🍌-%2347a2ff.svg?style=flat-square&logo=bookmark&logoColor=white
-[lahacks_badge]: https://img.shields.io/badge/LA%20Hacks%20🦆-%230065ff.svg?style=flat-square&logo=bookmark&logoColor=white
-[citrushack_badge]: https://img.shields.io/badge/Citrus%20Hack%20🍊-%23ff9900.svg?style=flat-square&logo=bookmark&logoColor=white
 
 ## 👀 Check out my...
 
