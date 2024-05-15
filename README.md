@@ -1,5 +1,5 @@
 # Hello! I'm Bill - but I also go by @IdkwhatImD0ing 👋
-Last update: 2/26/2024
+Last update: 05/15/2024
 
 ![](https://github.com/IdkwhatImD0ing/stats/blob/master/generated/overview.svg)
 ![](https://github.com/IdkwhatImD0ing/stats/blob/master/generated/languages.svg)
@@ -87,8 +87,8 @@ For a detailed record of my hackathon participations and achievements, check out
 
 [![Devpost](https://img.shields.io/badge/Devpost-Profile-003E54?style=flat-square&logo=devpost&logoColor=white)](https://devpost.com/IdkwhatImD0ing)
 
-- **20 Hackathon Wins**
-- **36 Hackathons Attended**
+- **26 Hackathon Wins**
+- **38 Hackathons Attended**
 
 **Frequently Used Technologies:**
 
