@@ -61,9 +61,9 @@ mindmap
 ## 🏅 Hackathon Achievements
 
   <div align="center">
-    <img src="https://img.shields.io/badge/26-Hackathons%20Won-FFD700?style=for-the-badge&logo=trophy&logoColor=gold" alt="Hackathons Won">
-    <img src="https://img.shields.io/badge/38-Hackathons%20Attended-C0C0C0?style=for-the-badge&logo=devpost&logoColor=silver" alt="Hackathons Attended">
-    <img src="https://img.shields.io/badge/68%25-Win%20Rate-22C55E?style=for-the-badge&logo=checkmarksymbol&logoColor=white" alt="Win Rate">
+    <img src="https://img.shields.io/badge/35-Hackathons%20Won-FFD700?style=for-the-badge&logo=trophy&logoColor=gold" alt="Hackathons Won">
+    <img src="https://img.shields.io/badge/58-Hackathons%20Attended-C0C0C0?style=for-the-badge&logo=devpost&logoColor=silver" alt="Hackathons Attended">
+    <img src="https://img.shields.io/badge/60%25-Win%20Rate-22C55E?style=for-the-badge&logo=checkmarksymbol&logoColor=white" alt="Win Rate">
     <a href="https://devpost.com/IdkwhatImD0ing">
       <img src="https://img.shields.io/badge/Devpost%20Profile-View%20Projects-003E54?style=for-the-badge&logo=devpost&logoColor=white" alt="Devpost Profile">
     </a>
