@@ -89,7 +89,7 @@ mindmap
     <img align="center" src="https://github-readme-stats.vercel.app/api/pin/?username=IdkwhatImD0ing&repo=DispatchAI&theme=tokyonight&hide_border=true" />
   </a>
   
-  <a href="https://github.com/aurelisajuan/hackUTD">
+  <a href="https://github.com/aurelisajuan/TalkTuahBank">
     <img align="center" src="https://github-readme-stats.vercel.app/api/pin/?username=aurelisajuan&repo=hackUTD&theme=tokyonight&hide_border=true" />
   </a>
   
