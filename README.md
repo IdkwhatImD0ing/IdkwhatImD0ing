@@ -85,13 +85,7 @@ mindmap
 ## 🚀 Featured Projects
 
 <div align="center">
-  <a href="https://github.com/IdkwhatImD0ing/DispatchAI">
-    <img align="center" src="https://github-readme-stats.vercel.app/api/pin/?username=IdkwhatImD0ing&repo=DispatchAI&theme=tokyonight&hide_border=true" />
-  </a>
   
-  <a href="https://github.com/aurelisajuan/TalkTuahBank">
-    <img align="center" src="https://github-readme-stats.vercel.app/api/pin/?username=aurelisajuan&repo=hackUTD&theme=tokyonight&hide_border=true" />
-  </a>
   
   <a href="https://github.com/SlugLoop/SlugLoop">
     <img align="center" src="https://github-readme-stats.vercel.app/api/pin/?username=SlugLoop&repo=SlugLoop&theme=tokyonight&hide_border=true" />
