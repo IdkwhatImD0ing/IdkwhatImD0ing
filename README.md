@@ -30,10 +30,13 @@ I build AI-first products, hackathon demos, and full-stack systems that are opti
 ## Currently Building
 
 <!-- CURRENTLY_BUILDING:START -->
-- Recent GitHub activity: Pushed updates to IdkwhatImD0ing/hackathonstarterkit
-- Also active on: Pushed updates to IdkwhatImD0ing/PortfolioV3
-- Latest writing: How to Build with ElevenLabs and Cursor at a Hackathon - Build voice AI hackathon projects with ElevenLabs and Cursor. The exact PRD-first, MCP-driven, test-driven workflow Bill uses to ship in hours.
-- Current focus: shipping AI-first hackathon tools, voice demos, and practical builder playbooks.
+## Currently building
+
+- Enhancing the IdkwhatImD0ing repository with new features and bug fixes.
+- Developing the hackathonstarterkit to streamline project setups for hackathons.
+- Updating PortfolioV3 to showcase recent projects and skills effectively.
+- Writing guides on hackathon strategies and tools for non-coders.
+- Experimenting with voice AI projects using ElevenLabs and Cursor.
 <!-- CURRENTLY_BUILDING:END -->
 
 ## Featured Builds
