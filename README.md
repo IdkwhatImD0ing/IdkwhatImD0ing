@@ -19,19 +19,9 @@ _Last updated: Apr 28 2026_
 
 I build AI-first products, hackathon demos, and full-stack systems that are optimized for shipping fast without losing the plot.
 
-## AI Voice Clone
-
-<div align="center">
-
-**Want the interactive version? [Talk to me here](https://art3m1s.me).**
-
-</div>
-
 ## Currently Building
 
 <!-- CURRENTLY_BUILDING:START -->
-## Currently building
-
 - Enhancing the IdkwhatImD0ing repository with new features and bug fixes.
 - Developing the hackathonstarterkit to streamline project setups for hackathons.
 - Updating PortfolioV3 to showcase recent projects and skills effectively.
@@ -41,25 +31,17 @@ I build AI-first products, hackathon demos, and full-stack systems that are opti
 
 ## Featured Builds
 
-**DispatchAI** - AI-assisted emergency dispatch tooling built around speed, triage, and decision support.
-
 <a href="https://github.com/IdkwhatImD0ing/DispatchAI">
   <img align="center" src="https://github-readme-stats.vercel.app/api/pin/?username=IdkwhatImD0ing&repo=DispatchAI&theme=tokyonight&hide_border=true" alt="DispatchAI repository card" />
 </a>
-
-**TalkTuahBank** - A hackathon banking project with a voice-forward product angle.
 
 <a href="https://github.com/aurelisajuan/hackUTD">
   <img align="center" src="https://github-readme-stats.vercel.app/api/pin/?username=aurelisajuan&repo=hackUTD&theme=tokyonight&hide_border=true" alt="TalkTuahBank repository card" />
 </a>
 
-**SlugLoop** - A collaboration-heavy build from the hackathon circuit.
-
 <a href="https://github.com/SlugLoop/SlugLoop">
   <img align="center" src="https://github-readme-stats.vercel.app/api/pin/?username=SlugLoop&repo=SlugLoop&theme=tokyonight&hide_border=true" alt="SlugLoop repository card" />
 </a>
-
-**AdaptEd** - Personalized learning infrastructure for adaptive education experiences.
 
 <a href="https://github.com/IdkwhatImD0ing/AdaptEd">
   <img align="center" src="https://github-readme-stats.vercel.app/api/pin/?username=IdkwhatImD0ing&repo=AdaptEd&theme=tokyonight&hide_border=true" alt="AdaptEd repository card" />

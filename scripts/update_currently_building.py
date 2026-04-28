@@ -85,6 +85,28 @@ def fallback_summary(activity: list[str], posts: list[str]) -> str:
     return "\n".join(bullets[:4])
 
 
+def sanitize_summary(content: str) -> str:
+    content = re.sub(r"```(?:markdown)?|```", "", content).strip()
+    if START in content or END in content:
+        raise ValueError("Generated content unexpectedly contained README markers")
+
+    lines = []
+    for line in content.splitlines():
+        stripped = line.strip()
+        if not stripped:
+            continue
+        if stripped.startswith("#"):
+            continue
+        if stripped.lower().strip(":") in {"currently building", "currently building:"}:
+            continue
+        lines.append(stripped)
+
+    if not lines:
+        raise ValueError("Generated content was empty after sanitization")
+
+    return "\n".join(lines)
+
+
 def call_openai(activity: list[str], posts: list[str], api_key: str) -> str:
     model = os.environ.get("OPENAI_MODEL", "gpt-4o-mini")
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
@@ -93,6 +115,7 @@ Write a concise GitHub profile README section called "Currently building" for Bi
 
 Rules:
 - Return markdown bullets only.
+- Do not include a title, heading, intro sentence, or section label.
 - Use 3 to 5 bullets.
 - Be concrete, direct, and credible.
 - Do not use emoji.
@@ -134,11 +157,7 @@ Recent Hackathon Playbook posts:
     with urllib.request.urlopen(request, timeout=60) as response:
         payload = json.loads(response.read().decode("utf-8"))
 
-    content = payload["choices"][0]["message"]["content"].strip()
-    content = re.sub(r"```(?:markdown)?|```", "", content).strip()
-    if START in content or END in content:
-        raise ValueError("Generated content unexpectedly contained README markers")
-    return content
+    return sanitize_summary(payload["choices"][0]["message"]["content"])
 
 
 def main() -> None:
@@ -163,7 +182,7 @@ def main() -> None:
     else:
         summary = fallback_summary(activity, posts)
 
-    summary = textwrap.dedent(summary).strip()
+    summary = sanitize_summary(textwrap.dedent(summary))
     changed = replace_block(args.readme, START, END, summary)
     print("Updated currently building block" if changed else "Currently building block already current")
 
