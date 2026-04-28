@@ -1,0 +1,41 @@
+name: Update terminal hero
+
+on:
+  schedule:
+    - cron: "41 14 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install terminal generator
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+          python -m pip install --upgrade pip
+          python -m pip install github-readme-terminal
+
+      - name: Generate terminal hero
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python scripts/generate_terminal_hero.py
+
+      - name: Commit terminal hero
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Update terminal hero"
+          file_pattern: assets/terminal-hero.gif

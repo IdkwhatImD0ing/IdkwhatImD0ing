@@ -1,26 +1,79 @@
-# 👋 Hey! I'm Bill (aka @IdkwhatImD0ing)
+# Hey, I'm Bill Zhang (aka @IdkwhatImD0ing)
 
-_Last updated: Mar 8 2025_
+_Last updated: Apr 28 2026_
 
 <div align="center">
-  
-  ![Profile Views](https://komarev.com/ghpvc/?username=IdkwhatImD0ing&style=flat-square&color=blue)
-  [![Portfolio](https://img.shields.io/badge/Portfolio-art3m1s.me-0077B5?style=flat-square&logo=buffer&logoColor=white)](https://art3m1s.me/)
-  [![LinkedIn](https://img.shields.io/badge/LinkedIn-bill--zhang1-0077B5?style=flat-square&logo=linkedin&logoColor=white)](https://linkedin.com/in/bill-zhang1)
-  
+  <img src="./assets/terminal-hero.gif" alt="Retro terminal profile hero with Bill Zhang's white PC specs" />
 </div>
 
 <div align="center">
-  
-  ![](https://github.com/IdkwhatImD0ing/stats/blob/master/generated/overview.svg)
-  ![](https://github.com/IdkwhatImD0ing/stats/blob/master/generated/languages.svg)
-  
+
+[![Talk to me here](https://img.shields.io/badge/Talk%20to%20me%20here-art3m1s.me-8B5CF6?style=for-the-badge&logo=soundcharts&logoColor=white)](https://art3m1s.me)
+[![Portfolio](https://img.shields.io/badge/Portfolio-art3m1s.me-0077B5?style=for-the-badge&logo=buffer&logoColor=white)](https://art3m1s.me)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-bill--zhang1-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/bill-zhang1)
+[![Email](https://img.shields.io/badge/Email-Me-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:jzhang71@usc.edu)
+
+![Profile Views](https://komarev.com/ghpvc/?username=IdkwhatImD0ing&style=flat-square&color=blue)
+
 </div>
 
-## 💻 Technical Arsenal
+I build AI-first products, hackathon demos, and full-stack systems that are optimized for shipping fast without losing the plot.
+
+## AI Voice Clone
+
+<div align="center">
+
+**Want the interactive version? [Talk to me here](https://art3m1s.me).**
+
+</div>
+
+## Currently Building
+
+<!-- CURRENTLY_BUILDING:START -->
+- Recent GitHub activity: Pushed updates to IdkwhatImD0ing/hackathonstarterkit
+- Also active on: Pushed updates to IdkwhatImD0ing/PortfolioV3
+- Latest writing: How to Build with ElevenLabs and Cursor at a Hackathon - Build voice AI hackathon projects with ElevenLabs and Cursor. The exact PRD-first, MCP-driven, test-driven workflow Bill uses to ship in hours.
+- Current focus: shipping AI-first hackathon tools, voice demos, and practical builder playbooks.
+<!-- CURRENTLY_BUILDING:END -->
+
+## Featured Builds
+
+**DispatchAI** - AI-assisted emergency dispatch tooling built around speed, triage, and decision support.
+
+<a href="https://github.com/IdkwhatImD0ing/DispatchAI">
+  <img align="center" src="https://github-readme-stats.vercel.app/api/pin/?username=IdkwhatImD0ing&repo=DispatchAI&theme=tokyonight&hide_border=true" alt="DispatchAI repository card" />
+</a>
+
+**TalkTuahBank** - A hackathon banking project with a voice-forward product angle.
+
+<a href="https://github.com/aurelisajuan/hackUTD">
+  <img align="center" src="https://github-readme-stats.vercel.app/api/pin/?username=aurelisajuan&repo=hackUTD&theme=tokyonight&hide_border=true" alt="TalkTuahBank repository card" />
+</a>
+
+**SlugLoop** - A collaboration-heavy build from the hackathon circuit.
+
+<a href="https://github.com/SlugLoop/SlugLoop">
+  <img align="center" src="https://github-readme-stats.vercel.app/api/pin/?username=SlugLoop&repo=SlugLoop&theme=tokyonight&hide_border=true" alt="SlugLoop repository card" />
+</a>
+
+**AdaptEd** - Personalized learning infrastructure for adaptive education experiences.
+
+<a href="https://github.com/IdkwhatImD0ing/AdaptEd">
+  <img align="center" src="https://github-readme-stats.vercel.app/api/pin/?username=IdkwhatImD0ing&repo=AdaptEd&theme=tokyonight&hide_border=true" alt="AdaptEd repository card" />
+</a>
+
+## Daily Drivers
+
+<div align="center">
+
+| Frontend | Backend | AI / Data |
+|:--------:|:-------:|:---------:|
+| ![React](https://skillicons.dev/icons?i=react,nextjs,tailwind,ts) | ![FastAPI](https://skillicons.dev/icons?i=fastapi,nodejs,postgres,firebase) | ![Python](https://skillicons.dev/icons?i=python,tensorflow,pytorch,opencv) |
+
+</div>
 
 <details>
-<summary><b>Click to expand my tech stack</b></summary>
+<summary><b>Full technical arsenal</b></summary>
 
 ```mermaid
 mindmap
@@ -58,89 +111,30 @@ mindmap
 
 </details>
 
-## 🏅 Hackathon Achievements
-
-  <div align="center">
-    <img src="https://img.shields.io/badge/35-Hackathons%20Won-FFD700?style=for-the-badge&logo=trophy&logoColor=gold" alt="Hackathons Won">
-    <img src="https://img.shields.io/badge/58-Hackathons%20Attended-C0C0C0?style=for-the-badge&logo=devpost&logoColor=silver" alt="Hackathons Attended">
-    <img src="https://img.shields.io/badge/60%25-Win%20Rate-22C55E?style=for-the-badge&logo=checkmarksymbol&logoColor=white" alt="Win Rate">
-    <a href="https://devpost.com/IdkwhatImD0ing">
-      <img src="https://img.shields.io/badge/Devpost%20Profile-View%20Projects-003E54?style=for-the-badge&logo=devpost&logoColor=white" alt="Devpost Profile">
-    </a>
-  </div>
-
-</div>
-
-## 🌟 Most-used Stack
+## Profile Metrics
 
 <div align="center">
-  
-| Frontend | Backend | Data Science |
-|:--------:|:-------:|:------------:|
-| ![React](https://skillicons.dev/icons?i=react) | ![FastAPI](https://skillicons.dev/icons?i=fastapi) | ![TensorFlow](https://skillicons.dev/icons?i=tensorflow) |
-| ![Next.js](https://skillicons.dev/icons?i=nextjs) | ![Node.js](https://skillicons.dev/icons?i=nodejs) | ![Python](https://skillicons.dev/icons?i=python) |
-
+  <img src="./assets/github-metrics.svg" alt="Generated GitHub profile metrics" />
+  <img src="./assets/github-skyline.svg" alt="Generated GitHub skyline city metrics" />
+  <img src="./assets/github-habits.svg" alt="Generated coding habits metrics" />
+  <img src="./assets/github-people.svg" alt="Generated related people metrics" />
+  <img src="./assets/playbook-rss.svg" alt="Generated Hackathon Playbook RSS metrics" />
 </div>
 
-## 🚀 Featured Projects
-
-<div align="center">
-
-  <a href="https://github.com/IdkwhatImD0ing/DispatchAI">
-    <img align="center" src="https://github-readme-stats.vercel.app/api/pin/?username=IdkwhatImD0ing&repo=DispatchAI&theme=tokyonight&hide_border=true" />
-  </a>
-  
-  <a href="https://github.com/aurelisajuan/TalkTuahBank">
-    <img align="center" src="https://github-readme-stats.vercel.app/api/pin/?username=aurelisajuan&repo=hackUTD&theme=tokyonight&hide_border=true" />
-  </a>
-  
-  
-  <a href="https://github.com/SlugLoop/SlugLoop">
-    <img align="center" src="https://github-readme-stats.vercel.app/api/pin/?username=SlugLoop&repo=SlugLoop&theme=tokyonight&hide_border=true" />
-  </a>
-  
-  <a href="https://github.com/IdkwhatImD0ing/AdaptEd">
-    <img align="center" src="https://github-readme-stats.vercel.app/api/pin/?username=IdkwhatImD0ing&repo=AdaptEd&theme=tokyonight&hide_border=true" />
-  </a>
-</div>
-
-## 🤝 Let's Hack Together!
-
-<div align="center">
-
-I'm always excited to collaborate and build something amazing at hackathons. Drop me a message!
-
-[![Email](https://img.shields.io/badge/Email-Me-red?style=for-the-badge&logo=gmail&logoColor=white)](mailto:jzhang71@usc.edu)
-[![Discord](https://img.shields.io/badge/Discord-Chat-7289DA?style=for-the-badge&logo=discord&logoColor=white)](https://discord.com/users/Art3m1s%230001)
-
-</div>
-
-## 📚 Explore More
-
-<div align="center">
-
-[![Portfolio](https://img.shields.io/badge/Portfolio-Check%20it%20out-0077B5?style=for-the-badge&logo=buffer&logoColor=white)](https://art3m1s.me/)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/bill-zhang1)
-[![YouTube](https://img.shields.io/badge/YouTube-Subscribe-red?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/@hackable-projects)
-
-</div>
-
-## 📈 Activity Graph
+## Activity
 
 <div align="center">
   <img src="https://raw.githubusercontent.com/IdkwhatImD0ing/IdkwhatImD0ing/output/snake.svg" alt="Snake animation" />
 </div>
 
-## ✨ GitHub Trophies
+## Let's Hack Together
 
 <div align="center">
 
-[![Trophies](https://github-profile-trophy.vercel.app/?username=IdkwhatImD0ing&theme=darkhub&no-frame=true&column=7)](https://github.com/IdkwhatImD0ing)
+If you are building something ambitious, weird, AI-heavy, or demo-worthy, I probably want to hear about it.
 
-</div>
-
-<div align="center">
-
-❤️ Thanks for visiting! Hit ⭐ if you like what you see!
+[![Discord](https://img.shields.io/badge/Discord-Chat-7289DA?style=for-the-badge&logo=discord&logoColor=white)](https://discord.com/users/Art3m1s%230001)
+[![YouTube](https://img.shields.io/badge/YouTube-Hackable%20Projects-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/@hackable-projects)
+[![Talk to me here](https://img.shields.io/badge/Talk%20to%20me%20here-art3m1s.me-8B5CF6?style=for-the-badge&logo=soundcharts&logoColor=white)](https://art3m1s.me)
 
 </div>
