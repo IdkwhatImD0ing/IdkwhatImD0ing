@@ -1,0 +1,54 @@
+name: Update game trophies
+
+on:
+  schedule:
+    - cron: "27 14 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: profile-readme-writes
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      GAME_TROPHY_API_URL: ${{ secrets.GAME_TROPHY_API_URL }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Generate game trophies
+        if: env.GAME_TROPHY_API_URL != ''
+        uses: harshitt13/github-profile-trophy-games-edition@v1.0.0
+        with:
+          username: IdkwhatImD0ing
+          api_url: ${{ env.GAME_TROPHY_API_URL }}
+          output_path: assets/game-trophies.svg
+          token: ${{ github.token }}
+          theme: lol
+
+      - name: Rebase generated changes on latest main
+        if: env.GAME_TROPHY_API_URL != ''
+        run: git pull --rebase --autostash origin main
+
+      - name: Commit game trophies
+        if: env.GAME_TROPHY_API_URL != ''
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Update game trophies"
+          file_pattern: assets/game-trophies.svg
+
+      - name: Explain missing API URL
+        if: env.GAME_TROPHY_API_URL == ''
+        run: |
+          echo "GAME_TROPHY_API_URL is not set."
+          echo "Deploy harshitt13/github-profile-trophy-games-edition to Vercel, then add the deployment URL as a repository secret named GAME_TROPHY_API_URL."

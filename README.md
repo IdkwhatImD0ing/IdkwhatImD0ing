@@ -101,9 +101,14 @@ mindmap
 <div align="center">
   <img src="./assets/github-metrics.svg" alt="Generated GitHub profile metrics" />
   <img src="./assets/github-skyline.svg" alt="Generated GitHub skyline city metrics" />
-  <img src="./assets/github-habits.svg" alt="Generated coding habits metrics" />
   <img src="./assets/github-people.svg" alt="Generated related people metrics" />
   <img src="./assets/playbook-rss.svg" alt="Generated Hackathon Playbook RSS metrics" />
+</div>
+
+## Achievements
+
+<div align="center">
+  <img src="./assets/game-trophies.svg" alt="Generated game-style GitHub trophies" />
 </div>
 
 ## Activity
