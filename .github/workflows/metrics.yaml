@@ -20,7 +20,7 @@ jobs:
           token: ${{ secrets.METRICS_TOKEN || github.token }}
           user: IdkwhatImD0ing
           filename: assets/github-metrics.svg
-          committer_branch: master
+          committer_branch: main
           base: header, activity, community, repositories, metadata
           config_timezone: America/Los_Angeles
           plugin_languages: yes
@@ -47,7 +47,7 @@ jobs:
           token: NOT_NEEDED
           user: IdkwhatImD0ing
           filename: assets/github-skyline.svg
-          committer_branch: master
+          committer_branch: main
           base: ""
           plugin_skyline: yes
           plugin_skyline_frames: 60
@@ -66,7 +66,7 @@ jobs:
           token: ${{ secrets.METRICS_TOKEN || github.token }}
           user: IdkwhatImD0ing
           filename: assets/github-habits.svg
-          committer_branch: master
+          committer_branch: main
           base: ""
           config_timezone: America/Los_Angeles
           plugin_habits: yes
@@ -84,7 +84,7 @@ jobs:
           token: ${{ secrets.METRICS_TOKEN || github.token }}
           user: IdkwhatImD0ing
           filename: assets/github-people.svg
-          committer_branch: master
+          committer_branch: main
           base: ""
           plugin_people: yes
           plugin_people_limit: 24
@@ -97,7 +97,7 @@ jobs:
           token: NOT_NEEDED
           user: IdkwhatImD0ing
           filename: assets/playbook-rss.svg
-          committer_branch: master
+          committer_branch: main
           base: ""
           plugin_rss: yes
           plugin_rss_source: https://www.thehackathonplaybook.dev/blog/rss.xml
