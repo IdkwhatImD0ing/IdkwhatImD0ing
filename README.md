@@ -22,11 +22,11 @@ I build AI-first products, hackathon demos, and full-stack systems that are opti
 ## Currently Building
 
 <!-- CURRENTLY_BUILDING:START -->
-- Enhancing the hackathonstarterkit for improved user experience and functionality.
-- Developing ExerciseTracker with new features and bug fixes in an open PR.
-- Updating PortfolioV3 to showcase recent projects and skills more effectively.
-- Contributing to IdkwhatImD0ing with regular updates and new features.
-- Writing guides on hackathon strategies and tools to help participants succeed.
+- Enhancing my personal portfolio with new features and design improvements in IdkwhatImD0ing/PortfolioV3.
+- Developing a starter kit for hackathons to streamline project setup in IdkwhatImD0ing/hackathonstarterkit.
+- Writing articles on effective hackathon strategies and tools for the Hackathon Playbook.
+- Collaborating on the ExerciseTracker project with a recent pull request to improve functionality.
+- Exploring voice AI integration in hackathon projects using ElevenLabs and Cursor.
 <!-- CURRENTLY_BUILDING:END -->
 
 ## Featured Builds
