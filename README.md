@@ -22,10 +22,11 @@ I build AI-first products, hackathon demos, and full-stack systems that are opti
 ## Currently Building
 
 <!-- CURRENTLY_BUILDING:START -->
-- Enhancing SlugLoop with new features and performance improvements for better user experience.
-- Developing a portfolio site (IdkwhatImD0ing/PortfolioV3) to showcase recent projects and skills.
-- Exploring voice AI integration using ElevenLabs and Cursor for hackathon projects.
-- Writing about hackathon strategies and insights on the Hackathon Playbook to help others succeed.
+- Enhancing user experience and features in PortfolioV4 for better showcase of projects and skills.
+- Developing DispatcherAI to streamline communication and task management in team settings.
+- Working on AdaptEd to create personalized learning experiences using AI-driven insights.
+- Sharing insights on hackathon strategies and tools through recent blog posts on Hackathon Playbook.
+- Collaborating on TalkTuahBank to improve financial literacy and resources for users.
 <!-- CURRENTLY_BUILDING:END -->
 
 ## Featured Builds
