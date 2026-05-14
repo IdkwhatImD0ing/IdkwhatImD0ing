@@ -22,11 +22,11 @@ I build AI-first products, hackathon demos, and full-stack systems that are opti
 ## Currently Building
 
 <!-- CURRENTLY_BUILDING:START -->
-- Enhancing user experience and features in PortfolioV4 for better showcase of projects and skills.
-- Developing DispatcherAI to streamline communication and task management in team settings.
-- Working on AdaptEd to create personalized learning experiences using AI-driven insights.
-- Sharing insights on hackathon strategies and tools through recent blog posts on Hackathon Playbook.
-- Collaborating on TalkTuahBank to improve financial literacy and resources for users.
+- Enhancing features and performance in PortfolioV4 for better user experience and design consistency.
+- Developing DispatcherAI to streamline communication and task management for teams.
+- Updating AdaptEd to improve educational tools and resources for diverse learning needs.
+- Writing guides on hackathon strategies and workflows for building AI projects efficiently.
+- Exploring ways non-coders can leverage AI tools to succeed in hackathons.
 <!-- CURRENTLY_BUILDING:END -->
 
 ## Featured Builds
