@@ -22,11 +22,11 @@ I build AI-first products, hackathon demos, and full-stack systems that are opti
 ## Currently Building
 
 <!-- CURRENTLY_BUILDING:START -->
-- Enhancing features and performance in PortfolioV4 for better user experience and design consistency.
-- Developing DispatcherAI to streamline communication and task management for teams.
-- Updating AdaptEd to improve educational tools and resources for diverse learning needs.
-- Writing guides on hackathon strategies and workflows for building AI projects efficiently.
-- Exploring ways non-coders can leverage AI tools to succeed in hackathons.
+- Enhancing features and fixing bugs in the Wave project on GitHub.
+- Collaborating on the agenthub project to improve developer tools.
+- Writing guides on effective hackathon strategies and AI tool integration.
+- Exploring voice AI applications with ElevenLabs and Cursor.
+- Researching non-coder success in hackathons using AI technologies.
 <!-- CURRENTLY_BUILDING:END -->
 
 ## Featured Builds
