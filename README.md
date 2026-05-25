@@ -22,10 +22,10 @@ I build AI-first products, hackathon demos, and full-stack systems that are opti
 ## Currently Building
 
 <!-- CURRENTLY_BUILDING:START -->
-- Enhancing features and fixing bugs in the IdkwhatImD0ing/agenthub project.
-- Developing a new workflow for building voice AI projects with ElevenLabs and Cursor.
-- Writing articles on hackathon strategies and success stories for Hackathon Playbook.
-- Collaborating on the emilyLi2020/WAVE project to improve its functionality.
+- Enhancing the scaleapi/scale-agentex-python with new features and bug fixes.
+- Developing the IdkwhatImD0ing/agenthub to improve user experience and functionality.
+- Writing articles on hackathon strategies and tools for non-coders.
+- Exploring voice AI integration using ElevenLabs and Cursor for rapid project development.
 <!-- CURRENTLY_BUILDING:END -->
 
 ## Featured Builds
