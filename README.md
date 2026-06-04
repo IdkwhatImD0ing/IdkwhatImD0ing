@@ -22,10 +22,11 @@ I build AI-first products, hackathon demos, and full-stack systems that are opti
 ## Currently Building
 
 <!-- CURRENTLY_BUILDING:START -->
-- Enhancing my portfolio with new features and design updates in IdkwhatImD0ing/PortfolioV4.
-- Contributing to scaleapi/scale-agentex-python with bug fixes and new functionality.
-- Writing articles on hackathon strategies and AI tools for the Hackathon Playbook.
-- Exploring voice AI project development using ElevenLabs and Cursor for hackathons.
+- Enhancing the functionality of agenthub with new features and bug fixes.
+- Revamping my personal portfolio (PortfolioV4) for better user experience and design.
+- Contributing to scaleapi's scale-agentex-python with new features and improvements.
+- Writing articles on hackathon strategies and AI tools for non-coders.
+- Exploring voice AI project development with ElevenLabs and Cursor.
 <!-- CURRENTLY_BUILDING:END -->
 
 ## Featured Builds
