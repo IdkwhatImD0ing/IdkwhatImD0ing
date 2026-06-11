@@ -22,11 +22,11 @@ I build AI-first products, hackathon demos, and full-stack systems that are opti
 ## Currently Building
 
 <!-- CURRENTLY_BUILDING:START -->
-- Enhancing features and fixing bugs in IdkwhatImD0ing/agenthub for improved user experience.
-- Finalizing updates to IdkwhatImD0ing/PortfolioV4 to showcase recent projects and skills.
-- Contributing to scaleapi/scale-agentex-python with new features and optimizations.
-- Writing posts on Hackathon Playbook to share insights on pitching and building with AI tools.
-- Exploring ways non-coders leverage AI to succeed in hackathons through recent blog posts.
+- Developing new features for the claimr project in the IdkwhatImD0ing repository.
+- Enhancing the agenthub project with recent updates and optimizations.
+- Revamping my personal portfolio (PortfolioV4) to showcase recent work and skills.
+- Contributing to the scale-agentex-python project with bug fixes and improvements.
+- Writing articles on hackathon strategies and tools for developers and non-coders.
 <!-- CURRENTLY_BUILDING:END -->
 
 ## Featured Builds
