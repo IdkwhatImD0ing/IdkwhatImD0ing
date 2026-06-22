@@ -22,10 +22,11 @@ I build AI-first products, hackathon demos, and full-stack systems that are opti
 ## Currently Building
 
 <!-- CURRENTLY_BUILDING:START -->
-- Finalizing updates for my portfolio project, showcasing recent work and skills in web development.
-- Enhancing the claimr application with new features and bug fixes to improve user experience.
-- Collaborating on agenthub, focusing on performance optimizations and additional integrations.
-- Documenting hackathon strategies and insights to help others succeed in competitive environments.
+- Enhancing features and fixing bugs in the agenthub project for improved user experience.
+- Developing a new version of PortfolioV4 to showcase my latest projects and skills.
+- Working on claimr to streamline claims processing with a focus on user interface improvements.
+- Sharing insights on hackathon strategies and tools through recent blog posts.
+- Experimenting with voice AI integration using ElevenLabs and Cursor for hackathon projects.
 <!-- CURRENTLY_BUILDING:END -->
 
 ## Featured Builds
