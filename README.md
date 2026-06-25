@@ -22,11 +22,10 @@ I build AI-first products, hackathon demos, and full-stack systems that are opti
 ## Currently Building
 
 <!-- CURRENTLY_BUILDING:START -->
-- Enhancing features and fixing bugs in the agenthub project for improved user experience.
-- Developing a new version of PortfolioV4 to showcase my latest projects and skills.
-- Working on claimr to streamline claims processing with a focus on user interface improvements.
-- Sharing insights on hackathon strategies and tools through recent blog posts.
-- Experimenting with voice AI integration using ElevenLabs and Cursor for hackathon projects.
+- Enhancing DispatcherAI with new features and optimizations for improved performance and user experience.
+- Contributing to hackathonstarterkit by refining project structure and adding essential documentation.
+- Writing articles on post-hackathon strategies and common pitch mistakes to help others succeed in future events.
+- Developing a voice AI project using ElevenLabs and Cursor, focusing on efficient workflows and rapid prototyping.
 <!-- CURRENTLY_BUILDING:END -->
 
 ## Featured Builds
