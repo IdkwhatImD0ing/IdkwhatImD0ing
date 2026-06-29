@@ -22,10 +22,11 @@ I build AI-first products, hackathon demos, and full-stack systems that are opti
 ## Currently Building
 
 <!-- CURRENTLY_BUILDING:START -->
-- Enhancing DispatcherAI with new features and optimizations for improved performance and user experience.
-- Contributing to hackathonstarterkit by refining project structure and adding essential documentation.
-- Writing articles on post-hackathon strategies and common pitch mistakes to help others succeed in future events.
-- Developing a voice AI project using ElevenLabs and Cursor, focusing on efficient workflows and rapid prototyping.
+- Contributing to the hackathonstarterkit project with multiple pull requests and updates for improved functionality.
+- Enhancing DispatcherAI with new features and optimizations through recent code updates and pull requests.
+- Documenting hackathon insights and strategies to help others succeed in future events.
+- Developing a voice AI project using ElevenLabs and Cursor, focusing on efficient workflows.
+- Sharing lessons learned from LA Hacks to improve pitch presentations and team dynamics.
 <!-- CURRENTLY_BUILDING:END -->
 
 ## Featured Builds
