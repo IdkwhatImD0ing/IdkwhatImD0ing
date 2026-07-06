@@ -22,11 +22,10 @@ I build AI-first products, hackathon demos, and full-stack systems that are opti
 ## Currently Building
 
 <!-- CURRENTLY_BUILDING:START -->
-- Contributing to the hackathon starter kit by opening multiple pull requests for enhancements and bug fixes.
-- Developing DispatcherAI, focusing on AI-driven solutions for efficient dispatching and resource management.
-- Writing and sharing insights on hackathon strategies and best practices through the Hackathon Playbook.
-- Experimenting with voice AI projects using ElevenLabs and Cursor for rapid prototyping in hackathon settings.
-- Merging updates and maintaining active collaboration in open-source projects to improve community resources.
+- Enhancing my personal portfolio with new features and design improvements in IdkwhatImD0ing/PortfolioV4.
+- Writing articles on post-hackathon strategies and common pitch mistakes for Hackathon Playbook.
+- Developing a voice AI project using ElevenLabs and Cursor for future hackathons.
+- Collaborating on open-source contributions to improve community resources and tools.
 <!-- CURRENTLY_BUILDING:END -->
 
 ## Featured Builds
