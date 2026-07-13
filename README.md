@@ -22,10 +22,11 @@ I build AI-first products, hackathon demos, and full-stack systems that are opti
 ## Currently Building
 
 <!-- CURRENTLY_BUILDING:START -->
-- Enhancing my portfolio project with new features and design updates in IdkwhatImD0ing/PortfolioV4.
-- Writing a series of posts on hackathon strategies and best practices for the Hackathon Playbook.
-- Developing a voice AI project using ElevenLabs and Cursor for upcoming hackathons.
-- Collaborating on open-source contributions to improve community tools and resources.
+- Enhancing my portfolio with new features and design updates in IdkwhatImD0ing/PortfolioV4.
+- Developing a guide on post-hackathon strategies to maximize your project impact.
+- Writing about common pitch mistakes observed at hackathons to help others improve.
+- Creating a voice AI project using ElevenLabs and Cursor for an upcoming hackathon.
+- Collaborating on PRs to refine and optimize my portfolio's functionality and presentation.
 <!-- CURRENTLY_BUILDING:END -->
 
 ## Featured Builds
