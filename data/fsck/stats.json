@@ -1,8 +1,22 @@
 {
-  "users": {},
-  "ops_log": [],
+  "users": {
+    "IdkwhatImD0ing": {
+      "scans": 1,
+      "panics": 0,
+      "cleans": 0,
+      "presses": 0
+    }
+  },
+  "ops_log": [
+    {
+      "login": "IdkwhatImD0ing",
+      "op": "fsck E5",
+      "result": "ok",
+      "utc": "2026-07-23T21:15:22Z"
+    }
+  ],
   "totals": {
-    "scans": 0,
+    "scans": 1,
     "panics": 0,
     "cleans": 0,
     "presses": 0,
