@@ -42,9 +42,9 @@
 <!-- MOTD:START -->
 ```text
 $ cat /etc/motd
-all daemons nominal. the human keeps taking credit for my commits.
+Current processes are running smoothly.
 uptime: 4 years, 10 months (since 2021-09-21)
-artemis.target: waxing gibbous (67% illuminated)
+artemis.target: waxing gibbous (68% illuminated)
 motd.d regenerated: 2026-07-23
 ```
 <!-- MOTD:END -->
@@ -63,9 +63,11 @@ motd.d regenerated: 2026-07-23
 <!-- CURRENTLY_BUILDING:START -->
 | PID | %CPU | TIME | COMMAND |
 | --: | --: | --: | :-- |
-| 4564 | 94.0 | 7:04 | [`hackathonstarterkit --caffeine`](https://github.com/IdkwhatImD0ing/hackathonstarterkit) |
-| 9284 | 84.0 | 47:44 | [`portfoliov4 --caffeine`](https://github.com/IdkwhatImD0ing/PortfolioV4) |
-| 9131 | 41.0 | 14:11 | [`dispatcherai --no-sleep`](https://github.com/DispatcherAI/DispatcherAI) |
+| 6853 | 95.0 | 16:13 | [`portfolio-v4 --update --merge`](https://github.com/IdkwhatImD0ing/PortfolioV4) |
+| 1406 | 90.0 | 89:26 | [`hackathon-starter --open-pr --review`](https://github.com/IdkwhatImD0ing/hackathonstarterkit) |
+| 5468 | 85.0 | 71:08 | `voice-ai --build --deploy` |
+| 6233 | 80.0 | 116:53 | [`idkwhatimdoing --delete --push`](https://github.com/IdkwhatImD0ing/IdkwhatImD0ing) |
+| 4776 | 75.0 | 99:36 | `hackathon-pitch --analyze --report` |
 <!-- CURRENTLY_BUILDING:END -->
 
 ## `$ tail /var/log/hackathons.log`
@@ -485,10 +487,8 @@ see [`man/bill.1.md`](./man/bill.1.md) — includes SYNOPSIS, EXIT STATUS, and a
 <!-- PASSWD:START -->
 ```text
 $ tail -n 8 /etc/passwd
-root:x:0:0:whitebox:/root:/bin/artemis
-bill:x:1000:100:the human:/home/bill:/usr/bin/zsh
-# registry syncs on the daemon's next pass.
-# star this repo to create your account.
+prakhxr0:x:1000:100:starred 2024-06-14:/home/prakhxr0:/usr/bin/zsh
+# 1 user registered — star this repo to create your account.
 ```
 <!-- PASSWD:END -->
 
@@ -530,7 +530,7 @@ If you are building something ambitious, weird, AI-heavy, or demo-worthy, I prob
 [ [`reboot`](#top) ] · [ [`view source`](https://github.com/IdkwhatImD0ing/IdkwhatImD0ing) ] · [ [`.plan`](./.plan) ]
 
 <!-- BUILD_PLATE:START -->
-<sub>compiled from `local` · build 0 · this page rebuilds itself; the human is a contributor</sub>
+<sub>compiled from `2e1e001` · build 29 · this page rebuilds itself; the human is a contributor</sub>
 <!-- BUILD_PLATE:END -->
 
 `Connection to whitebox closed.`
