@@ -18,13 +18,15 @@ jobs:
     timeout-minutes: 20
 
     steps:
-      - name: Generate core GitHub metrics
+      - name: Generate core GitHub metrics (terminal skin)
         uses: lowlighter/metrics@latest
         with:
           token: ${{ secrets.METRICS_TOKEN || github.token }}
           user: IdkwhatImD0ing
+          template: terminal
           filename: assets/github-metrics.svg
           committer_branch: main
+          committer_message: "metrics: dashboards repainted [skip actions]"
           base: header, activity, community, repositories, metadata
           config_display: large
           config_timezone: America/Los_Angeles
@@ -33,9 +35,6 @@ jobs:
           plugin_languages_limit: 8
           plugin_languages_threshold: 0%
           plugin_languages_ignored: html, css
-          plugin_notable: yes
-          plugin_notable_from: organization
-          plugin_notable_types: commit
           plugin_isocalendar: yes
           plugin_isocalendar_duration: half-year
 
@@ -46,6 +45,7 @@ jobs:
           user: IdkwhatImD0ing
           filename: assets/github-skyline.svg
           committer_branch: main
+          committer_message: "metrics: skyline re-surveyed [skip actions]"
           base: ""
           config_display: large
           plugin_skyline: yes
@@ -58,30 +58,3 @@ jobs:
               "wait": 4,
               "hide": ".github-corner, .footer-link, .buttons-options, .mobile-rotate, .display-info span:first-child"
             }
-
-      - name: Generate related people
-        uses: lowlighter/metrics@latest
-        with:
-          token: ${{ secrets.METRICS_TOKEN || github.token }}
-          user: IdkwhatImD0ing
-          filename: assets/github-people.svg
-          committer_branch: main
-          base: ""
-          config_display: large
-          plugin_people: yes
-          plugin_people_limit: 24
-          plugin_people_size: 32
-          plugin_people_types: followers, following
-
-      - name: Generate Hackathon Playbook RSS
-        uses: lowlighter/metrics@latest
-        with:
-          token: NOT_NEEDED
-          user: IdkwhatImD0ing
-          filename: assets/playbook-rss.svg
-          committer_branch: main
-          base: ""
-          config_display: large
-          plugin_rss: yes
-          plugin_rss_source: https://www.thehackathonplaybook.dev/blog/rss.xml
-          plugin_rss_limit: 4

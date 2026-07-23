@@ -29,18 +29,35 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Update currently building block
+      # OpenAI-independent renders run first so a bad LLM day cannot block them.
+      - name: Render hackathon log
+        run: python scripts/render_hacklog.py
+
+      - name: Render crontab
+        run: python scripts/render_crontab.py
+
+      - name: Render passwd (stargazers)
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python scripts/render_passwd.py
+
+      - name: Rewrite own bio (ps aux, MOTD, status, build plate)
+        id: build
         env:
           GITHUB_TOKEN: ${{ github.token }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           REQUIRE_OPENAI: "1"
+          GITHUB_SHA: ${{ github.sha }}
         run: python scripts/update_currently_building.py
 
+      # Commit whatever rendered even if the LLM step failed.
       - name: Rebase generated changes on latest main
+        if: ${{ !cancelled() }}
         run: git pull --rebase --autostash origin main
 
       - name: Commit README update
+        if: ${{ !cancelled() }}
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "Update currently building section"
-          file_pattern: README.md
+          commit_message: "${{ steps.build.outputs.msg || 'artemis-build: routine self-maintenance' }}"
+          file_pattern: "README.md assets/status.json"

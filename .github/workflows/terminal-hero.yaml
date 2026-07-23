@@ -15,7 +15,7 @@ concurrency:
 jobs:
   update:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
 
     steps:
       - name: Check out repository
@@ -29,23 +29,34 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install terminal generator
+      - name: Install generators
         run: |
           sudo apt-get update
           sudo apt-get install -y ffmpeg
           python -m pip install --upgrade pip
-          python -m pip install github-readme-terminal
+          python -m pip install github-readme-terminal pillow
 
-      - name: Generate terminal hero
+      - name: Generate terminal hero (boot program of the week)
         env:
           GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_SHA: ${{ github.sha }}
         run: python scripts/generate_terminal_hero.py
+
+      - name: Regenerate neofetch card
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python scripts/generate_neofetch.py
+
+      - name: Regenerate ANSI business card
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python scripts/generate_ansi_card.py
 
       - name: Rebase generated changes on latest main
         run: git pull --rebase --autostash origin main
 
-      - name: Commit terminal hero
+      - name: Commit boot assets
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "Update terminal hero"
-          file_pattern: assets/terminal-hero.gif
+          commit_message: "boot: re-rendered POST sequence, refreshed peripherals"
+          file_pattern: "assets/terminal-hero.gif assets/neofetch.svg bill.ansi"

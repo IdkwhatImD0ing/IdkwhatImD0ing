@@ -1,0 +1,11 @@
+{
+  "board_number": 1,
+  "first_cell": null,
+  "revealed": {},
+  "status": "active",
+  "salt_fp": "83f8ec5b",
+  "mines_exposed": null,
+  "panic_cell": null,
+  "created_utc": "2026-07-23T19:33:19Z",
+  "last_op": null
+}

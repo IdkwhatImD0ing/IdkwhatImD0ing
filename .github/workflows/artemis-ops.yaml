@@ -1,0 +1,139 @@
+name: artemis ops
+
+on:
+  issues:
+    types: [opened]
+  watch:
+    types: [started]
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: profile-readme-writes
+  cancel-in-progress: false
+
+jobs:
+  ops:
+    # Non-matching issues are left completely untouched.
+    if: >-
+      github.event_name == 'watch' ||
+      startsWith(github.event.issue.title, 'artemis|') ||
+      github.event.issue.title == 'sudo make me a sandwich'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # A queued run may fire for an issue a previous run's drain step already
+      # handled and closed; skip it instead of double-processing.
+      - name: Check issue is still open
+        if: github.event_name == 'issues'
+        id: gate
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          state=$(gh issue view "$ISSUE_NUMBER" --repo "$GH_REPO" --json state -q .state || echo "UNKNOWN")
+          echo "issue #$ISSUE_NUMBER state: $state"
+          if [ "$state" = "CLOSED" ]; then
+            echo "open=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "open=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Ack with eyes reaction
+        if: github.event_name == 'issues' && steps.gate.outputs.open == 'true'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: gh api "repos/$GH_REPO/issues/$ISSUE_NUMBER/reactions" -f content=eyes
+
+      # The title is passed via env vars only — never interpolated into the script text.
+      - name: Process command
+        if: github.event_name == 'issues' && steps.gate.outputs.open == 'true'
+        env:
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_ACTOR: ${{ github.event.issue.user.login }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          FSCK_SALT: ${{ secrets.FSCK_SALT }}
+        run: |
+          python scripts/artemis_ops.py process \
+            --title="$ISSUE_TITLE" --actor="$ISSUE_ACTOR" --issue="$ISSUE_NUMBER" \
+            > "$RUNNER_TEMP/reply.md" \
+            || echo "artemis: the daemon dumped core before replying. try again in a minute." > "$RUNNER_TEMP/reply.md"
+          cat "$RUNNER_TEMP/reply.md"
+
+      # The daemon is single-threaded: drain up to 8 other queued artemis issues
+      # (oldest first) through the same engine, replying to and closing each.
+      - name: Drain queued artemis issues
+        if: github.event_name == 'issues'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          FSCK_SALT: ${{ secrets.FSCK_SALT }}
+        run: |
+          gh issue list --repo "$GH_REPO" --state open --limit 100 \
+            --json number,title,author > "$RUNNER_TEMP/open.json" || echo '[]' > "$RUNNER_TEMP/open.json"
+          jq -c --argjson cur "$ISSUE_NUMBER" \
+            '[.[] | select(((.title | startswith("artemis|")) or .title == "sudo make me a sandwich") and .number != $cur)] | sort_by(.number) | .[:8] | .[]' \
+            "$RUNNER_TEMP/open.json" > "$RUNNER_TEMP/queue.jsonl"
+          while IFS= read -r row; do
+            num=$(jq -r '.number' <<<"$row")
+            title=$(jq -r '.title' <<<"$row")
+            actor=$(jq -r '.author.login // "ghost"' <<<"$row")
+            python scripts/artemis_ops.py process \
+              --title="$title" --actor="$actor" --issue="$num" > "$RUNNER_TEMP/drain-reply.md" || continue
+            gh issue comment "$num" --repo "$GH_REPO" --body-file "$RUNNER_TEMP/drain-reply.md" || true
+            gh issue close "$num" --repo "$GH_REPO" || true
+          done < "$RUNNER_TEMP/queue.jsonl"
+
+      - name: Register new user
+        if: github.event_name == 'watch'
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python scripts/render_passwd.py
+
+      - name: Rebase generated changes on latest main
+        run: git pull --rebase --autostash origin main
+
+      - name: Commit board update
+        if: github.event_name == 'issues'
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "fsck: sector scan complete [skip ci]"
+          file_pattern: "README.md data/fsck/*.json"
+
+      - name: Commit passwd update
+        if: github.event_name == 'watch'
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "passwd: new user registered"
+          file_pattern: README.md
+
+      - name: Reply and close issue
+        if: github.event_name == 'issues' && steps.gate.outputs.open == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          gh issue comment "$ISSUE_NUMBER" --repo "$GH_REPO" --body-file "$RUNNER_TEMP/reply.md"
+          gh issue close "$ISSUE_NUMBER" --repo "$GH_REPO"
