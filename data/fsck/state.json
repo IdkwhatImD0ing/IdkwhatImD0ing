@@ -36,16 +36,27 @@
     "F5": 1,
     "F6": 1
   },
-  "status": "active",
+  "status": "panicked",
   "salt_fp": "d58b9ecb",
-  "mines_exposed": null,
-  "panic_cell": null,
+  "mines_exposed": [
+    "A7",
+    "C1",
+    "C3",
+    "D7",
+    "F9",
+    "G2",
+    "G5",
+    "H5",
+    "I5",
+    "I8"
+  ],
+  "panic_cell": "C3",
   "created_utc": "2026-07-23T21:15:22Z",
   "last_op": {
     "login": "IdkwhatImD0ing",
-    "op": "fsck E5",
-    "result": "ok",
-    "cell": "E5",
-    "utc": "2026-07-23T21:15:22Z"
+    "op": "fsck C3",
+    "result": "panic",
+    "cell": "C3",
+    "utc": "2026-07-23T21:17:24Z"
   }
 }
