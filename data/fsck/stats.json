@@ -1,0 +1,11 @@
+{
+  "users": {},
+  "ops_log": [],
+  "totals": {
+    "scans": 0,
+    "panics": 0,
+    "cleans": 0,
+    "presses": 0,
+    "reformats": 0
+  }
+}
