@@ -4,7 +4,8 @@
       "scans": 2,
       "panics": 1,
       "cleans": 0,
-      "presses": 0
+      "presses": 0,
+      "reformats": 1
     }
   },
   "ops_log": [
@@ -19,6 +20,12 @@
       "op": "fsck C3",
       "result": "panic",
       "utc": "2026-07-23T21:17:24Z"
+    },
+    {
+      "login": "IdkwhatImD0ing",
+      "op": "reformat",
+      "result": "reformat",
+      "utc": "2026-07-23T21:18:18Z"
     }
   ],
   "totals": {
@@ -26,6 +33,6 @@
     "panics": 1,
     "cleans": 0,
     "presses": 0,
-    "reformats": 0
+    "reformats": 1
   }
 }
