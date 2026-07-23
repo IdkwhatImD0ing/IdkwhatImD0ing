@@ -22,11 +22,11 @@ I build AI-first products, hackathon demos, and full-stack systems that are opti
 ## Currently Building
 
 <!-- CURRENTLY_BUILDING:START -->
-- Enhancing the IdkwhatImD0ing/PortfolioV4 with new features and UI improvements.
-- Finalizing updates for the IdkwhatImD0ing/Taxes project to streamline user experience.
-- Writing a guide on post-hackathon strategies to maximize project impact and visibility.
-- Documenting common pitch mistakes observed at hackathons to aid future participants.
-- Developing a voice AI project using ElevenLabs and Cursor for an upcoming hackathon.
+- Enhancing my portfolio project with new features and UI improvements in IdkwhatImD0ing/PortfolioV4.
+- Developing a starter kit for hackathons in IdkwhatImD0ing/hackathonstarterkit to streamline project setup.
+- Creating a voice AI hackathon project using ElevenLabs and Cursor, focusing on efficient workflows.
+- Writing articles on post-hackathon strategies and common pitch mistakes to help future participants.
+- Collaborating on open-source projects to improve coding skills and contribute to the developer community.
 <!-- CURRENTLY_BUILDING:END -->
 
 ## Featured Builds
