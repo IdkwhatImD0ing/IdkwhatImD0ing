@@ -178,10 +178,10 @@ warning: package 'sleep' is an optional dependency and is not installed
 
 <!-- SCREENSAVER:START -->
 <div align="center">
-  <img src="https://raw.githubusercontent.com/IdkwhatImD0ing/IdkwhatImD0ing/output/snake.svg" alt="contribution graph screensaver (snake)" width="820">
+  <img src="https://raw.githubusercontent.com/IdkwhatImD0ing/IdkwhatImD0ing/output/pacman.svg" alt="contribution graph screensaver (pacman)" width="820">
 </div>
 
-`screensaver of the week: snake — a classic. the predator rotates. come back next week.`
+`screensaver of the week: pacman — the ghosts are also eating my commits. rotates weekly.`
 <!-- SCREENSAVER:END -->
 
 ## `$ crontab -l`
