@@ -42,10 +42,10 @@
 <!-- MOTD:START -->
 ```text
 $ cat /etc/motd
-Currently optimizing game mechanics and voice AI.
+Current workload: high, caffeine levels: higher.
 uptime: 4 years, 10 months (since 2021-09-21)
-artemis.target: waxing gibbous (96% illuminated)
-motd.d regenerated: 2026-07-27
+artemis.target: full moon (99% illuminated)
+motd.d regenerated: 2026-07-30
 ```
 <!-- MOTD:END -->
 
@@ -63,9 +63,10 @@ motd.d regenerated: 2026-07-27
 <!-- CURRENTLY_BUILDING:START -->
 | PID | %CPU | TIME | COMMAND |
 | --: | --: | --: | :-- |
-| 7470 | 95.0 | 33:30 | [`bullet-hell --update --merge --branch`](https://github.com/IdkwhatImD0ing/BulletHellGame) |
-| 5468 | 90.0 | 71:08 | `voice-ai --elevenlabs --build` |
-| 4776 | 85.0 | 99:36 | `hackathon-pitch --analyze --optimize` |
+| 7470 | 95.0 | 33:30 | [`bullet-hell --update --optimize`](https://github.com/IdkwhatImD0ing/BulletHellGame) |
+| 5468 | 90.0 | 71:08 | `voice-ai --elevenlabs --demo` |
+| 3140 | 85.0 | 23:20 | `hackathon-tips --post --share` |
+| 8778 | 80.0 | 21:18 | `project-ship --assets --skills` |
 <!-- CURRENTLY_BUILDING:END -->
 
 ## `$ tail /var/log/hackathons.log`
@@ -532,7 +533,7 @@ If you are building something ambitious, weird, AI-heavy, or demo-worthy, I prob
 [ [`reboot`](#top) ] · [ [`view source`](https://github.com/IdkwhatImD0ing/IdkwhatImD0ing) ] · [ [`.plan`](./.plan) ]
 
 <!-- BUILD_PLATE:START -->
-<sub>compiled from `16971c6` · build 30 · this page rebuilds itself; the human is a contributor</sub>
+<sub>compiled from `53f0edb` · build 31 · this page rebuilds itself; the human is a contributor</sub>
 <!-- BUILD_PLATE:END -->
 
 `Connection to whitebox closed.`
