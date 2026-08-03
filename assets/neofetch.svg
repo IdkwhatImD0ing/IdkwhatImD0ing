@@ -32,7 +32,7 @@
 <text x="348" y="103" xml:space="preserve" font-family="ui-monospace, 'Cascadia Code', Menlo, Consolas, monospace" font-size="13"><tspan font-weight="bold" fill="#00FF41">Host:</tspan><tspan fill="#8bd5a0"> Whitebox Rev 5080</tspan></text>
 <text x="348" y="118" xml:space="preserve" font-family="ui-monospace, 'Cascadia Code', Menlo, Consolas, monospace" font-size="13"><tspan font-weight="bold" fill="#00FF41">Kernel:</tspan><tspan fill="#8bd5a0"> art3m1s 5.8.0-lts</tspan></text>
 <text x="348" y="133" xml:space="preserve" font-family="ui-monospace, 'Cascadia Code', Menlo, Consolas, monospace" font-size="13"><tspan font-weight="bold" fill="#00FF41">Uptime:</tspan><tspan fill="#8bd5a0"> 4 years, 10 months</tspan></text>
-<text x="348" y="148" xml:space="preserve" font-family="ui-monospace, 'Cascadia Code', Menlo, Consolas, monospace" font-size="13"><tspan font-weight="bold" fill="#00FF41">Packages:</tspan><tspan fill="#8bd5a0"> 81 (pacman), 35 (hackathon)</tspan></text>
+<text x="348" y="148" xml:space="preserve" font-family="ui-monospace, 'Cascadia Code', Menlo, Consolas, monospace" font-size="13"><tspan font-weight="bold" fill="#00FF41">Packages:</tspan><tspan fill="#8bd5a0"> 80 (pacman), 35 (hackathon)</tspan></text>
 <text x="348" y="163" xml:space="preserve" font-family="ui-monospace, 'Cascadia Code', Menlo, Consolas, monospace" font-size="13"><tspan font-weight="bold" fill="#00FF41">Shell:</tspan><tspan fill="#8bd5a0"> chaos 5.0.80</tspan></text>
 <text x="348" y="178" xml:space="preserve" font-family="ui-monospace, 'Cascadia Code', Menlo, Consolas, monospace" font-size="13"><tspan font-weight="bold" fill="#00FF41">Resolution:</tspan><tspan fill="#8bd5a0"> 35 wins x 58 entries</tspan></text>
 <text x="348" y="193" xml:space="preserve" font-family="ui-monospace, 'Cascadia Code', Menlo, Consolas, monospace" font-size="13"><tspan font-weight="bold" fill="#00FF41">DE:</tspan><tspan fill="#8bd5a0"> tmux</tspan></text>
@@ -41,7 +41,7 @@
 <text x="348" y="238" xml:space="preserve" font-family="ui-monospace, 'Cascadia Code', Menlo, Consolas, monospace" font-size="13"><tspan font-weight="bold" fill="#00FF41">CPU:</tspan><tspan fill="#8bd5a0"> AMD Ryzen 7 9800X3D</tspan></text>
 <text x="348" y="253" xml:space="preserve" font-family="ui-monospace, 'Cascadia Code', Menlo, Consolas, monospace" font-size="13"><tspan font-weight="bold" fill="#00FF41">GPU:</tspan><tspan fill="#8bd5a0"> RTX 5080 Astral White</tspan></text>
 <text x="348" y="268" xml:space="preserve" font-family="ui-monospace, 'Cascadia Code', Menlo, Consolas, monospace" font-size="13"><tspan font-weight="bold" fill="#00FF41">Memory:</tspan><tspan fill="#8bd5a0"> 96GB (mostly context windows)</tspan></text>
-<text x="348" y="283" xml:space="preserve" font-family="ui-monospace, 'Cascadia Code', Menlo, Consolas, monospace" font-size="13"><tspan font-weight="bold" fill="#00FF41">Followers:</tspan><tspan fill="#8bd5a0"> 174 · Stars: 84</tspan></text>
+<text x="348" y="283" xml:space="preserve" font-family="ui-monospace, 'Cascadia Code', Menlo, Consolas, monospace" font-size="13"><tspan font-weight="bold" fill="#00FF41">Followers:</tspan><tspan fill="#8bd5a0"> 175 · Stars: 84</tspan></text>
 <rect x="348" y="294" width="24" height="13" fill="#21262d"/>
 <rect x="374" y="294" width="24" height="13" fill="#ff5555"/>
 <rect x="400" y="294" width="24" height="13" fill="#00FF41"/>
