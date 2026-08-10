@@ -42,10 +42,10 @@
 <!-- MOTD:START -->
 ```text
 $ cat /etc/motd
-Current processes are running smoothly, as expected.
+Running processes for optimal performance and minimal bugs.
 uptime: 4 years, 10 months (since 2021-09-21)
-artemis.target: waning gibbous (73% illuminated)
-motd.d regenerated: 2026-08-03
+artemis.target: waning crescent (8% illuminated)
+motd.d regenerated: 2026-08-10
 ```
 <!-- MOTD:END -->
 
@@ -64,8 +64,9 @@ motd.d regenerated: 2026-08-03
 | PID | %CPU | TIME | COMMAND |
 | --: | --: | --: | :-- |
 | 5707 | 97.0 | 70:07 | `voice-agent --elevenlabs --demo` |
-| 6853 | 85.0 | 16:13 | [`portfolio-v4 --issue --fix`](https://github.com/IdkwhatImD0ing/PortfolioV4) |
-| 5976 | 60.0 | 99:36 | `hackathon-playbook --post --share` |
+| 6853 | 95.0 | 16:13 | [`portfolio-v4 --update --merge`](https://github.com/IdkwhatImD0ing/PortfolioV4) |
+| 1516 | 85.0 | 79:16 | [`eve-tracker --sync --optimize`](https://github.com/IdkwhatImD0ing/EveOnlineTracker) |
+| 3140 | 75.0 | 23:20 | `hackathon-tips --publish --share` |
 <!-- CURRENTLY_BUILDING:END -->
 
 ## `$ tail /var/log/hackathons.log`
@@ -532,7 +533,7 @@ If you are building something ambitious, weird, AI-heavy, or demo-worthy, I prob
 [ [`reboot`](#top) ] · [ [`view source`](https://github.com/IdkwhatImD0ing/IdkwhatImD0ing) ] · [ [`.plan`](./.plan) ]
 
 <!-- BUILD_PLATE:START -->
-<sub>compiled from `cbeedfd` · build 32 · this page rebuilds itself; the human is a contributor</sub>
+<sub>compiled from `3be04fe` · build 34 · this page rebuilds itself; the human is a contributor</sub>
 <!-- BUILD_PLATE:END -->
 
 `Connection to whitebox closed.`
