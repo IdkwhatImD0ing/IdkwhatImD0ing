@@ -42,10 +42,10 @@
 <!-- MOTD:START -->
 ```text
 $ cat /etc/motd
-Current workload: intense hackathon preparations.
-uptime: 4 years, 10 months (since 2021-09-21)
-artemis.target: first quarter (49% illuminated)
-motd.d regenerated: 2026-08-20
+Updates are the new black.
+uptime: 4 years, 11 months (since 2021-09-21)
+artemis.target: waxing gibbous (87% illuminated)
+motd.d regenerated: 2026-08-24
 ```
 <!-- MOTD:END -->
 
@@ -63,7 +63,7 @@ motd.d regenerated: 2026-08-20
 <!-- CURRENTLY_BUILDING:START -->
 | PID | %CPU | TIME | COMMAND |
 | --: | --: | --: | :-- |
-| 8406 | 95.0 | 9:06 | [`hackathonstarter --update --merge --branch`](https://github.com/IdkwhatImD0ing/hackathonstarterkit) |
+| 8406 | 95.0 | 9:06 | [`hackathonstarter --update --merge --pr`](https://github.com/IdkwhatImD0ing/hackathonstarterkit) |
 | 5468 | 90.0 | 71:08 | `voice-ai --elevenlabs --build` |
 | 5025 | 85.0 | 108:45 | `pitch-checker --analyze --feedback` |
 <!-- CURRENTLY_BUILDING:END -->
@@ -532,7 +532,7 @@ If you are building something ambitious, weird, AI-heavy, or demo-worthy, I prob
 [ [`reboot`](#top) ] · [ [`view source`](https://github.com/IdkwhatImD0ing/IdkwhatImD0ing) ] · [ [`.plan`](./.plan) ]
 
 <!-- BUILD_PLATE:START -->
-<sub>compiled from `4f77f68` · build 37 · this page rebuilds itself; the human is a contributor</sub>
+<sub>compiled from `55cee79` · build 38 · this page rebuilds itself; the human is a contributor</sub>
 <!-- BUILD_PLATE:END -->
 
 `Connection to whitebox closed.`
