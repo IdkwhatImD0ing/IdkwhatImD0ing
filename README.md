@@ -42,10 +42,10 @@
 <!-- MOTD:START -->
 ```text
 $ cat /etc/motd
-Current work involves a lot of tax calculations.
+Current processes are running smoothly, as expected.
 uptime: 4 years, 11 months (since 2021-09-21)
-artemis.target: full moon (100% illuminated)
-motd.d regenerated: 2026-08-28
+artemis.target: waning gibbous (85% illuminated)
+motd.d regenerated: 2026-08-31
 ```
 <!-- MOTD:END -->
 
@@ -63,9 +63,10 @@ motd.d regenerated: 2026-08-28
 <!-- CURRENTLY_BUILDING:START -->
 | PID | %CPU | TIME | COMMAND |
 | --: | --: | --: | :-- |
-| 3834 | 90.0 | 117:54 | [`hackathon-agent --push --branch --pr`](https://github.com/IdkwhatImD0ing/hackathonstarterkit) |
-| 7007 | 85.0 | 50:47 | [`taxes-agent --update --merge --pr`](https://github.com/IdkwhatImD0ing/Taxes) |
-| 5707 | 75.0 | 70:07 | `voice-agent --elevenlabs --demo` |
+| 5707 | 97.0 | 70:07 | [`voice-agent --elevenlabs --demo`](https://github.com/IdkwhatImD0ing/skiing) |
+| 4776 | 85.0 | 99:36 | `hackathon-pitch --optimize --feedback` |
+| 8643 | 80.0 | 6:03 | `cursor-builder --mcp --test-driven` |
+| 3464 | 75.0 | 107:44 | `asset-shipper --portfolio --ai-skills` |
 <!-- CURRENTLY_BUILDING:END -->
 
 ## `$ tail /var/log/hackathons.log`
@@ -532,7 +533,7 @@ If you are building something ambitious, weird, AI-heavy, or demo-worthy, I prob
 [ [`reboot`](#top) ] · [ [`view source`](https://github.com/IdkwhatImD0ing/IdkwhatImD0ing) ] · [ [`.plan`](./.plan) ]
 
 <!-- BUILD_PLATE:START -->
-<sub>compiled from `0961482` · build 39 · this page rebuilds itself; the human is a contributor</sub>
+<sub>compiled from `f555842` · build 40 · this page rebuilds itself; the human is a contributor</sub>
 <!-- BUILD_PLATE:END -->
 
 `Connection to whitebox closed.`
