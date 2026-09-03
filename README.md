@@ -44,8 +44,8 @@
 $ cat /etc/motd
 Current processes are running smoothly, as expected.
 uptime: 4 years, 11 months (since 2021-09-21)
-artemis.target: waning gibbous (85% illuminated)
-motd.d regenerated: 2026-08-31
+artemis.target: waning gibbous (57% illuminated)
+motd.d regenerated: 2026-09-03
 ```
 <!-- MOTD:END -->
 
@@ -63,10 +63,10 @@ motd.d regenerated: 2026-08-31
 <!-- CURRENTLY_BUILDING:START -->
 | PID | %CPU | TIME | COMMAND |
 | --: | --: | --: | :-- |
-| 5707 | 97.0 | 70:07 | [`voice-agent --elevenlabs --demo`](https://github.com/IdkwhatImD0ing/skiing) |
-| 4776 | 85.0 | 99:36 | `hackathon-pitch --optimize --feedback` |
-| 8643 | 80.0 | 6:03 | `cursor-builder --mcp --test-driven` |
-| 3464 | 75.0 | 107:44 | `asset-shipper --portfolio --ai-skills` |
+| 5988 | 95.0 | 111:48 | [`portfolio --update --deploy`](https://github.com/IdkwhatImD0ing/PortfolioV4) |
+| 5468 | 90.0 | 71:08 | `voice-ai --build --test` |
+| 4840 | 85.0 | 43:40 | [`firetrace --debug --verbose`](https://github.com/IdkwhatImD0ing/FireTrace) |
+| 5433 | 70.0 | 36:33 | [`skiing --track --share`](https://github.com/IdkwhatImD0ing/skiing) |
 <!-- CURRENTLY_BUILDING:END -->
 
 ## `$ tail /var/log/hackathons.log`
@@ -533,7 +533,7 @@ If you are building something ambitious, weird, AI-heavy, or demo-worthy, I prob
 [ [`reboot`](#top) ] · [ [`view source`](https://github.com/IdkwhatImD0ing/IdkwhatImD0ing) ] · [ [`.plan`](./.plan) ]
 
 <!-- BUILD_PLATE:START -->
-<sub>compiled from `f555842` · build 40 · this page rebuilds itself; the human is a contributor</sub>
+<sub>compiled from `1ea45cf` · build 41 · this page rebuilds itself; the human is a contributor</sub>
 <!-- BUILD_PLATE:END -->
 
 `Connection to whitebox closed.`
