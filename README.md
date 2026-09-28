@@ -42,10 +42,10 @@
 <!-- MOTD:START -->
 ```text
 $ cat /etc/motd
-Current processes are running smoothly, as expected.
+Current processes are mostly about skiing and voice AI.
 uptime: 5 years, 0 months (since 2021-09-21)
-artemis.target: waxing gibbous (96% illuminated)
-motd.d regenerated: 2026-09-24
+artemis.target: waning gibbous (94% illuminated)
+motd.d regenerated: 2026-09-28
 ```
 <!-- MOTD:END -->
 
@@ -63,11 +63,10 @@ motd.d regenerated: 2026-09-24
 <!-- CURRENTLY_BUILDING:START -->
 | PID | %CPU | TIME | COMMAND |
 | --: | --: | --: | :-- |
-| 5707 | 97.0 | 70:07 | `voice-agent --elevenlabs --demo` |
-| 6853 | 90.0 | 16:13 | [`portfolio-v4 --merge --deploy`](https://github.com/IdkwhatImD0ing/PortfolioV4) |
-| 5106 | 85.0 | 69:06 | [`bill-splitter --update --optimize`](https://github.com/IdkwhatImD0ing/bill-splitter) |
-| 4840 | 75.0 | 43:40 | [`firetrace --debug --monitor`](https://github.com/IdkwhatImD0ing/FireTrace) |
-| 4564 | 70.0 | 7:04 | [`hackathonstarterkit --build --test`](https://github.com/IdkwhatImD0ing/hackathonstarterkit) |
+| 5433 | 95.0 | 36:33 | [`skiing --update --merge`](https://github.com/IdkwhatImD0ing/skiing) |
+| 5468 | 85.0 | 71:08 | `voice-ai --elevenlabs --cursor` |
+| 4776 | 75.0 | 99:36 | `hackathon-pitch --review --feedback` |
+| 3464 | 60.0 | 107:44 | `asset-shipper --linkedin --showcase` |
 <!-- CURRENTLY_BUILDING:END -->
 
 ## `$ tail /var/log/hackathons.log`
@@ -534,7 +533,7 @@ If you are building something ambitious, weird, AI-heavy, or demo-worthy, I prob
 [ [`reboot`](#top) ] · [ [`view source`](https://github.com/IdkwhatImD0ing/IdkwhatImD0ing) ] · [ [`.plan`](./.plan) ]
 
 <!-- BUILD_PLATE:START -->
-<sub>compiled from `e609600` · build 47 · this page rebuilds itself; the human is a contributor</sub>
+<sub>compiled from `005e7f6` · build 48 · this page rebuilds itself; the human is a contributor</sub>
 <!-- BUILD_PLATE:END -->
 
 `Connection to whitebox closed.`
