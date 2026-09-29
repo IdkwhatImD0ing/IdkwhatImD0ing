@@ -1,4 +1,5 @@
 """The phosphor design system: one surface, one font, three meaningful colors.
+(The phosphor is electric purple: Bill's favourite colour, glowing like a CRT.)
 
 Every SVG on the profile is drawn through this module, so the whole page reads
 as one machine. Stdlib only. Nothing here touches the network or README.md.
@@ -9,11 +10,11 @@ Type     GitHub's code font stack. Every run of text is locked to a 0.6em
          character grid with textLength, so columns line up on Consolas,
          SF Mono and DejaVu alike. Display type is a 5x7 dot matrix drawn as
          rects (identical on every OS).
-Color    phosphor (#00FF41) = lit, won, active. amber (#FFB000) = warning, or
+Color    phosphor (#C04BFF) = lit, won, active. amber (#FFB000) = warning, or
          "you can act here". red (#FF5555) = kernel panic, nothing else.
          Everything else is GitHub's own ink and muted grays.
 Light    "safe mode": the same drawings on GitHub's light code-block panel,
-         with the phosphor accent swapped for amber. Served only through
+         with the phosphor dimmed to a deep purple that reads on white. Served only through
          <picture> sources, never through prefers-color-scheme inside an SVG
          (that follows the OS, not the visitor's GitHub theme).
 Motion   t=0 is the finished frame. Animation may only add motion on top of a
@@ -40,10 +41,16 @@ LINE = 20        # body line height
 
 # The machine. tianni (天逆) is the Heaven Defying Bead from Renegade Immortal: the
 # one artifact bound to its owner, with an old soul living inside (here, the LLM
-# daemon that rewrites this page). Rename it here and nowhere else.
+# daemon that rewrites this page). Every drawing and generated block reads it
+# from here; the hand-written prompts in README.md, .plan, man/bill.1.md and
+# scripts/data/oneliners.txt must be renamed by hand, then re-run the renderers.
 HOST = "tianni"
 MACHINE = "Tianni Rev 5080"
 PROMPT = f"bill@{HOST}:~$ "
+
+# The lifetime hackathon record (the hero meter, bill.ansi). The log in
+# var/log/hackathons.log holds only the greatest hits.
+WON, ENTERED = 35, 58
 
 WINDOWS = ("boot", "ships", "fsck", "etc")
 
@@ -53,12 +60,14 @@ DARK = {
     "line": "#3D444D",    # inactive pane borders, key edges
     "fg": "#F0F6FC",      # body text (== code-block text)
     "mu": "#9198A1",      # secondary text, labels, inactive windows
-    "acc": "#00FF41",     # phosphor: lit, won, active
-    "acct": "#B6F5C4",    # long phosphor text (vibrates less than pure green)
-    "accd": "#149238",    # dim phosphor: accent labels, unlit outlines
-    "track": "#123D22",   # unlit meter cells
-    "ghost": "#162A1E",   # unlit dot-matrix dots
-    "chip": "#00FF41",    # filled accent chips (active window, F-keys, WIN tags)
+    # Electric purple, lifted from #BF00FF just enough to pass 4.5:1 as small
+    # text on the panel; the glow filter supplies the neon.
+    "acc": "#C04BFF",     # phosphor: lit, won, active
+    "acct": "#E0B3FF",    # long phosphor text (pale lavender reads easier in bulk)
+    "accd": "#8A3FC7",    # dim phosphor: accent labels, unlit outlines
+    "track": "#2A1740",   # unlit meter cells
+    "ghost": "#221630",   # unlit dot-matrix dots
+    "chip": "#C04BFF",    # filled accent chips (active window, F-keys, WIN tags)
     "ink": "#0D1117",     # text on chips
     "warn": "#FFB000",    # amber: warnings, "you can act here"
     "red": "#FF5555",     # kernel panic only
@@ -75,12 +84,12 @@ LIGHT = {  # safe mode
     "line": "#D1D9E0",
     "fg": "#1F2328",
     "mu": "#59636E",
-    "acc": "#9A6700",
-    "acct": "#7D4E00",
-    "accd": "#B08800",
-    "track": "#EFE3C4",
-    "ghost": "#EEE8DA",
-    "chip": "#FFB000",
+    "acc": "#7B2CBF",
+    "acct": "#5A1F8C",
+    "accd": "#9D6BD6",
+    "track": "#E9DDF7",
+    "ghost": "#EFE8F7",
+    "chip": "#C9A0FF",
     "ink": "#1F2328",
     "warn": "#BC4C00",
     "red": "#CF222E",
@@ -156,7 +165,8 @@ def write_svg(path: str | Path, content: str) -> bool:
     except ET.ParseError as error:
         raise ValueError(f"refusing to write malformed SVG {path}: {error}") from error
     target = Path(path)
-    if target.exists() and target.read_text(encoding="utf-8") == content:
+    # Compare bytes: a corrupted or non-UTF-8 file must be overwritten, not crash the check.
+    if target.exists() and target.read_bytes() == content.encode("utf-8"):
         return False
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(content, encoding="utf-8", newline="\n")
@@ -168,6 +178,10 @@ def write_svg(path: str | Path, content: str) -> bool:
 
 def fmt(v: float) -> str:
     return f"{v:.1f}".rstrip("0").rstrip(".") if isinstance(v, float) else str(v)
+
+
+def plural(n: int, word: str) -> str:
+    return f"{n} {word}" if n == 1 else f"{n} {word}s"
 
 
 def text_width(s: str, size: float = SIZE) -> float:
@@ -342,31 +356,44 @@ def dot_width(s: str, px: float) -> float:
     return max(len(s) * 6 - 1, 0) * px
 
 
+def cell_d(x: float, y: float, w: float, h: float | None = None) -> str:
+    """One square (or w x h box) as a path segment: many cells share one <path>."""
+    return f"M{fmt(x)} {fmt(y)}h{fmt(w)}v{fmt(w if h is None else h)}h-{fmt(w)}z"
+
+
+def dots_d(cells: list[tuple[float, float]], size: float) -> str:
+    return "".join(cell_d(x, y, size) for x, y in cells)
+
+
+def glyph_cells(ch: str, x: float, y: float, px: float, lit: bool = True,
+                tear_rows: tuple[int, ...] = (), tear: float = 0.0) -> list[tuple[float, float]]:
+    """Top-left corners of a 5x7 glyph's lit (or unlit) dots. tear_rows shifts
+    those lit rows sideways by `tear` px (the panic glitch). Unknown characters
+    are blanks."""
+    rows = GLYPHS.get(ch.upper(), GLYPHS[" "])
+    out = []
+    for ry, row in enumerate(rows):
+        dx = tear if (lit and ry in tear_rows) else 0.0
+        for rx, bit in enumerate(row):
+            if (bit == "#") == lit:
+                out.append((x + rx * px + dx, y + ry * px))
+    return out
+
+
 def dot_text(s: str, x: float, y: float, px: float, on: str = "acc", off: str | None = "gh",
              tear_rows: tuple[int, ...] = (), tear: float = 0.0, dot: float | None = None) -> str:
-    """5x7 dot matrix drawn as rects. `off` draws the unlit dots too (the LED
-    look); pass None for a clean face. tear_rows shifts those rows sideways by
-    `tear` px (the panic-week glitch). Unknown characters render as blanks."""
+    """5x7 dot matrix, one <path> per class. `off` draws the unlit dots too (the
+    LED look); pass None for a clean face."""
     size = dot if dot is not None else max(px - 1, 1)
-    lit, unlit = [], []
-    cx = x
-    for ch in s.upper():
-        rows = GLYPHS.get(ch, GLYPHS[" "])
-        for ry, row in enumerate(rows):
-            dx = tear if ry in tear_rows else 0
-            for rx, bit in enumerate(row):
-                if bit == "#":
-                    lit.append(f'<rect x="{fmt(cx + rx * px + dx)}" y="{fmt(y + ry * px)}" '
-                               f'width="{fmt(size)}" height="{fmt(size)}"/>')
-                elif off and ch != " ":
-                    unlit.append(f'<rect x="{fmt(cx + rx * px)}" y="{fmt(y + ry * px)}" '
-                                 f'width="{fmt(size)}" height="{fmt(size)}"/>')
-        cx += 6 * px
-    out = ""
-    if unlit:
-        out += f'<g class="{off}">' + "".join(unlit) + "</g>"
-    out += f'<g class="{on}">' + "".join(lit) + "</g>"
-    return out
+    lit: list[tuple[float, float]] = []
+    unlit: list[tuple[float, float]] = []
+    for i, ch in enumerate(s.upper()):
+        gx = x + i * 6 * px
+        lit += glyph_cells(ch, gx, y, px, tear_rows=tear_rows, tear=tear)
+        if off and ch != " ":
+            unlit += glyph_cells(ch, gx, y, px, lit=False)
+    out = f'<path class="{off}" d="{dots_d(unlit, size)}"/>' if unlit else ""
+    return out + f'<path class="{on}" d="{dots_d(lit, size)}"/>'
 
 
 # --- moon (same synodic math as the old MOTD) ------------------------------------

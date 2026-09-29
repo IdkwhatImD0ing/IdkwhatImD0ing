@@ -2,9 +2,11 @@
 
 Reads recent public GitHub activity plus the Hackathon Playbook RSS feed, asks
 OpenAI for a tiny process table, and writes it to assets/status.json, where the
-hero's htop pane (scripts/render_hero.py) and bill.ansi pick it up. Without an
-API key, or when the model returns junk, a deterministic fallback built from the
-same activity takes over.
+hero's htop pane (scripts/render_hero.py) and bill.ansi pick it up. When the
+model is unreachable or returns junk, the previous status.json is kept as-is
+(the commit says 'artemis: llm offline, kept the old bio'); only when there is
+no usable previous one, or with --fallback-only, a deterministic fallback built
+from the same activity takes over.
 
 Also owns the BUILD_PLATE block: one plain line inside the footer <pre>.
 
@@ -413,9 +415,8 @@ def load_previous_status(path: str) -> dict | None:
         payload = finalize_payload(data)
     except (OSError, ValueError, TypeError, AttributeError):
         return None
-    for key in ("updated", "build"):
-        if key in data:
-            payload[key] = data[key]
+    if "updated" in data:
+        payload["updated"] = data["updated"]
     return payload
 
 
@@ -429,13 +430,8 @@ def write_status_json(payload: dict, now: datetime | None, path: str = STATUS_PA
     }
     if now is not None:
         status["updated"] = now.strftime("%Y-%m-%dT%H:%M:%SZ")
-        run = run_number()
-        if run != "0":
-            status["build"] = int(run)  # lets the hero's journal name this very build
-    else:
-        for key in ("updated", "build"):
-            if key in payload:
-                status[key] = payload[key]
+    elif "updated" in payload:
+        status["updated"] = payload["updated"]
     target = Path(path)
     try:
         target.parent.mkdir(parents=True, exist_ok=True)

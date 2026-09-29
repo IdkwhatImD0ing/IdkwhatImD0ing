@@ -6,7 +6,7 @@ Meant to be consumed with:
 Stdlib only, no figlet: the block-letter banner font lives in this file.
 Colors follow the phosphor design system (scripts/phosphor.py), mapped
 to the nearest xterm-256 entries so the card looks the same in every terminal
-that has 256 colors (truecolor is not assumed): phosphor green for lit and
+that has 256 colors (truecolor is not assumed): electric purple for lit and
 active things, amber only where the reader can act, the terminal's own
 foreground for body text and links, grays for everything else.
 Run from the repo root: python scripts/generate_ansi_card.py
@@ -18,7 +18,7 @@ import re
 import unicodedata
 from pathlib import Path
 
-from render_hero import ENTERED, WON  # the hackathon record lives in one place
+from phosphor import ENTERED, WON  # the hackathon record lives in one place
 
 ESC = "\x1b"
 RESET = f"{ESC}[0m"
@@ -35,9 +35,8 @@ def fg256(code: int) -> str:
 
 
 # Design token -> xterm-256 color (the 256 entry's hex in the comment).
-PHOSPHOR = fg256(47)      # acc  #00FF41 -> #00ff5f  lit, won, active
-DIM_PHOSPHOR = fg256(28)  # accd #149238 -> #008700  borders, separators
-#                           (29 is nearer on paper but reads teal beside the banner)
+PHOSPHOR = fg256(171)     # acc  #C04BFF -> #d75fff  lit, won, active
+DIM_PHOSPHOR = fg256(98)  # accd #8A3FC7 -> #875fd7  borders, separators
 AMBER = fg256(214)        # warn #FFB000 -> #ffaf00  "you can act here"
 INK = f"{ESC}[39m"        # fg   the terminal's own foreground, so body text
 #                           never vanishes on a light-background terminal
@@ -45,8 +44,8 @@ MUTED = fg256(246)        # mu   #9198A1 -> #949494  labels, secondary text
 FAINT = fg256(242)        #      #6c6c6c             asides, the fine print
 
 # Banner rows, top to bottom: phosphor at full beam, fading down the tube
-# into the pure-green ramp (the 47/41/35/29 column drifts teal when dim).
-GRADIENT = (47, 47, 41, 34, 28)
+# into the violet end of the ramp.
+GRADIENT = (177, 171, 135, 129, 93)
 
 BORDER = DIM_PHOSPHOR
 LABEL = MUTED

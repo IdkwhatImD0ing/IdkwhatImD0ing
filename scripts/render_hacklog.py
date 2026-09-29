@@ -74,8 +74,8 @@ LED_BEZEL = 5        # recessed display window around the dot field
 
 # The oldest display on the page has one tired LED. Dark mode only; lit at t=0
 # and between flickers; prefers-reduced-motion (ph.css) holds it steady.
-FLICKER_CSS = (".flk{animation:wbflk 6.7s steps(1) infinite 2.3s}"
-               "@keyframes wbflk{0%,86%{opacity:1}87%{opacity:.12}88%{opacity:1}"
+FLICKER_CSS = (".flk{animation:phflk 6.7s steps(1) infinite 2.3s}"
+               "@keyframes phflk{0%,86%{opacity:1}87%{opacity:.12}88%{opacity:1}"
                "90%{opacity:.3}91%,100%{opacity:1}}")
 
 # The log is typed by hand: any run of spaces separates fields (the [TAG] marks
@@ -242,16 +242,12 @@ def fit(text: str, chars: int) -> str:
     return text[:chars - 3].rstrip() + "..."
 
 
-def plural(n: int, word: str) -> str:
-    return f"{n} {word}" + ("" if n == 1 else "s")
-
-
 def stats_line(ship: Ship) -> str:
     if not ship.repo:
         return "no remote"
     if ship.stars is None or ship.forks is None:
         return ""
-    return f"{plural(ship.stars, 'star')}  {plural(ship.forks, 'fork')}"
+    return f"{ph.plural(ship.stars, 'star')}  {ph.plural(ship.forks, 'fork')}"
 
 
 def award_label(ship: Ship) -> str:
@@ -269,17 +265,10 @@ def led_label(name: str) -> str:
 
 
 def dot_cells(s: str, x: float, y: float, px: float) -> list[str]:
-    """The lit dots of the ph.dot_text face (same glyphs, pitch, dot = px - 1),
-    as compact path segments instead of hundreds of rects."""
-    size = ph.fmt(px - 1)
-    cells = []
-    for i, ch in enumerate(s.upper()):
-        for ry, row in enumerate(ph.GLYPHS.get(ch, ph.GLYPHS[" "])):
-            for rx, bit in enumerate(row):
-                if bit == "#":
-                    cells.append(f"M{ph.fmt(x + (i * 6 + rx) * px)} {ph.fmt(y + ry * px)}"
-                                 f"h{size}v{size}h-{size}z")
-    return cells
+    """The lit dots of the ph.dot_text face, one path segment per dot (so one
+    dot can be pulled out to flicker)."""
+    return [ph.cell_d(cx, cy, px - 1) for i, ch in enumerate(s.upper())
+            for cx, cy in ph.glyph_cells(ch, x + i * 6 * px, y, px)]
 
 
 def led_module(name: str, x: float, y: float, avail: float, px: float = DOT_PX,
@@ -448,7 +437,7 @@ def pane_svg(ship: Ship, index: int, active: bool, mode: str, phone: bool = Fals
     path = f"cd ~/ships/{ship.slug}"
     right = "" if phone else stats
     if right and len(path) > path_room(right) and ship.stars is not None:
-        right = plural(ship.stars, "star")  # long slug: drop forks before clipping the path
+        right = ph.plural(ship.stars, "star")  # long slug: drop forks before clipping the path
     path = fit(path, path_room(right))
     body.append(ph.runs(tx, y_prompt, [("$", "acc!"), (" ", ""), (path, "fg")], size))
     if active:

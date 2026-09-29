@@ -73,5 +73,5 @@ jobs:
         if: ${{ !cancelled() }}
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "${{ steps.build.outputs.msg || 'artemis-build: routine self-maintenance' }}"
+          commit_message: "${{ steps.build.outputs.msg || 'artemis: routine self-maintenance' }}"
           file_pattern: "README.md assets/status.json assets/hero*.svg assets/ships bill.ansi"

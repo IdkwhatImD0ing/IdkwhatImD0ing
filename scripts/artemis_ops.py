@@ -560,11 +560,24 @@ def board_sealed(state: dict, salt: str) -> bool:
     return fp != salt_fingerprint(DEFAULT_SALT)
 
 
+def as_count(value: object) -> int:
+    """A counter from stats.json; a hand-edited non-number reads as 0, never a crash."""
+    try:
+        return max(int(value), 0)  # type: ignore[arg-type]
+    except (TypeError, ValueError):
+        return 0
+
+
+def stats_part(stats: dict, key: str, kind: type) -> dict | list:
+    value = stats.get(key)
+    return value if isinstance(value, kind) else kind()
+
+
 def top_users(stats: dict, key: str) -> list[tuple[str, int]]:
     ranked = [
-        (sanitize_login(login), int(counts.get(key, 0)))
-        for login, counts in stats.get("users", {}).items()
-        if isinstance(counts, dict) and int(counts.get(key, 0) or 0) > 0
+        (sanitize_login(login), as_count(counts.get(key)))
+        for login, counts in stats_part(stats, "users", dict).items()
+        if isinstance(counts, dict) and as_count(counts.get(key)) > 0
     ]
     ranked.sort(key=lambda item: (-item[1], item[0]))
     return ranked[:HALL_ROWS]
@@ -587,9 +600,10 @@ def fsck_view(state: dict, stats: dict, salt: str) -> dict:
         board_line = f"#{board}, cleaned {short_date(last.get('utc'))}"
     else:
         board_line = f"#{board}, online since {short_date(state.get('created_utc'))}"
-    totals = stats.get("totals", {})
+    totals = stats_part(stats, "totals", dict)
     ops = []
-    for entry in list(reversed(stats.get("ops_log", [])))[:SMART_ROWS]:
+    log = [entry for entry in stats_part(stats, "ops_log", list) if isinstance(entry, dict)]
+    for entry in list(reversed(log))[:SMART_ROWS]:
         result = str(entry.get("result", ""))
         # The engine only logs short ops ("fsck C4", "reformat") and known
         # results; anything longer is a hand edit, clipped so it cannot push
@@ -609,10 +623,10 @@ def fsck_view(state: dict, stats: dict, salt: str) -> dict:
         "pct": done * 100 // CLEAN_TOTAL,
         "panic_cell": panic_cell,
         "sealed": board_sealed(state, salt),
-        "operators": len(stats.get("users", {})),
-        "scans": int(totals.get("scans", 0)),
-        "panics": int(totals.get("panics", 0)),
-        "cleans": int(totals.get("cleans", 0)),
+        "operators": len(stats_part(stats, "users", dict)),
+        "scans": as_count(totals.get("scans")),
+        "panics": as_count(totals.get("panics")),
+        "cleans": as_count(totals.get("cleans")),
         "ops": ops,
         "fame": top_users(stats, "cleans"),
         "shame": top_users(stats, "panics"),
@@ -620,13 +634,9 @@ def fsck_view(state: dict, stats: dict, salt: str) -> dict:
     }
 
 
-def plural(n: int, word: str) -> str:
-    return f"{n} {word}" if n == 1 else f"{n} {word}s"
-
-
 def totals_text(view: dict) -> str:
-    return (f"{plural(view['operators'], 'operator')}, {plural(view['scans'], 'scan')}, "
-            f"{plural(view['panics'], 'panic')}, {plural(view['cleans'], 'clean')}")
+    return (f"{ph.plural(view['operators'], 'operator')}, {ph.plural(view['scans'], 'scan')}, "
+            f"{ph.plural(view['panics'], 'panic')}, {ph.plural(view['cleans'], 'clean')}")
 
 
 def corrupt_lines(view: dict) -> list[tuple[str, str]]:
@@ -1015,6 +1025,15 @@ def render_readme(readme: str, state: dict, stats: dict, salt: str, root: Path =
         block = render_fsck_block(state, stats, salt)
     except Exception:  # noqa: BLE001 - never blank the block over a drawing bug
         warn("fsck render failed; panel and README left as they were\n" + traceback.format_exc())
+        return False
+    try:
+        text = Path(readme).read_text(encoding="utf-8")
+    except OSError as error:
+        warn(f"skipped block update ({FSCK_START}): {error}")
+        return False
+    if FSCK_START not in text or FSCK_END not in text:
+        # Checked before any panel is written: files nothing references would pile up.
+        warn(f"skipped block update ({FSCK_START}): markers missing; no panel written")
         return False
     try:
         for path, content in panels.items():
@@ -1461,10 +1480,20 @@ def self_test() -> None:
         # Missing markers are a warning, not a crash, and nothing is blanked.
         bare = root / "BARE.md"
         bare.write_text("no markers here\n", encoding="utf-8")
+        before = sorted(path.name for path in (root / FSCK_DIR).glob("panel*.svg"))
+        record_op(stats, "tester", ["scans"], "fsck E5", "dup")
         assert not render_readme(str(bare), state, stats, salt, root=root)
+        assert sorted(path.name for path in (root / FSCK_DIR).glob("panel*.svg")) == before, \
+            "a README without markers gets no panel files"
         swap_oneliner(40, str(bare))
         assert bare.read_text(encoding="utf-8") == "no markers here\n"
         assert not render_readme(str(root / "MISSING.md"), state, stats, salt, root=root)
+
+    # Hand-edited stats never take the renderer down.
+    junk = {"users": {"x": {"panics": "n/a"}, "y": "str"}, "totals": {"scans": "?"}, "ops_log": ["bad", 3]}
+    view = fsck_view(state, junk, salt)
+    assert view["scans"] == 0 and view["ops"] == [] and view["shame"] == []
+    render_panels(state, junk, salt)
 
     print("self-test: all assertions passed")
 

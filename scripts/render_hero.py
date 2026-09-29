@@ -16,8 +16,8 @@ power-cycles (curtains whose default opacity is 0), the BIOS POSTs on the dark
 tube, and at ~3.2s the panes re-attach. With reduced motion or a frozen
 renderer you get the finished session and a `--:--` clock.
 
-Boot program (seeded like the old gifos hero, so a SHA always boots the same
-way): 1-in-8 kernel_panic, else standard / memtest+ / scramble.
+Boot program of the week (seeded by the ISO week, so every redraw in a week
+boots the same way): 1-in-8 kernel_panic, else standard / memtest+ / scramble.
 
 Every input is optional: missing data drops a journal line or falls back to
 seed values. All three SVGs render in memory first; files are written only if
@@ -64,7 +64,7 @@ FSCK_STATE = Path("data/fsck/state.json")
 OUT_DIR = Path("assets")
 
 ACCOUNT_CREATED = datetime(2021, 9, 21, tzinfo=timezone.utc)
-WON, ENTERED = 35, 58
+WON, ENTERED = ph.WON, ph.ENTERED
 TAGLINE = "AI-first builder · hackathon operator · ships fast"
 STACK = "ts python react fastapi pg"
 MEMORY_MB = 98304  # 2x48GB Dominator Platinum: the POST fallback without a token
@@ -172,10 +172,8 @@ def local_now() -> datetime:
 
 
 def derive_seed() -> tuple[int, str, str]:
-    """(seed, label, source): GITHUB_SHA's first 8 hex, else ISO year*100+week."""
-    sha = os.environ.get("GITHUB_SHA", "")
-    if re.fullmatch(r"[0-9a-fA-F]{8,40}", sha):
-        return int(sha[:8], 16), sha[:7].lower(), "GITHUB_SHA"
+    """(seed, label, source): ISO year*100+week. Both workflows redraw the hero
+    (Mon/Thu and Sat), so a per-commit seed would reroll the boot mid-week."""
     year, week, _ = local_now().isocalendar()
     return year * 100 + week, f"{year}-W{week:02d}", "iso-week"
 
@@ -226,7 +224,7 @@ def read_json(path: Path) -> object:
         return None
 
 
-def read_status(path: Path, notes: list[str]) -> tuple[str, str, list[dict], datetime | None, int | None]:
+def read_status(path: Path, notes: list[str]) -> tuple[str, str, list[dict], datetime | None]:
     data = read_json(path)
     if not isinstance(data, dict):
         notes.append(f"{path} unreadable; using seed values")
@@ -240,10 +238,7 @@ def read_status(path: Path, notes: list[str]) -> tuple[str, str, list[dict], dat
         have = {p["command"] for p in processes}
         processes += [p for p in clean_processes(list(SEED_PROCESSES)) if p["command"] not in have]
         processes = sorted(processes, key=lambda p: -p["cpu"])[:4]
-    build = data.get("build")
-    if not (isinstance(build, int) and not isinstance(build, bool) and 0 < build < 10**9):
-        build = None
-    return obsession, motd, processes, parse_utc(data.get("updated")), build
+    return obsession, motd, processes, parse_utc(data.get("updated"))
 
 
 def request_json(url: str, token: str, accept: str = "application/vnd.github+json",
@@ -298,8 +293,9 @@ def fetch_newest_stargazer(token: str) -> tuple[str, datetime] | None:
 
 
 def fsck_entries() -> list[Entry]:
-    """The last three real fsck ops (scans, panics, cleans, reformats, button
-    presses), so the journal tells the story that led to the current board."""
+    """The last three game ops (scans, panics, cleans, reformats), so the journal
+    tells the story that led to the current board. Button presses are left out:
+    the DO NOT PRESS key must never crowd the game out of the journal."""
     stats = read_json(FSCK_STATS)
     state = read_json(FSCK_STATE)
     log = stats.get("ops_log") if isinstance(stats, dict) else None
@@ -308,8 +304,7 @@ def fsck_entries() -> list[Entry]:
     ops = [op for op in log if isinstance(op, dict)]
     board = state.get("board_number") if isinstance(state, dict) else None
     notable = [i for i, op in enumerate(ops) if op.get("result") in ("panic", "clean", "reformat")]
-    # the latest notable op plus what led up to it (or any scan/press since): the last 3 real ops
-    story = [i for i, op in enumerate(ops) if op.get("result") in ("ok", "panic", "clean", "reformat", "press")]
+    story = [i for i, op in enumerate(ops) if op.get("result") in ("ok", "panic", "clean", "reformat")]
     picks = story[-3:]
 
     entries = []
@@ -334,8 +329,6 @@ def fsck_entries() -> list[Entry]:
                 entries.append(Entry(when, "mkfs", "/dev/sda1 reformatted"))
         elif result == "ok" and cell:
             entries.append(Entry(when, "fsck", f"{cell} verified by {login}"))
-        elif result == "press":
-            entries.append(Entry(when, "button", f"{login} pressed it. nothing happened."))
     return entries
 
 
@@ -343,7 +336,7 @@ def gather(program: str | None, status_path: Path, offline: bool) -> Inputs:
     notes: list[str] = []
     now = datetime.now(timezone.utc)
     seed, seed_label, seed_source = derive_seed()
-    obsession, motd, processes, updated, status_build = read_status(status_path, notes)
+    obsession, motd, processes, updated = read_status(status_path, notes)
     token = "" if offline else os.environ.get("GITHUB_TOKEN", "")
     if not token:
         notes.append("no GITHUB_TOKEN: skipping the stargazer and contribution lookups")
@@ -356,11 +349,9 @@ def gather(program: str | None, status_path: Path, offline: bool) -> Inputs:
         notes=notes,
     )
     inp.fsck = fsck_entries()
-    builds = build_commits(2)
-    # status.json is written before the bot commits, so it can be one build ahead of git log.
-    if status_build and updated and (not builds or status_build > builds[0][0]):
-        builds = [(status_build, updated)] + builds[:1]
-    inp.builds = builds
+    # Committed builds only (the CRONTAB receipts read the same git log), so the
+    # two screens always agree on the newest build.
+    inp.builds = build_commits(2)
     return inp
 
 
@@ -492,24 +483,24 @@ def css_animations() -> str:
     hold = secs(T_HOLD)
     return (
         ".pl,.ov,.bl,.sc{opacity:0}"
-        f".rv{{animation:wbhold var(--h) linear {hold},wbflick var(--d,.22s) linear var(--t)}}"
-        f".hk{{animation:wbhold var(--h) linear {hold}}}"
-        ".pl{animation:wbshow var(--w) steps(1) var(--t)}"
-        ".sc{animation:wbshow .07s steps(1) var(--t)}"
-        "@keyframes wbhold{from,to{opacity:0}}"
-        "@keyframes wbshow{from,to{opacity:1}}"
-        "@keyframes wbflick{0%{opacity:0}16%{opacity:1}30%{opacity:.12}48%{opacity:1}66%{opacity:.45}100%{opacity:1}}"
-        "@keyframes wbjit{0%{transform:translate(6px,0)}17%{transform:translate(-5px,1px)}"
+        f".rv{{animation:phhold var(--h) linear {hold},phflick var(--d,.22s) linear var(--t)}}"
+        f".hk{{animation:phhold var(--h) linear {hold}}}"
+        ".pl{animation:phshow var(--w) steps(1) var(--t)}"
+        ".sc{animation:phshow .07s steps(1) var(--t)}"
+        "@keyframes phhold{from,to{opacity:0}}"
+        "@keyframes phshow{from,to{opacity:1}}"
+        "@keyframes phflick{0%{opacity:0}16%{opacity:1}30%{opacity:.12}48%{opacity:1}66%{opacity:.45}100%{opacity:1}}"
+        "@keyframes phjit{0%{transform:translate(6px,0)}17%{transform:translate(-5px,1px)}"
         "34%{transform:translate(3px,-1px) skewX(-3deg)}51%{transform:translate(-7px,0)}"
         "68%{transform:translate(4px,1px) skewX(2deg)}85%{transform:translate(-2px,0)}100%{transform:none}}"
-        "@keyframes wbsq{from{transform:scaleY(1)}to{transform:scaleY(.004)}}"
-        "@keyframes wbunsq{from{transform:scaleY(.004)}to{transform:scaleY(1)}}"
-        "@keyframes wbloff{0%{opacity:1;transform:scaleX(1)}55%{opacity:1;transform:scaleX(.012)}"
+        "@keyframes phsq{from{transform:scaleY(1)}to{transform:scaleY(.004)}}"
+        "@keyframes phunsq{from{transform:scaleY(.004)}to{transform:scaleY(1)}}"
+        "@keyframes phloff{0%{opacity:1;transform:scaleX(1)}55%{opacity:1;transform:scaleX(.012)}"
         "100%{opacity:0;transform:scaleX(.012)}}"
-        "@keyframes wblon{0%{opacity:1;transform:scaleX(.012)}100%{opacity:1;transform:scaleX(1)}}"
-        "@keyframes wbtype{from{transform:translateX(0)}}"
-        "@keyframes wbfl{0%,58%{opacity:1}59%,100%{opacity:.18}}"
-        ".fl{animation:wbfl 1.7s steps(1) infinite}"
+        "@keyframes phlon{0%{opacity:1;transform:scaleX(.012)}100%{opacity:1;transform:scaleX(1)}}"
+        "@keyframes phtype{from{transform:translateX(0)}}"
+        "@keyframes phfl{0%,58%{opacity:1}59%,100%{opacity:.18}}"
+        ".fl{animation:phfl 1.7s steps(1) infinite}"
         ".sess,.bl{transform-box:fill-box;transform-origin:50% 50%}"
         ".ovt{transform-box:fill-box;transform-origin:50% 0}"
         ".ovb{transform-box:fill-box;transform-origin:50% 100%}"
@@ -523,34 +514,14 @@ def crt_css(attach: float) -> str:
     reopen = (attach - T_OFF) / total * 100
     frames = (f"0%{{opacity:1;transform:scaleY(0)}}{shut:.2f}%{{opacity:1;transform:scaleY(1)}}"
               f"{reopen:.2f}%{{opacity:1;transform:scaleY(1)}}100%{{opacity:1;transform:scaleY(0)}}")
-    return (f"@keyframes wbcrt{{{frames}}}"
-            f".ovt,.ovb{{animation:wbcrt {secs(total)} cubic-bezier(.6,0,.4,1) {secs(T_OFF)}}}")
+    return (f"@keyframes phcrt{{{frames}}}"
+            f".ovt,.ovb{{animation:phcrt {secs(total)} cubic-bezier(.6,0,.4,1) {secs(T_OFF)}}}")
 
 
 def session_style(motion: Motion, attach: float) -> str:
     """Jitter, collapse to a line, and (after the POST) expand back."""
-    return motion.style(("wbjit", 0.15, T_JIT, "steps(1)"), ("wbsq", T_DARK - T_OFF, T_OFF, "ease-in"),
-                        ("wbunsq", T_OPEN, attach, "ease-out"))
-
-
-def cell_d(x: float, y: float, w: float, h: float | None = None) -> str:
-    return f"M{n(x)} {n(y)}h{n(w)}v{n(w if h is None else h)}h-{n(w)}z"
-
-
-def dots_d(cells: list[tuple[float, float]], size: float) -> str:
-    return "".join(cell_d(x, y, size) for x, y in cells)
-
-
-def glyph_cells(ch: str, x: float, y: float, px: float, lit: bool = True,
-                tear_rows: tuple[int, ...] = (), tear: float = 0.0) -> list[tuple[float, float]]:
-    rows = ph.GLYPHS.get(ch.upper(), ph.GLYPHS[" "])
-    out = []
-    for ry, row in enumerate(rows):
-        dx = tear if (lit and ry in tear_rows) else 0.0
-        for rx, bit in enumerate(row):
-            if (bit == "#") == lit:
-                out.append((x + rx * px + dx, y + ry * px))
-    return out
+    return motion.style(("phjit", 0.15, T_JIT, "steps(1)"), ("phsq", T_DARK - T_OFF, T_OFF, "ease-in"),
+                        ("phunsq", T_OPEN, attach, "ease-out"))
 
 
 def moon_paths(cx: float, cy: float, r: int, px: float, illum: float, waxing: bool,
@@ -567,7 +538,7 @@ def moon_paths(cx: float, cy: float, r: int, px: float, illum: float, waxing: bo
             half = math.sqrt(max(0.0, 1 - y * y))
             on = (x if waxing else -x) > k * half
             cls = (limb if x * x + y * y > 0.62 else lit) if on else dark
-            groups[cls].append(cell_d(cx + gx * px, cy + gy * px, px - 1))
+            groups[cls].append(ph.cell_d(cx + gx * px, cy + gy * px, px - 1))
     return "".join(f'<path class="{cls}" d="{"".join(d)}"/>' for cls, d in groups.items() if d)
 
 
@@ -588,7 +559,7 @@ def clock_defs(pw: float, pixel_h: float, cell_w: float, cell_h: float) -> str:
     ids = {":": "ckc", "-": "ckd"}
     out = []
     for key, rows in CLOCK_FONT.items():
-        d = "".join(cell_d(c * pw, r * pixel_h, cell_w, cell_h)
+        d = "".join(ph.cell_d(c * pw, r * pixel_h, cell_w, cell_h)
                     for r, row in enumerate(rows) for c, bit in enumerate(row) if bit == "1")
         out.append(f'<path id="{ids.get(key, "ck" + key)}" d="{d}"/>')
     return "".join(out)
@@ -726,7 +697,7 @@ def post_layer(inp: Inputs, width: float, height: float, x0: float, y0: float, l
            f'<rect class="cv ov ovb" x="0" y="{n(half - 1)}" width="{n(width)}" height="{n(half + 1)}"/>',
            # the picture collapsing into a line, then a dot (and the reverse on attach)
            f'<rect class="acct bl glow" x="8" y="{n(half - 1.5)}" width="{n(width - 16)}" height="3"'
-           + motion.style(("wbloff", 0.3, T_DARK - 0.03, "ease-in"), ("wblon", 0.16, attach - 0.15, "ease-out"))
+           + motion.style(("phloff", 0.3, T_DARK - 0.03, "ease-in"), ("phlon", 0.16, attach - 0.15, "ease-out"))
            + "/>",
            # scanlines on the dark tube, under the text so the POST stays crisp
            f'<rect x="0" y="0" width="{n(width)}" height="{n(height)}" fill="url(#scan)"'
@@ -768,7 +739,7 @@ def post_layer(inp: Inputs, width: float, height: float, x0: float, y0: float, l
         tw = len(cmd) * cw
         tx = x0 + len(prompt) * cw
         typer = (f'<g transform="translate({n(tw)} 0)"'
-                 + motion.style(("wbtype", 0.36, script.type_at, f"steps({len(cmd)},end) backwards"))
+                 + motion.style(("phtype", 0.36, script.type_at, f"steps({len(cmd)},end) backwards"))
                  + f'><rect class="cv" x="{n(tx)}" y="{n(y - size)}" width="{n(tw + cw + 2)}" height="{n(size * 1.5)}"/>'
                  f'<rect fill="url(#scan)" x="{n(tx)}" y="{n(y - size)}" width="{n(tw + cw + 2)}" height="{n(size * 1.5)}"/>'
                  f'<rect class="acc" x="{n(tx)}" y="{n(y - size + 2)}" width="{n(cw)}" height="{n(size + 1)}"/></g>')
@@ -827,9 +798,9 @@ def name_block(words: list[tuple[str, float, float]], px: float, motion: Motion,
         for i, ch in enumerate(word):
             if ch != " ":
                 gx = x + i * 6 * px
-                unlit += glyph_cells(ch, gx, y, px, lit=False)
+                unlit += ph.glyph_cells(ch, gx, y, px, lit=False)
                 glyphs.append((ch, gx, y))
-    out = [f'<path class="gh" d="{dots_d(unlit, dot)}"/>', '<g class="acc glow">']
+    out = [f'<path class="gh" d="{ph.dots_d(unlit, dot)}"/>', '<g class="acc glow">']
     t0 = attach + 0.1
     defs = ""
     last = t0 + len(glyphs) * stagger
@@ -847,18 +818,18 @@ def name_block(words: list[tuple[str, float, float]], px: float, motion: Motion,
                             f'style="--t:{secs(t0 + i * 0.07)}"/>')
             reveal = t0 + count * 0.07
             last = max(last, reveal)
-            cells = glyph_cells(ch, gx, gy, px, tear_rows=tear_rows, tear=tear)
-            out.append(f'<path d="{dots_d(cells, dot)}"{motion.reveal(reveal, 0.2)}/>')
+            cells = ph.glyph_cells(ch, gx, gy, px, tear_rows=tear_rows, tear=tear)
+            out.append(f'<path d="{ph.dots_d(cells, dot)}"{motion.reveal(reveal, 0.2)}/>')
         out += alts
-        defs = "".join(f'<path id="sg{ord(c)}" d="{dots_d(glyph_cells(c, 0, 0, px), dot)}"/>' for c in sorted(used))
+        defs = "".join(f'<path id="sg{ord(c)}" d="{ph.dots_d(ph.glyph_cells(c, 0, 0, px), dot)}"/>' for c in sorted(used))
     else:
         for k, (ch, gx, gy) in enumerate(glyphs):
-            cells = glyph_cells(ch, gx, gy, px, tear_rows=tear_rows, tear=tear)
-            out.append(f'<path d="{dots_d(cells, dot)}"{motion.reveal(t0 + k * stagger, 0.2)}/>')
+            cells = ph.glyph_cells(ch, gx, gy, px, tear_rows=tear_rows, tear=tear)
+            out.append(f'<path d="{ph.dots_d(cells, dot)}"{motion.reveal(t0 + k * stagger, 0.2)}/>')
     cx, cy = cursor_at
     block = [(cx + c * px, cy + r * px) for r in range(7) for c in range(5)]
     blink = ' class="blink"' if motion.on else ""
-    out.append(f'<g{motion.reveal(last + 0.05, 0.12)}><path{blink} d="{dots_d(block, dot)}"/></g>')
+    out.append(f'<g{motion.reveal(last + 0.05, 0.12)}><path{blink} d="{ph.dots_d(block, dot)}"/></g>')
     out.append("</g>")
     return "".join(out), defs
 
@@ -868,13 +839,13 @@ def hackathon_meter(x: float, y: float, cell: float, gap: float, height: float, 
     """/dev/hackathons: one cell per event entered, lit if won. Fills up on attach."""
     per_row = per_row or ENTERED
     cells = [(x + (i % per_row) * (cell + gap), y + (i // per_row) * (height + 3)) for i in range(ENTERED)]
-    off = "".join(cell_d(cx, cy, cell, height) for cx, cy in cells[WON:])
+    off = "".join(ph.cell_d(cx, cy, cell, height) for cx, cy in cells[WON:])
     out = [f'<path class="tr" d="{off}"/>', '<g class="acc glow">']
     if motion.on:
-        out += [f'<path d="{cell_d(cx, cy, cell, height)}"{motion.dark_until(attach + 0.16 + i * 0.009)}/>'
+        out += [f'<path d="{ph.cell_d(cx, cy, cell, height)}"{motion.dark_until(attach + 0.16 + i * 0.009)}/>'
                 for i, (cx, cy) in enumerate(cells[:WON])]
     else:
-        out.append(f'<path d="{"".join(cell_d(cx, cy, cell, height) for cx, cy in cells[:WON])}"/>')
+        out.append(f'<path d="{"".join(ph.cell_d(cx, cy, cell, height) for cx, cy in cells[:WON])}"/>')
     out.append("</g>")
     return "".join(out)
 
@@ -914,7 +885,7 @@ def htop_rows(x0: float, y0: float, lh: float, size: float, procs: list[dict], w
         out.append(ph.text(mx, y, "[", "mu", size))
         on, off, flick = [], [], []
         for i in range(10):
-            d = cell_d(mx + cw + 0.5 + i * (seg_w + seg_gap), y - size * 0.8, seg_w, size * 0.92)
+            d = ph.cell_d(mx + cw + 0.5 + i * (seg_w + seg_gap), y - size * 0.8, seg_w, size * 0.92)
             if i >= lit:
                 off.append(d)
             elif i >= lit - 2 and motion.on:
