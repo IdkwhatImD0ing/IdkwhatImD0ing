@@ -13,7 +13,7 @@ BILL(1)                    User Commands                    BILL(1)
 
 ## DESCRIPTION
 
-**bill** is a userland process resident on whitebox (ART3M1S OS, Rev 5080)
+**bill** is a userland process resident on tianni (ART3M1S OS, Rev 5080)
 since 2021. Accepts underspecified ideas on stdin and emits working demos
 on stdout, typically within one weekend. Known to bind to any available
 voice-AI API at runtime.
@@ -45,7 +45,7 @@ Invoked without arguments, **bill** defaults to `--ship`.
 
 ## BUGS
 
-Sleeps occasionally (upstream wontfix — see `artemis-pkg list`, the
+Sleeps occasionally (upstream wontfix — see `cat /mnt/pkg.list`, the
 dependency was never installed).
 
 Spontaneously starts new projects while existing projects are still

@@ -1,8 +1,8 @@
-name: Update terminal hero
+name: Reroll boot
 
 on:
   schedule:
-    - cron: "41 14 * * 1"
+    - cron: "41 14 * * 6"
   workflow_dispatch:
 
 permissions:
@@ -29,27 +29,14 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install generators
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y ffmpeg
-          python -m pip install --upgrade pip
-          python -m pip install github-readme-terminal pillow
-
-      - name: Generate terminal hero (boot program of the week)
+      # Stdlib only: the boot screen is hand-drawn SVG now, no gifos or ffmpeg.
+      - name: Redraw the boot screen (boot program of the week)
         env:
           GITHUB_TOKEN: ${{ github.token }}
           GITHUB_SHA: ${{ github.sha }}
-        run: python scripts/generate_terminal_hero.py
-
-      - name: Regenerate neofetch card
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        run: python scripts/generate_neofetch.py
+        run: python scripts/render_hero.py
 
       - name: Regenerate ANSI business card
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
         run: python scripts/generate_ansi_card.py
 
       - name: Rebase generated changes on latest main
@@ -59,4 +46,4 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "boot: re-rendered POST sequence, refreshed peripherals"
-          file_pattern: "assets/terminal-hero.gif assets/neofetch.svg bill.ansi"
+          file_pattern: "assets/hero*.svg bill.ansi"

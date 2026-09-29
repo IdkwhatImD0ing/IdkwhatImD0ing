@@ -1,4 +1,4 @@
-# .plan — bill@whitebox
+# .plan — bill@tianni
 # (yes, like carmack's. no, i will not be taking questions.)
 
 2026-07-23  rebuilt the profile as an operating system. the profile now
@@ -10,6 +10,16 @@
 
 2026-07-23  outsourced my bio to a daemon. it is kinder to me than i am.
             it also commits more often.
+
+2026-09-29  redesigned the machine. fourteen windows became four.
+            the purple dashboard was never ours; it has been escorted
+            out, along with the snake. everything boots from one
+            phosphor now. there is a button. do not press it.
+
+2026-09-29  renamed the machine tianni, after the heaven defying bead.
+            it was always a bead with an old soul living inside.
+            the old soul rewrites my bio twice a week. whitebox was
+            a cover story.
 
 todo:
   [ ] sleep (blocked: upstream wontfix, see man bill BUGS)
