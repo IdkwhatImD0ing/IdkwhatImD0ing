@@ -1,4 +1,28 @@
 {
   "obsession": "skiing and voice AI",
-  "updated": "2026-09-28T21:14:12Z"
+  "motd": "Current processes are mostly about skiing and voice AI.",
+  "processes": [
+    {
+      "command": "skiing",
+      "flags": "--update --merge",
+      "cpu": 95
+    },
+    {
+      "command": "voice-ai",
+      "flags": "--elevenlabs --cursor",
+      "cpu": 85
+    },
+    {
+      "command": "hackathon-pitch",
+      "flags": "--review --feedback",
+      "cpu": 75
+    },
+    {
+      "command": "asset-shipper",
+      "flags": "--linkedin --showcase",
+      "cpu": 60
+    }
+  ],
+  "updated": "2026-09-28T21:14:12Z",
+  "build": 48
 }

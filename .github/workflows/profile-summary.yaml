@@ -30,10 +30,12 @@ jobs:
           python-version: "3.x"
 
       # OpenAI-independent renders run first so a bad LLM day cannot block them.
-      - name: Render hackathon log
+      - name: Render ships (hackathon log)
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: python scripts/render_hacklog.py
 
-      - name: Render crontab
+      - name: Render crontab and build receipts
         run: python scripts/render_crontab.py
 
       - name: Render passwd (stargazers)
@@ -41,7 +43,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         run: python scripts/render_passwd.py
 
-      - name: Rewrite own bio (ps aux, MOTD, status, build plate)
+      - name: Rewrite own bio (status.json, build plate)
         id: build
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -49,6 +51,18 @@ jobs:
           REQUIRE_OPENAI: "1"
           GITHUB_SHA: ${{ github.sha }}
         run: python scripts/update_currently_building.py
+
+      # Runs even if the LLM step failed: it falls back to the last status.json.
+      - name: Redraw the boot screen
+        if: ${{ !cancelled() }}
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_SHA: ${{ github.sha }}
+        run: python scripts/render_hero.py
+
+      - name: Reprint the ANSI business card
+        if: ${{ !cancelled() }}
+        run: python scripts/generate_ansi_card.py
 
       # Commit whatever rendered even if the LLM step failed.
       - name: Rebase generated changes on latest main
@@ -60,4 +74,4 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "${{ steps.build.outputs.msg || 'artemis-build: routine self-maintenance' }}"
-          file_pattern: "README.md assets/status.json"
+          file_pattern: "README.md assets/status.json assets/hero*.svg assets/ships bill.ansi"

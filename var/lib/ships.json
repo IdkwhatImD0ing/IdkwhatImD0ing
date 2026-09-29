@@ -1,0 +1,30 @@
+{
+  "DispatchAI": {
+    "repo": "IdkwhatImD0ing/DispatchAI",
+    "payload": "AI copilot for overloaded 911 dispatch centers",
+    "lang": "TypeScript",
+    "stars": 10,
+    "forks": 4
+  },
+  "TalkTuahBank": {
+    "repo": "aurelisajuan/TalkTuahBank",
+    "payload": "voice-first banking for the people banks forgot",
+    "lang": "TypeScript",
+    "stars": 18,
+    "forks": 7
+  },
+  "SlugLoop": {
+    "repo": "SlugLoop/SlugLoop",
+    "payload": "real-time campus bus tracker, UCSC-approved",
+    "lang": "JavaScript",
+    "stars": 9,
+    "forks": 4
+  },
+  "AdaptEd": {
+    "repo": "IdkwhatImD0ing/AdaptEd",
+    "payload": "lectures that reshape themselves to the student",
+    "lang": "Jupyter Notebook",
+    "stars": 20,
+    "forks": 4
+  }
+}
