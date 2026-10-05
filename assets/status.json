@@ -1,6 +1,6 @@
 {
-  "obsession": "voice ai projects",
-  "motd": "the updates are flowing like snow on a slope.",
+  "obsession": "hackathon starter kit",
+  "motd": "all systems operational. awaiting next hackathon.",
   "processes": [
     {
       "command": "voice-agent",
@@ -8,15 +8,15 @@
       "cpu": 97
     },
     {
-      "command": "skiing",
-      "flags": "--update --demo",
+      "command": "hackathonkit",
+      "flags": "--update --merge",
       "cpu": 85
     },
     {
-      "command": "hackathon",
-      "flags": "--review --insights",
+      "command": "music-videos",
+      "flags": "--sync --demo",
       "cpu": 75
     }
   ],
-  "updated": "2026-10-01T20:21:24Z"
+  "updated": "2026-10-05T22:00:33Z"
 }

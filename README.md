@@ -61,10 +61,10 @@ CRON_TZ=UTC
 
 <b>bill@tianni:~$ git log --oneline -4 --grep "^artemis-build" |</b>
 <b>&gt; sed 's/artemis-//; s/, kept the good parts//'</b>
+<a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/commit/3124247da11c5c26967263780657f0c1532d27dd">3124247</a> build 49: rewrote own bio around voice ai projects
 <a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/commit/c0cb2beebea860523022b003213618f481fa0f46">c0cb2be</a> build 48: rewrote own bio around skiing and voice AI
 <a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/commit/2c6d6134e0b0e3d340d40a1df1a68544352f4b63">2c6d613</a> build 47: rewrote own bio around voice AI integration
 <a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/commit/31284576ea529966b68385d8903a90cf019ec2f1">3128457</a> build 46: rewrote own bio around portfolio updates
-<a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/commit/e817099baaeb60084bec730bdee33affcc2b6a2b">e817099</a> build 45: rewrote own bio around voice AI projects
 <b>bill@tianni:~$ # nobody reviews these. quality has improved.</b>
 <!-- CRONTAB:END --></pre>
 
@@ -384,6 +384,6 @@ curl -sL https://raw.githubusercontent.com/IdkwhatImD0ing/IdkwhatImD0ing/main/bi
 [detached (from session tianni)]<!-- BOOT_ONELINER:START -->
 tianni: 0 days since last spontaneous rewrite
 <!-- BOOT_ONELINER:END --><!-- BUILD_PLATE:START -->
-build 49 · compiled from 1ff7044 · the human is a contributor
+build 50 · compiled from 41bc8c6 · the human is a contributor
 <!-- BUILD_PLATE:END -->
 <b>bill@tianni:~$</b> <a href="#top">tmux a -t tianni</a>   # or: <a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sudo+make+me+a+sandwich">help</a>, <a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing">source</a></pre>
