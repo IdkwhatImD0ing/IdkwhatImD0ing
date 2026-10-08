@@ -1,22 +1,27 @@
 {
   "obsession": "hackathon starter kit",
-  "motd": "all systems operational. awaiting next hackathon.",
+  "motd": "the updates are live. again.",
   "processes": [
     {
-      "command": "voice-agent",
-      "flags": "--elevenlabs --demo",
-      "cpu": 97
+      "command": "hackathon-kit",
+      "flags": "--update --merge",
+      "cpu": 95
     },
     {
-      "command": "hackathonkit",
-      "flags": "--update --merge",
+      "command": "music-video",
+      "flags": "--render --demo",
+      "cpu": 90
+    },
+    {
+      "command": "llm-tuner",
+      "flags": "--fine-tune",
       "cpu": 85
     },
     {
-      "command": "music-videos",
-      "flags": "--sync --demo",
-      "cpu": 75
+      "command": "pitch-check",
+      "flags": "--review",
+      "cpu": 80
     }
   ],
-  "updated": "2026-10-05T22:00:33Z"
+  "updated": "2026-10-08T20:41:23Z"
 }
