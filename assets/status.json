@@ -1,14 +1,14 @@
 {
   "obsession": "hackathon starter kit",
-  "motd": "the updates are live. again.",
+  "motd": "the updates are flowing. no one is surprised.",
   "processes": [
     {
-      "command": "hackathon-kit",
+      "command": "hackathonkit",
       "flags": "--update --merge",
       "cpu": 95
     },
     {
-      "command": "music-video",
+      "command": "claude-music",
       "flags": "--render --demo",
       "cpu": 90
     },
@@ -18,10 +18,10 @@
       "cpu": 85
     },
     {
-      "command": "pitch-check",
+      "command": "pitch-checker",
       "flags": "--review",
       "cpu": 80
     }
   ],
-  "updated": "2026-10-08T20:41:23Z"
+  "updated": "2026-10-12T22:29:26Z"
 }
