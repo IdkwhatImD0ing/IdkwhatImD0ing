@@ -1,6 +1,6 @@
 {
-  "obsession": "hackathon starter kit",
-  "motd": "the updates are flowing. no one is surprised.",
+  "obsession": "hackathon productivity",
+  "motd": "the updates are relentless. just like the deadlines.",
   "processes": [
     {
       "command": "hackathonkit",
@@ -8,20 +8,20 @@
       "cpu": 95
     },
     {
-      "command": "claude-music",
-      "flags": "--render --demo",
-      "cpu": 90
-    },
-    {
       "command": "llm-tuner",
-      "flags": "--fine-tune",
-      "cpu": 85
+      "flags": "--rent-gpu",
+      "cpu": 92
     },
     {
       "command": "pitch-checker",
-      "flags": "--review",
-      "cpu": 80
+      "flags": "--analyze",
+      "cpu": 88
+    },
+    {
+      "command": "asset-shipper",
+      "flags": "--link-assets",
+      "cpu": 85
     }
   ],
-  "updated": "2026-10-12T22:29:26Z"
+  "updated": "2026-10-15T19:06:38Z"
 }
