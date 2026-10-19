@@ -1,27 +1,22 @@
 {
-  "obsession": "hackathon productivity",
-  "motd": "the updates are relentless. just like the deadlines.",
+  "obsession": "hackathons and travel",
+  "motd": "the updates are relentless. just like my obsessions.",
   "processes": [
     {
-      "command": "hackathonkit",
-      "flags": "--update --merge",
+      "command": "travel-agent",
+      "flags": "--update --verbose",
       "cpu": 95
     },
     {
-      "command": "llm-tuner",
-      "flags": "--rent-gpu",
+      "command": "hackathon-kit",
+      "flags": "--merge --debug",
       "cpu": 92
     },
     {
-      "command": "pitch-checker",
-      "flags": "--analyze",
-      "cpu": 88
-    },
-    {
-      "command": "asset-shipper",
-      "flags": "--link-assets",
-      "cpu": 85
+      "command": "llm-tuner",
+      "flags": "--cloud --auto",
+      "cpu": 90
     }
   ],
-  "updated": "2026-10-15T19:06:38Z"
+  "updated": "2026-10-19T20:34:37Z"
 }
