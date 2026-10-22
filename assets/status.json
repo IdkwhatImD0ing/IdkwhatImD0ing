@@ -1,6 +1,6 @@
 {
-  "obsession": "hackathons and travel",
-  "motd": "the updates are relentless. just like my obsessions.",
+  "obsession": "travel and hackathons",
+  "motd": "the updates are never-ending, much like travel plans.",
   "processes": [
     {
       "command": "travel-agent",
@@ -8,15 +8,20 @@
       "cpu": 95
     },
     {
+      "command": "portfolio-v5",
+      "flags": "--build --watch",
+      "cpu": 90
+    },
+    {
       "command": "hackathon-kit",
-      "flags": "--merge --debug",
-      "cpu": 92
+      "flags": "--merge --deploy",
+      "cpu": 85
     },
     {
       "command": "llm-tuner",
-      "flags": "--cloud --auto",
-      "cpu": 90
+      "flags": "--rent --debug",
+      "cpu": 80
     }
   ],
-  "updated": "2026-10-19T20:34:37Z"
+  "updated": "2026-10-22T19:12:53Z"
 }

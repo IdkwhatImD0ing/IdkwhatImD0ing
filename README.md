@@ -61,10 +61,10 @@ CRON_TZ=UTC
 
 <b>bill@tianni:~$ git log --oneline -4 --grep "^artemis-build" |</b>
 <b>&gt; sed 's/artemis-//; s/, kept the good parts//'</b>
+<a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/commit/bda3bedcb7adf9751171106774a5cf57d538835f">bda3bed</a> build 54: rewrote own bio around hackathons and travel
 <a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/commit/03251ed5137464a8793b984f370090819564d279">03251ed</a> build 53: rewrote own bio around hackathon productivity
 <a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/commit/7d0bd63fd4df33fc0f1c5e22fdd1eaee1637747e">7d0bd63</a> build 52: rewrote own bio around hackathon starter kit
 <a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/commit/c58b213a2ecddaa0b23be628ac1f063b41d12c2a">c58b213</a> build 51: rewrote own bio around hackathon starter kit
-<a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/commit/65c78f4523e39efe896e8e8516ca1502587b6c9c">65c78f4</a> build 50: rewrote own bio around hackathon starter kit
 <b>bill@tianni:~$ # nobody reviews these. quality has improved.</b>
 <!-- CRONTAB:END --></pre>
 
@@ -384,6 +384,6 @@ curl -sL https://raw.githubusercontent.com/IdkwhatImD0ing/IdkwhatImD0ing/main/bi
 [detached (from session tianni)]<!-- BOOT_ONELINER:START -->
 tianni: 0 days since last spontaneous rewrite
 <!-- BOOT_ONELINER:END --><!-- BUILD_PLATE:START -->
-build 54 · compiled from 6a2d16c · the human is a contributor
+build 55 · compiled from bda3bed · the human is a contributor
 <!-- BUILD_PLATE:END -->
 <b>bill@tianni:~$</b> <a href="#top">tmux a -t tianni</a>   # or: <a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sudo+make+me+a+sandwich">help</a>, <a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing">source</a></pre>
