@@ -1,8 +1,8 @@
 name: Moon watch
 
-# Once a week, on Saturday, the steward re-reads the dates: if Bill pushed
-# again to a repo in the Now section, its date moves forward (no LLM, no new
-# lines), and the terminal talisman is redrawn. It commits only when a date
+# Once a week, on Saturday: if Bill pushed again to a repo in the Now
+# section, its date moves forward (no LLM, no new lines), and the terminal
+# card is redrawn. It commits only when a date
 # moved. The Saturday cadence is also part of the repo's keepalive (GitHub
 # disables cron workflows after 60 quiet days); do not thin it.
 
@@ -36,12 +36,12 @@ jobs:
           python-version: "3.12"
 
       # Stdlib only. Any API failure warns and changes nothing.
-      - name: The steward re-reads the dates
+      - name: Move the Now dates forward
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: python scripts/update_currently_building.py --dates-only
 
-      - name: Redraw the terminal talisman
+      - name: Redraw the terminal card
         run: python scripts/generate_ansi_card.py
 
       - name: Rebase on latest main
@@ -50,6 +50,6 @@ jobs:
       - name: Commit
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "moon-watch: the steward re-read the dates"
+          commit_message: "Move the Now dates forward (moon watch)"
           # Every pathspec must exist, or git add fails and nothing commits.
           file_pattern: "README.md assets/status.json bill.ansi"

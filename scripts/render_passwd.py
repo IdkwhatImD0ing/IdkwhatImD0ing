@@ -1,17 +1,14 @@
-"""Render the PASSWD block: the disciple register, newest four entries.
+"""Render the PASSWD block: the register of people who starred the repo.
 
 The block lives inside an HTML <pre> in README.md, right after its heading:
 
-    <pre><b>弟子名册 the disciple register · newest four</b><!-- PASSWD:START -->
+    <pre><b>弟子名册, the people who starred this repo</b><!-- PASSWD:START -->
     ...rendered here...
     <!-- PASSWD:END --></pre>
 
-Starring the repo initiates you as a 外门弟子, an outer disciple. Each
-stargazer gets a register number (1000 + their position in the star list),
-their login linked to their profile, and the day they were initiated (the
-star date). The register opens with a few fixed entries, so the newest four
-are always four lines even while there are fewer than four stargazers. A last
-line names the next free number.
+Each stargazer gets a number (1000 + their position in the star list), their
+login linked to their profile, and the day they starred. The list opens with
+Bill's own line and shows the newest four. A last line says how to get on it.
 
 The stargazers endpoint needs a token (it 401s anonymously), so run it as
 GITHUB_TOKEN=... python scripts/render_passwd.py  (CI always has one).
@@ -43,13 +40,10 @@ SAFE_LOGIN = re.compile(r"[^A-Za-z0-9-]")
 DATE = re.compile(r"\d{4}-\d{2}-\d{2}")
 UNKNOWN_DATE = "????-??-??"  # an entry without a usable starred_at
 
-# The head of the register, in file order. Disciples are entered after these,
-# so the fixed entries only show while there are fewer than four stargazers.
+# The head of the register. Stargazers are entered after it, so it only shows
+# while there are fewer than four of them.
 SYSTEM_ENTRIES = (
-    (65534, "nobody", "the wind. owns nothing"),
-    (997, "sleep", "never initiated. optional dependency"),
-    (998, "steward", "keeps the mission hall. not a person"),
-    (999, "bill", "教主, Sect Leader. here since 2021-09-21"),
+    (999, "bill", "教主 (sect leader), on GitHub since 2021-09-21"),
 )
 
 
@@ -110,8 +104,7 @@ def head(number: int, login: str) -> tuple[str, str]:
 
 def fit_description(prefix_cols: int, candidates: tuple[str, ...]) -> str:
     """The first description that keeps the line inside MAX_WIDTH. Long logins
-    shed words: the initiation date is the point of the line, so the rank goes
-    first and the date last."""
+    shed words: the star date goes last."""
     for text in candidates:
         if prefix_cols + display_cols(text) <= MAX_WIDTH:
             return text
@@ -127,8 +120,7 @@ def disciple_line(entry: dict, number: int) -> str | None:
     gap = padded[len(login):]
     description = fit_description(
         display_cols(number_part) + len(login) + len(gap),
-        (f"外门 outer disciple. initiated {date}", f"outer disciple. initiated {date}",
-         f"initiated {date}", date),
+        (f"starred {date}", date),
     )
     line = f'{html.escape(number_part, quote=False)}<a href="https://github.com/{login}">{login}</a>'
     if description:
@@ -153,8 +145,8 @@ def render(stargazers: list[tuple[int, dict]], total: int, repo: str = REPO) -> 
         raise ValueError("no renderable stargazers")
 
     closing = (
-        f"the next number, {FIRST_NUMBER + total}, is unclaimed. "
-        f'<a href="https://github.com/{html.escape(repo)}">star this repo</a> to be initiated.'
+        f'<a href="https://github.com/{html.escape(repo)}">Star this repo</a> '
+        f"to get on the list as no. {FIRST_NUMBER + total}."
     )
     lines = rows[-TAIL_COUNT:] + [closing]
 

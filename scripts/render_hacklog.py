@@ -8,8 +8,8 @@ The newest four entries (by date) each become one card SVG in assets/forge/
 (<slug>.svg dark, <slug>-light.svg for light mode, <slug>-phone.svg for
 phones), drawn by scripts/art_forge.py, and the HACKLOG marker block in
 README.md becomes a left-aligned 2x2 grid of those cards, each linked to its
-repo. (The folder and the "forged artifact" signature keep their old names on
-purpose: they are invisible to readers.)
+repo. (The folder keeps its old name on purpose. Card SVGs carry the
+"project card" signature; older ones with "forged artifact" are still pruned.)
 
 var/lib/ships.json (hand-maintained) maps NAME -> {"repo": "owner/name",
 "payload": one line, "lang": str, "stars": int, "forks": int}. The cards show
@@ -232,15 +232,13 @@ def verdict(ship: Ship) -> str:
 
 
 def alt_text(ship: Ship) -> str:
-    """'TalkTuahBank: Overall 1st Place at HackUTD 2024, November 2024. Voice-first
-    banking for the people banks forgot. Opens the source on GitHub.'"""
+    """'TalkTuahBank: Overall 1st Place at HackUTD 2024, November 2024. Banking
+    over a regular phone call, no app or internet needed.'"""
     record = dataclasses.asdict(ship)
     award = ship.award or verdict(ship)
     text = f"{ship.name}: {award} at {ship.event}, {af.month(record, long=True)}."
     if ship.payload:
         text += " " + af.one_liner(record) + "."
-    if ship.repo:
-        text += " Opens the source on GitHub."
     return text
 
 
@@ -355,7 +353,8 @@ def main() -> None:
         if stale.name in files:
             continue
         try:
-            if af.SIGNATURE in stale.read_text(encoding="utf-8", errors="replace")[:600]:
+            head = stale.read_text(encoding="utf-8", errors="replace")[:600]
+            if af.SIGNATURE in head or af.OLD_SIGNATURE in head:
                 stale.unlink()
                 print(f"removed stale artifact {stale}")
         except OSError as error:

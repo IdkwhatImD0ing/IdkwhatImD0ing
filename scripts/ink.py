@@ -23,10 +23,10 @@ Colour   gold = lit, won, active. jade = you can act here (and qi).
          danger = the formation's backlash, a qi deviation, nothing else.
          seal red = seals only. Everything else is paper, ink and muted.
 Light    the same drawing with mode="light". Served only through
-         <picture><source media="(prefers-color-scheme: light)">; a light
-         SVG never animates (doc() refuses @keyframes in light mode).
-Motion   the SVG with every animation removed is the finished picture.
-         Animation only adds motion; prefers-reduced-motion stops all of it.
+         <picture><source media="(prefers-color-scheme: light)">.
+Stills   nothing on the profile moves: doc() refuses @keyframes and <animate>
+         in every mode (CLAUDE.md, "Stills only"). The reduced-motion rule in
+         css() stays as a harmless guard.
 Ornament the site's own path data (app/sect/sect.css, ornaments.tsx,
          lib/sect/logo.ts): cloud corners, brush strokes, the ink ring, the
          worn seal and the sun-and-moon logo.
@@ -294,15 +294,15 @@ def glyph_defs(markup: str) -> str:
 def doc(w: float, h: float, body: str, label: str, mode: str = "dark", defs: str = "",
         extra_css: str = "") -> str:
     """A complete SVG. `label` is the accessible description (aria-label and
-    <title>): the same facts a sighted visitor gets. Light documents may not
-    animate; one that tries raises ValueError."""
+    <title>): the same facts a sighted visitor gets. Stills only: a document
+    that tries to animate raises ValueError."""
     glow = GLOW if "glow" in body and mode == "dark" else ""
     out = (f'<svg xmlns="http://www.w3.org/2000/svg" width="{fmt(w)}" height="{fmt(h)}" '
            f'viewBox="0 0 {fmt(w)} {fmt(h)}" role="img" aria-label="{attr(label)}">'
            f"<title>{escape(label)}</title>{css(mode, extra_css)}"
            f"<defs>{glyph_defs(body + defs)}{glow}{defs}</defs>{body}</svg>\n")
-    if mode == "light" and "@keyframes" in out:
-        raise ValueError("light SVGs never animate")
+    if "@keyframes" in out or "<animate" in out:
+        raise ValueError("stills only: no SVG on the profile animates")
     return out
 
 

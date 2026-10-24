@@ -9,8 +9,7 @@ with the award, the event and the month. The award words are gold when the
 build won (gold means won, nowhere else) and plain text when it shipped. The
 card links to its repo in the README, so it does not repeat the address. No
 seals, cloud corners, runes, glow or star counts: detail lives in the hero and
-the footer. A missing one-liner gets an in-fiction excuse, never an invented
-one.
+the footer. A missing one-liner says so plainly; it is never invented.
 """
 
 from __future__ import annotations
@@ -22,13 +21,14 @@ from datetime import date
 import ink
 
 PANE_W = 414
-SIGNATURE = 'aria-label="forged artifact '   # in the first 600 chars of every pane SVG
+SIGNATURE = 'aria-label="project card '      # in the first 600 chars of every card SVG
+OLD_SIGNATURE = 'aria-label="forged artifact '  # cards drawn before 2026-10-24, still pruned
 GUTTER = 4          # half on each side of a desktop pane; the same under it
 PAD = 16
 NAME_SIZE = 24
 TEXT_SIZE, LINE_H = 14, 20
 SMALL_SIZE = 12
-NO_PAYLOAD = "no inscription on file. it was built anyway."
+NO_PAYLOAD = "No description yet."
 MONTHS = ("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
 MONTHS_LONG = ("January", "February", "March", "April", "May", "June", "July", "August", "September",
                "October", "November", "December")
@@ -107,7 +107,7 @@ def payload_lines_needed(ships: list[dict], phone: bool) -> int:
 def label(ship: dict, index: int) -> str:
     name = _get(ship, "name") or "unnamed"
     award = _get(ship, "award") or ("won" if won(ship) else "shipped")
-    bits = [f"forged artifact {index}: {name}.", f"{award} at {_get(ship, 'event')}, {month(ship, long=True)}."]
+    bits = [f"project card {index + 1}: {name}.", f"{award} at {_get(ship, 'event')}, {month(ship, long=True)}."]
     payload = one_liner(ship)
     bits.append(payload + "." if payload else NO_PAYLOAD)
     return " ".join(bits)

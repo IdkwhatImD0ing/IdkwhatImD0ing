@@ -1,4 +1,4 @@
-"""The sect's petitions: 破阵 (break the formation), the gong, and the kitchen hall.
+"""Minesweeper you play by opening GitHub issues, plus the gong and the sandwich reply.
 
 Visitors play minesweeper against the 护宗大阵, the Grand Sect-Protecting
 Formation, by opening issues. This module is the engine, the title router and
@@ -22,7 +22,7 @@ Titles (prefixes are case-sensitive; the cell letter is not):
 The legacy titles are the sect's previous life (a machine called tianni);
 they keep working so old links and open issues never break.
 
-Contract for `process`: stdout is EXACTLY the in-character issue-comment reply
+Contract for `process`: stdout is EXACTLY the plain issue-comment reply
 (nothing else), and the exit code is always 0. Diagnostics go to stderr.
 
 Presentation: the board is one drawn device assembled from static tiles in
@@ -38,8 +38,8 @@ Anti-cheat: trap (mine) positions are never persisted for an active board.
 They are recomputed on demand from HMAC(FSCK_SALT, board_number:first_cell);
 the state file only stores revealed cells with their adjacency digits (public
 info a player has already earned). Without the FSCK_SALT repo secret the
-engine falls back to a public salt and the panel admits, in fiction, that the
-traps are derivable. Never change DEFAULT_SALT, the HMAC message,
+engine falls back to a public salt and the panel says the mines can be found
+in the source. Never change DEFAULT_SALT, the HMAC message,
 place_mines, MINE_COUNT, the state/stats JSON keys or the data/fsck/ paths:
 any of them silently corrupts the live board. Stats keep logging the old op
 names (`fsck C4`, `reformat`, `button`); the view maps them for display.
@@ -100,10 +100,9 @@ SCAN_TITLE = "sect|zhen|{cell}"
 RELAY_TITLE = "sect|zhen|relay"
 GONG_TITLE = "sect|gong"
 SANDWICH_TITLE = "sudo make me a sandwich"
-SANDWICH_REPLY = ("the kitchen hall does not take orders from the sudoers file. "
-                  "this incident will be reported to the elders.")
-GONG_REPLY = "nothing happened."
-INTERNAL_FAULT = "the scribe spilled ink on the reply. try again in a minute."
+SANDWICH_REPLY = "Okay."  # xkcd 149
+GONG_REPLY = "Nothing happened."
+INTERNAL_FAULT = "Something went wrong on my end. Try again in a minute."
 
 OPS_LOG_LIMIT = 12
 OPS_SHOWN = 4
@@ -113,15 +112,9 @@ RESULT_COLS = 16  # the longest result label: "FORMATION BROKEN"
 PHONE_W = 360
 RESULTS = ("ok", "dup", "panic", "clean", "reformat", "refused", "press")
 
-SCAN_BODY = (
-    "Submit this petition as-is to read node {cell} of the grand formation.\n"
-    "The formation answers with an eyes reaction and redraws the board in about a minute."
-)
-RELAY_BODY = (
-    "Submit this petition as-is to have the elders re-lay the formation.\n"
-    "They only do it once the formation is broken or has struck back."
-)
-GONG_BODY = "Submit this petition as-is. You were told."
+SCAN_BODY = "Submit this issue to open {cell}. The board on my profile updates in about a minute."
+RELAY_BODY = "Submit this issue to start a new board. It only works once the current game is won or lost."
+GONG_BODY = ":)"
 
 
 def warn(message: str) -> None:
@@ -426,15 +419,15 @@ def top_users(stats: dict, key: str) -> list[tuple[str, int]]:
 
 
 def display_op(op: object) -> str:
-    """The stored op name in the sect's words: 'fsck C4' -> 'step C4',
-    'reformat' -> 're-lay', 'button' -> 'gong'. A hand edit is sanitized and
+    """The stored op name in plain words: 'fsck C4' -> 'open C4',
+    'reformat' -> 'reset', 'button' -> 'gong'. A hand edit is sanitized and
     clipped, so it can never push the result column off the panel."""
     text = str(op or "")
     match = re.fullmatch(r"fsck ([A-Ia-i][1-9])", text)
     if match:
-        return f"step {match.group(1).upper()}"
+        return f"open {match.group(1).upper()}"
     if text == "reformat":
-        return "re-lay"
+        return "reset"
     if text == "button":
         return "gong"
     return clip(sanitize_fragment(text) or "?", OP_COLS)
@@ -537,7 +530,7 @@ def prune_panels(seq: int, root: Path = Path(".")) -> None:
 
 def tile_pic(name: str, width: int, height: int, alt: str, title: str = "") -> str:
     """A tile in a bare <picture>: light twin via <source>, no auto-link to the raw file."""
-    extra = f' title="{title}"' if title else ""
+    extra = f' title="{html.escape(title)}"' if title else ""
     dark = f"{af.TILE_DIR}/dark/{name}.svg"
     return (f'<picture><source media="(max-width: 600px)" srcset="{dark}">'
             f'<source media="(prefers-color-scheme: light)" srcset="{af.TILE_DIR}/light/{name}.svg">'
@@ -557,13 +550,13 @@ def render_cell(state: dict, cell: str, mines: set[str] | None) -> str:
         if cell in revealed:
             return digit_pic(cell, revealed[cell])
         url = html.escape(scan_url(cell))
-        return f'<a href="{url}">{tile_pic("hidden", af.TILE, af.TILE, f"step on {cell}", f"read node {cell}")}</a>'
-    # A spent formation (backlash or broken): everything is face-up, nothing is clickable.
+        return f'<a href="{url}">{tile_pic("hidden", af.TILE, af.TILE, f"open {cell}")}</a>'
+    # A finished game (lost or cleared): everything is face-up, nothing is clickable.
     mines = mines or set()
     if cell in mines:
         if status == "panicked" and cell == state.get("panic_cell"):
-            return tile_pic("panic", af.TILE, af.TILE, f"{cell}: BACKLASH")
-        return tile_pic("mine", af.TILE, af.TILE, f"{cell}: killing trap (dormant)")
+            return tile_pic("panic", af.TILE, af.TILE, f"{cell}: the mine that was hit")
+        return tile_pic("mine", af.TILE, af.TILE, f"{cell}: mine")
     return digit_pic(cell, revealed[cell] if cell in revealed else adjacency(cell, mines))
 
 
@@ -586,23 +579,22 @@ def panel_pic(view: dict) -> str:
             f'alt="{html.escape(af.panel_alt(view))}"></picture>')
 
 
-def key_link(url: str, name: str, width: int, alt: str, title: str) -> str:
+def key_link(url: str, name: str, width: int, alt: str) -> str:
     return (f'<a href="{html.escape(url)}"><picture>'
             f'<source media="(max-width: 600px)" srcset="{af.DIR}/{name}.svg">'
             f'<source media="(prefers-color-scheme: light)" srcset="{af.DIR}/{name}-light.svg">'
-            f'<img src="{af.DIR}/{name}.svg" width="{width}" height="{af.GONG_H}" align="top" alt="{alt}" '
-            f'title="{title}"></picture></a>')
+            f'<img src="{af.DIR}/{name}.svg" width="{width}" height="{af.GONG_H}" align="top" alt="{alt}">'
+            f'</picture></a>')
 
 
 def render_fsck_block(state: dict, stats: dict, salt: str) -> str:
     """Panel (floated right) + board in one paragraph, so their tops align; then
-    the keys: the sealed gong always, the re-lay key only on a spent formation.
+    the keys: the gong always, the new-board key only after a game ends.
     Pure: returns markup, touches nothing."""
     view = fsck_view(state, stats, salt)
-    keys = [key_link(gong_url(), "gong", af.GONG_W, "勿敲 DO NOT STRIKE", "nothing happens. probably.")]
+    keys = [key_link(gong_url(), "gong", af.GONG_W, "勿敲 DO NOT STRIKE")]
     if can_reformat(state):
-        keys.append(key_link(relay_url(), "relay", af.RELAY_W, "重布 re-lay the formation: bring up a fresh one",
-                             "the elders lay a fresh formation"))
+        keys.append(key_link(relay_url(), "relay", af.RELAY_W, "重布 (re-lay): start a new board"))
     return ("<p>\n" + panel_pic(view) + render_board(state, salt) + '<br clear="all">\n</p>\n\n'
             + "<p>\n" + "\n".join(keys) + "\n</p>")
 
@@ -679,37 +671,35 @@ def parse_command(title: str) -> tuple[str, str | None] | None:
     return ("button", None)
 
 
+def squares(n: int) -> str:
+    return f"{n} square" if n == 1 else f"{n} squares"
+
+
 def scan_reply(state: dict, info: dict, actor: str) -> str:
+    """Plain and short: what happened, the score, and what to do next only when
+    the game is over. The board itself shows the rest."""
     board = state["board_number"]
     done = len(state["revealed"])
     result = info["result"]
     prefix = ""
     if info["auto_reformatted"]:
-        prefix = f"the last formation was spent; the elders re-laid it. formation #{board} stands.\n"
+        prefix = f"The last game was over, so this started board #{board}.\n"
 
     if result == "dup":
-        return prefix + (
-            f"node {info['cell']} was already read on formation #{board}. "
-            "the elders note your diligence and go back to their tea."
-        )
+        return prefix + f"{info['cell']} is already open on board #{board}."
     if result == "panic":
         return prefix + (
-            f"反噬 BACKLASH: node {info['cell']} was a killing trap. the formation struck back.\n"
-            f"formation #{board} falls at {done}/{CLEAN_TOTAL} nodes read. "
-            f"the incident is recorded against disciple {actor}.\n"
-            f"file `{RELAY_TITLE}` to have the elders re-lay it."
+            f"{info['cell']} was a mine, so board #{board} is over at {done}/{CLEAN_TOTAL}.\n"
+            f"Open an issue titled `{RELAY_TITLE}` to start a new one."
         )
     if result == "clean":
         return prefix + (
-            f"阵破: the formation is broken. all {CLEAN_TOTAL} safe nodes of formation #{board} read.\n"
-            f"disciple {actor} takes the credit. the elders nod, almost imperceptibly.\n"
-            f"file `{RELAY_TITLE}` whenever you want to do it all again."
+            f"That was the last safe square. {actor} cleared board #{board}!\n"
+            f"Open an issue titled `{RELAY_TITLE}` to start a new one."
         )
     return prefix + (
-        f"破阵 (breaking the formation): node {info['cell']} holds. "
-        f"{info['adj']}/8 neighbouring nodes hide traps.\n"
-        f"{info['opened']} node(s) opened this pass. {done}/{CLEAN_TOTAL} read on formation #{board}. "
-        "carry on, disciple."
+        f"{info['cell']} is safe. It opened {squares(info['opened'])}, "
+        f"and board #{board} is at {done}/{CLEAN_TOTAL}."
     )
 
 
@@ -736,20 +726,15 @@ def handle_reformat(actor: str, readme: str) -> str:
         save_json(STATS_PATH, stats)
         render_readme(readme, state, stats, salt)
         return (
-            "the elders refuse: the formation still stands. finish what you started, disciple.\n"
-            f"(formation #{state['board_number']} stands at {done}/{CLEAN_TOTAL} nodes read. "
-            "formations outlive us all.)"
+            f"Board #{state['board_number']} is still going ({done}/{CLEAN_TOTAL}). "
+            "A new board can only start once this one is won or lost."
         )
     state = new_state(state["board_number"] + 1, salt)
     record_op(stats, actor, ["reformats"], "reformat", "reformat")
     save_json(STATE_PATH, state)
     save_json(STATS_PATH, stats)
     render_readme(readme, state, stats, salt)
-    return (
-        f"the elders re-lay the grand formation... done. formation #{state['board_number']} stands, "
-        f"{MINE_COUNT} killing traps hidden.\n"
-        "the first step is always safe. after that you are on your own, disciple."
-    )
+    return f"Started board #{state['board_number']}. It has {MINE_COUNT} mines."
 
 
 def swap_oneliner(issue_number: int, readme: str) -> None:
@@ -796,8 +781,8 @@ def handle_process(title: str, actor: str, issue_number: int, readme: str) -> st
         typed = re.sub(r"^\s*(?:sect|artemis)\s*\|", "", title or "", flags=re.IGNORECASE).replace("|", " ")
         shown = sanitize_fragment(typed) or "(empty)"
         return (
-            f"the sect does not know the art `{shown}`.\n"
-            f"known arts: `{SCAN_TITLE.format(cell='A1')}`..`{SCAN_TITLE.format(cell='I9')}`, "
+            f"Unknown command `{shown}`.\n"
+            f"Titles that work: `{SCAN_TITLE.format(cell='A1')}` to `{SCAN_TITLE.format(cell='I9')}`, "
             f"`{RELAY_TITLE}`, `{GONG_TITLE}`"
         )
     verb, cell = command
@@ -906,9 +891,9 @@ def self_test() -> None:
                 "sect|zhen|C4\nsect|gong", ""):
         assert parse_command(bad) is None, bad
     unknown = handle_process("sect|zhen|Z9", "tester", 1, "no-readme-needed.md")
-    assert unknown.startswith("the sect does not know the art `zhen Z9`."), unknown
+    assert unknown.startswith("Unknown command `zhen Z9`."), unknown
     legacy_unknown = handle_process("artemis|fsck|Z9", "tester", 1, "no-readme-needed.md")
-    assert legacy_unknown.startswith("the sect does not know the art `fsck Z9`."), legacy_unknown
+    assert legacy_unknown.startswith("Unknown command `fsck Z9`."), legacy_unknown
     assert "`sect|zhen|relay`" in unknown and "`sect|gong`" in unknown and "artemis" not in unknown
     mention = handle_process("sect| @someone look", "tester", 1, "no-readme-needed.md")
     assert "@" not in mention.splitlines()[0], "the bot never mentions anyone on a visitor's behalf"
@@ -916,26 +901,36 @@ def self_test() -> None:
     for reply in (unknown, SANDWICH_REPLY, GONG_REPLY, INTERNAL_FAULT):
         assert not re.search(r"\bcults?\b", reply, re.IGNORECASE)
 
-    # Replies: in fiction, and the re-lay title they name is a real one.
+    # Replies: plain, short, and the new-board title they name is a real one.
     ok_reply = scan_reply(state, {"result": "ok", "cell": "E5", "opened": 3, "adj": 1, "auto_reformatted": True},
                           "tester")
-    assert ok_reply.startswith("the last formation was spent") and "破阵 (breaking the formation)" in ok_reply
-    for result in ("panic", "clean"):
+    assert ok_reply.startswith("The last game was over, so this started board #")
+    assert "E5 is safe. It opened 3 squares, and board #" in ok_reply
+    one = scan_reply(state, {"result": "ok", "cell": "E5", "opened": 1, "adj": 1, "auto_reformatted": False}, "t")
+    assert "opened 1 square," in one
+    replies = [ok_reply, one]
+    for result in ("panic", "clean", "dup"):
         reply = scan_reply(state, {"result": result, "cell": "E5", "opened": 0, "adj": None,
                                    "auto_reformatted": False}, "tester")
-        assert f"`{RELAY_TITLE}`" in reply and parse_command(RELAY_TITLE) == ("reformat", None)
-        assert "disciple tester" in reply
+        replies.append(reply)
+        if result != "dup":
+            assert f"`{RELAY_TITLE}`" in reply and parse_command(RELAY_TITLE) == ("reformat", None)
+    assert "tester cleared board #" in replies[3]
+    # No sect story, dashes or semicolons in what the bot says to a visitor.
+    for reply in replies + [unknown, SANDWICH_REPLY, GONG_REPLY, INTERNAL_FAULT, SCAN_BODY, RELAY_BODY, GONG_BODY]:
+        assert not re.search(r"\b(?:disciples?|elders?|formations?|petitions?|nodes?|traps?)\b|[;—]",
+                             reply, re.IGNORECASE), reply
 
     # Sanitizers.
     assert sanitize_login("evil/../user<img>") == "eviluserimg"
     assert sanitize_login("") == "anonymous"
     assert sanitize_fragment("a[b]c<d>`e`|f") == "abcdef"
 
-    # Display names: stats keep the stored op names; the view speaks the sect's words.
-    assert display_op("fsck C4") == "step C4" and display_op("reformat") == "re-lay" and display_op("button") == "gong"
+    # Display names: stats keep the stored op names; the view uses plain words.
+    assert display_op("fsck C4") == "open C4" and display_op("reformat") == "reset" and display_op("button") == "gong"
     assert len(display_op("x" * 80)) == OP_COLS and display_result("panic") == "panic"
     assert all(len(af.result_label(result)) <= RESULT_COLS for result in RESULTS)
-    assert af.result_label("panic") == "BACKLASH"
+    assert af.result_label("panic") == "MINE"
 
     # Gong pool swap: deterministic per issue number, never repeats the current line.
     lines = load_oneliners()
@@ -963,7 +958,7 @@ def self_test() -> None:
     record_op(stats, "tester", ["presses"], "button", "press")
     assert stats["seq"] == 2, "every recorded op must bump the panel cache-buster"
     view = fsck_view(state, stats, salt)
-    assert [op["op"] for op in view["ops"]] == ["gong", "step E5"], "newest first, in the sect's words"
+    assert [op["op"] for op in view["ops"]] == ["gong", "open E5"], "newest first, in plain words"
     assert view["total"] == CLEAN_TOTAL and view["traps"] == MINE_COUNT and view["disciples"] == 1
 
     hidden = f'<img src="{af.TILE_DIR}/dark/hidden.svg"'
@@ -976,7 +971,8 @@ def self_test() -> None:
     assert active_block.count(hidden) == len(unread), "hidden nodes appear only as links"
     assert all(f"sect%7Czhen%7C{cell}&amp;" in active_block for cell in unread)
     assert not any(f"sect%7Czhen%7C{cell}&amp;" in active_block for cell in state["revealed"])
-    assert all(f'alt="step on {cell}"' in active_block for cell in unread)
+    assert all(f'alt="open {cell}"' in active_block for cell in unread)
+    assert ' title="' not in active_block, "no tooltips: the alt says it"
     assert all(f'alt="{cell}: {digit}"' in active_block for cell, digit in state["revealed"].items())
     assert quote_plus(SCAN_BODY.format(cell=unread[0])) in html.unescape(active_block)
     assert active_block.count("<br>") == len(ROWS) + 1 and 'br clear="all"' in active_block
@@ -996,12 +992,12 @@ def self_test() -> None:
     clean_block = render_fsck_block(final, stats, salt)
     panic_block = render_fsck_block(panic_state, stats, salt)
     assert panic_block.count(f'<img src="{af.TILE_DIR}/dark/panic.svg"') == 1
-    assert f'alt="{panic_state["panic_cell"]}: BACKLASH"' in panic_block
+    assert f'alt="{panic_state["panic_cell"]}: the mine that was hit"' in panic_block
     assert "tiles/dark/cols-panic.svg" in panic_block and "tiles/dark/cols.svg" in active_block
     assert "tiles/dark/cols-clean.svg" in clean_block
     assert panic_block.count(f'<img src="{af.TILE_DIR}/dark/mine.svg"') == MINE_COUNT - 1
     assert clean_block.count(f'<img src="{af.TILE_DIR}/dark/mine.svg"') == MINE_COUNT
-    assert "tiles/dark/panic.svg" not in clean_block and "killing trap (dormant)" in clean_block
+    assert "tiles/dark/panic.svg" not in clean_block and ': mine"' in clean_block
     for dead in (panic_block, clean_block):
         assert "tiles/dark/hidden.svg" not in dead
         assert not re.search(r"(?:sect%7Czhen|artemis%7Cfsck)%7C[A-I][1-9]", dead), "spent formations have no step links"
@@ -1031,10 +1027,12 @@ def self_test() -> None:
     def dark_panel(board_state: dict, board_stats: dict, board_salt: str) -> str:
         return render_panels(board_state, board_stats, board_salt)[panel_paths(panel_seq(board_stats))["dark"]]
 
-    assert "the formation holds" in dark_panel(state, stats, salt)
-    assert "@keyframes" in dark_panel(state, stats, salt), "the live formation's qi still moves"
-    assert "BACKLASH" in dark_panel(panic_state, stats, salt)
-    assert "is broken" in dark_panel(final, stats, salt)
+    assert "In progress" in dark_panel(state, stats, salt)
+    assert "@keyframes" not in dark_panel(state, stats, salt), "stills only"
+    assert "Game over" in dark_panel(panic_state, stats, salt)
+    assert "Cleared" in dark_panel(final, stats, salt)
+    for words in ("formation holds", "disciple", "petition", "killing trap", "node", "BACKLASH", "(no limit)"):
+        assert words not in dark_panel(state, stats, salt) + dark_panel(panic_state, stats, salt), words
     assert af.PANEL_H <= af.BOARD_H, "the panel is never taller than the board beside it"
     assert af.BOARD_W <= 279 and af.BOARD_W + 20 + af.PANEL_W <= 831, \
         "board must fit a 360px phone and a 1280px desktop"
@@ -1077,19 +1075,15 @@ def self_test() -> None:
     assert wink not in render_fsck_block(state, stats, salt)
     assert wink not in render_fsck_block(state, stats, DEFAULT_SALT), "a local render tells the live board's truth"
 
-    # Static assets: every tile and key, both modes, valid XML; light mode is still.
+    # Static assets: every tile and key, both modes, valid XML, all still.
     assets = af.static_assets()
     assert len(assets) == 2 * len(af.TILE_NAMES) + 4
     used = {"hidden", "panic", "mine", "cols", "cols-panic", "cols-clean", "edge", "base",
             *(f"c{n}" for n in range(9)), *(f"r{row}" for row in ROWS)}
     assert used <= set(af.TILE_NAMES), sorted(used - set(af.TILE_NAMES))
-    assert "@keyframes" in assets[f"{af.TILE_DIR}/dark/panic.svg"] and "@keyframes" in assets[f"{af.DIR}/gong.svg"]
     for path, content in assets.items():
         ET.fromstring(content)
-        if "/light/" in path or path.endswith("-light.svg"):
-            assert "@keyframes" not in content, f"{path} animates in light mode"
-        elif "@keyframes" in content:
-            assert "prefers-reduced-motion" in content, f"{path} animates without the reduced-motion rule"
+        assert "@keyframes" not in content and "<animate" not in content, f"{path} animates (stills only)"
     for key in ("gong", "gong-light", "relay", "relay-light"):
         assert f"{af.DIR}/{key}.svg" in assets, key
 
@@ -1169,7 +1163,7 @@ def cmd_process(args: argparse.Namespace) -> None:
     except Exception:  # The reply is the contract; a bad day never breaks the bot.
         warn(traceback.format_exc())
         reply = INTERNAL_FAULT
-    if hasattr(sys.stdout, "reconfigure"):  # the replies carry 破阵 / 反噬 / 阵破
+    if hasattr(sys.stdout, "reconfigure"):  # logins and titles can carry non-ASCII
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     print(reply)
 
@@ -1193,7 +1187,7 @@ def cmd_tiles(_args: argparse.Namespace) -> None:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="The sect's petitions: the formation, the gong, the kitchen hall")
+    parser = argparse.ArgumentParser(description="Minesweeper by issues, the gong and the sandwich reply")
     sub = parser.add_subparsers(dest="command", required=True)
 
     p_init = sub.add_parser("init", help="fresh formation + empty stats")

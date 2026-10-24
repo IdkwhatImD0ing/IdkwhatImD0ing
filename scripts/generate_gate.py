@@ -1,6 +1,10 @@
-"""山门, the Mountain Gate: the hero, made from a real flight through art3m1s.me.
+"""山门, the Mountain Gate: the hero, a still picture of art3m1s.me.
 
-Local only (needs Pillow; CI never runs it). Two steps:
+Stills only. The profile has no animated images (CLAUDE.md, "Stills only"):
+every file this script writes is a single-frame WebP, and it checks that
+before it finishes. The old animated heroes are kept in archive/calling-card-v1/assets/gate/.
+
+Local only (needs Pillow; CI never runs it). Three commands:
 
   python scripts/generate_gate.py titles
       Writes the title overlays, drawn through ink.py like every other SVG:
@@ -11,23 +15,30 @@ Local only (needs Pillow; CI never runs it). Two steps:
       re-capture can composite the same titles.
 
   python scripts/generate_gate.py encode --frames DIR --overlays DIR --paper PATH
-      DIR holds the captured frames (g000.jpg ... in flight order, 1280 x 720)
-      and the overlays rasterised to PNG with a transparent background
-      (title.png, title-light.png, title-phone.png). Writes:
-        assets/gate/hero.webp              1200 x 600 animated, <= 6 MB
-        assets/gate/hero-still.webp        1200 x 600, the gate, <= 400 KB
-        assets/gate/hero-light.webp        1200 x 600, an ink-wash print on paper, <= 600 KB
-        assets/gate/hero-phone.webp        720 x 720 animated, <= 3 MB
-        assets/gate/hero-phone-still.webp  720 x 720, <= 250 KB
+      DIR holds captured frames (g000.jpg ... in flight order, 1280 x 720) and
+      the overlays rasterised to PNG with a transparent background (title.png,
+      title-light.png, title-phone.png). Writes three stills:
+        assets/gate/hero-still.webp        1200 x 600, frame --hold, <= 400 KB
+        assets/gate/hero-light.webp        1200 x 600, frame --hold as an ink-wash
+                                           print on paper, <= 600 KB
+        assets/gate/hero-phone-still.webp  720 x 720, frame --phone-hold, <= 250 KB
+      --hold defaults to 46: the gate centred at the top of the stair, with the
+      moon fully clear at top right. --phone-hold defaults to the last frame
+      (the gate up close; the square crop cuts the moon at any distance).
 
-How the frames are captured (Playwright, viewport 1280 x 720): open
+  python scripts/generate_gate.py pick --anim PATH --frame N
+      Rebuilds hero-still.webp from frame N of an old animated hero (its title
+      is already composited in), smoothing the flat sky where the animation's
+      encoder left blocks. This is how the current hero-still.webp was made:
+      --anim archive/calling-card-v1/assets/gate/hero.webp --frame 46.
+
+How frames are captured (Playwright, viewport 1280 x 720): open
 https://art3m1s.me, wait for the scene, hide every page element except the
 WebGL canvas with injected CSS
     body *{visibility:hidden!important} canvas{visibility:visible!important}
 (so no name, label or old text from the site's interface is in the picture),
-then scroll from 0 to 900 px in 96 steps with a trapezoid speed profile, one
-screenshot per step, then 24 more at rest while banners wave and motes drift.
-The camera reaches the gate near step 75; the rest is the gate at rest.
+then scroll from 0 to 900 px in 96 steps, one screenshot per step. The camera
+reaches the gate near step 75. Never run Blender for this.
 """
 
 from __future__ import annotations
@@ -129,16 +140,66 @@ def write_titles() -> None:
 # ---------------------------------------------------------------------------------------
 
 
-def encode(frames_dir: Path, overlays: Path, paper: Path, quality: int, phone_quality: int) -> None:
+def assert_still(path: Path) -> None:
+    """Stills only: refuse to leave an animated file behind."""
+    from PIL import Image
+
+    with Image.open(path) as im:
+        if getattr(im, "n_frames", 1) != 1 or getattr(im, "is_animated", False):
+            path.unlink()
+            raise SystemExit(f"{path.as_posix()} came out animated; removed it (stills only)")
+
+
+def save_still(path: Path, im, budget: int, q: int = 86) -> None:
+    """One frame, the best quality that fits the byte budget."""
+    while True:
+        im.save(path, quality=q, method=6)
+        size = path.stat().st_size
+        if size <= budget or q <= 40:
+            print(f"{path.as_posix()}: q{q}, {size / 1e3:.0f} KB")
+            break
+        q -= 4
+    assert_still(path)
+
+
+def clean_blocks(im):
+    """Smooth the flat parts of a frame (sky, mist) where a lossy encoder left
+    8 px blocks, and keep every edge (gate, trees, the title) as it was."""
+    from PIL import Image, ImageFilter, ImageOps
+
+    grey = ImageOps.grayscale(im)
+    detail = grey.filter(ImageFilter.GaussianBlur(1.2)).filter(ImageFilter.FIND_EDGES)
+    detail = detail.filter(ImageFilter.MaxFilter(7)).filter(ImageFilter.GaussianBlur(4))
+    flat = detail.point(lambda v: 255 if v < 5 else (0 if v > 11 else int(255 * (11 - v) / 6)))
+    out = Image.composite(im.filter(ImageFilter.GaussianBlur(7)), im, flat)
+    band = 430                      # the title band stays exactly as composited
+    out.paste(im.crop((0, band, im.width, im.height)), (0, band))
+    return out
+
+
+def pick(anim: Path, frame: int) -> None:
+    """hero-still.webp from one frame of an old animated hero."""
+    from PIL import Image, ImageSequence
+
+    with Image.open(anim) as im:
+        frames = getattr(im, "n_frames", 1)
+        if not 0 <= frame < frames:
+            raise SystemExit(f"{anim} has {frames} frames; frame {frame} is out of range")
+        chosen = next(f for i, f in enumerate(ImageSequence.Iterator(im)) if i == frame).convert("RGB")
+    if chosen.size != (W, H):
+        raise SystemExit(f"expected a {W} x {H} hero, got {chosen.size}")
+    OUT.mkdir(parents=True, exist_ok=True)
+    save_still(OUT / "hero-still.webp", clean_blocks(chosen), 400_000, q=90)
+
+
+def encode(frames_dir: Path, overlays: Path, paper: Path, hold: int, phone_hold: int) -> None:
     from PIL import Image, ImageChops, ImageEnhance, ImageFilter, ImageOps
 
     frames = sorted(frames_dir.glob("g*.jpg"))
     if len(frames) < 60:
         raise SystemExit(f"expected the captured flight in {frames_dir} (g000.jpg ...), found {len(frames)}")
-    rest = 75                    # the camera reaches the gate here
-    flight = frames[:rest + 1]
-    held = frames[rest + 1::2]   # the gate at rest, every other frame
-    last = held[-1]
+    gate_frame = frames[min(hold, len(frames) - 1)]
+    phone_frame = frames[phone_hold if 0 <= phone_hold < len(frames) else -1]
 
     def desk(path: Path) -> Image.Image:
         im = Image.open(path).convert("RGB")
@@ -153,53 +214,16 @@ def encode(frames_dir: Path, overlays: Path, paper: Path, quality: int, phone_qu
         out.alpha_composite(overlay)
         return out.convert("RGB")
 
-    def timeline(make, overlay: Image.Image) -> tuple[list[Image.Image], list[int]]:
-        imgs, durs = [], []
-        imgs.append(over(make(flight[0]), overlay))
-        durs.append(1100)                       # a breath on the stair before the climb
-        for i, path in enumerate(flight[1:], start=1):
-            imgs.append(over(make(path), overlay))
-            ease = max(0, i - (rest - 5))       # the last few frames slow into the stop
-            durs.append(72 + ease * ease * 9)
-        for path in held:
-            imgs.append(over(make(path), overlay))
-            durs.append(115)
-        first, end = imgs[0], imgs[-1]
-        for k in range(1, 7):                   # crossfade back to the stair: a clean loop
-            imgs.append(Image.blend(end, first, k / 7))
-            durs.append(80)
-        return imgs, durs
-
-    def save_anim(path: Path, imgs: list, durs: list[int], q: int, budget: int) -> None:
-        while True:
-            imgs[0].save(path, save_all=True, append_images=imgs[1:], duration=durs, loop=0,
-                         quality=q, method=6, minimize_size=True, allow_mixed=False)
-            size = path.stat().st_size
-            print(f"{path.as_posix()}: {len(imgs)} frames, {sum(durs) / 1000:.1f} s, q{q}, {size / 1e6:.2f} MB")
-            if size <= budget or q <= 30:
-                return
-            q -= 6
-
-    def save_still(path: Path, im: Image.Image, budget: int, q: int = 86) -> None:
-        while True:
-            im.save(path, quality=q, method=6)
-            size = path.stat().st_size
-            if size <= budget or q <= 40:
-                print(f"{path.as_posix()}: q{q}, {size / 1e3:.0f} KB")
-                return
-            q -= 4
-
     OUT.mkdir(parents=True, exist_ok=True)
     title = Image.open(overlays / "title.png").convert("RGBA").resize((W, H), Image.LANCZOS)
     title_light = Image.open(overlays / "title-light.png").convert("RGBA").resize((W, H), Image.LANCZOS)
     title_phone = Image.open(overlays / "title-phone.png").convert("RGBA").resize((PW, PW), Image.LANCZOS)
 
-    # stills first (cheap)
-    save_still(OUT / "hero-still.webp", over(desk(last), title), 400_000)
-    save_still(OUT / "hero-phone-still.webp", over(square(last), title_phone), 250_000)
+    save_still(OUT / "hero-still.webp", over(desk(gate_frame), title), 400_000)
+    save_still(OUT / "hero-phone-still.webp", over(square(phone_frame), title_phone), 250_000)
 
     # the day print: the gate as an ink-wash print on aged paper
-    gate = desk(last)
+    gate = desk(gate_frame)
     grey = ImageOps.autocontrast(ImageOps.grayscale(gate), cutoff=1)
     grey = ImageEnhance.Contrast(grey).enhance(1.25)
     bleed = grey.filter(ImageFilter.GaussianBlur(1.6))
@@ -221,27 +245,27 @@ def encode(frames_dir: Path, overlays: Path, paper: Path, quality: int, phone_qu
     toned = ImageChops.multiply(toned, Image.merge("RGB", (fibre, fibre, fibre)))
     save_still(OUT / "hero-light.webp", over(toned, title_light), 600_000)
 
-    imgs, durs = timeline(desk, title)
-    save_anim(OUT / "hero.webp", imgs, durs, quality, 6_000_000)
-    imgs, durs = timeline(square, title_phone)
-    save_anim(OUT / "hero-phone.webp", imgs, durs, phone_quality, 3_000_000)
-
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Build the Mountain Gate hero.")
+    parser = argparse.ArgumentParser(description="Build the Mountain Gate hero (stills only).")
     sub = parser.add_subparsers(dest="cmd", required=True)
     sub.add_parser("titles", help="write the title overlay SVGs")
-    enc = sub.add_parser("encode", help="encode the five hero WebPs from captured frames")
+    enc = sub.add_parser("encode", help="encode the three hero stills from captured frames")
     enc.add_argument("--frames", required=True, type=Path)
     enc.add_argument("--overlays", required=True, type=Path, help="title.png, title-light.png, title-phone.png")
     enc.add_argument("--paper", default=Path("../PortfolioV5/client/src/app/sect/assets/paper.webp"), type=Path)
-    enc.add_argument("--quality", type=int, default=76)
-    enc.add_argument("--phone-quality", type=int, default=68)
+    enc.add_argument("--hold", type=int, default=46, help="the frame for the desktop and light stills")
+    enc.add_argument("--phone-hold", type=int, default=-1, help="the frame for the phone still (-1: the last)")
+    pk = sub.add_parser("pick", help="hero-still.webp from one frame of an old animated hero")
+    pk.add_argument("--anim", required=True, type=Path)
+    pk.add_argument("--frame", type=int, default=46)
     args = parser.parse_args()
     if args.cmd == "titles":
         write_titles()
+    elif args.cmd == "pick":
+        pick(args.anim, args.frame)
     else:
-        encode(args.frames, args.overlays, args.paper, args.quality, args.phone_quality)
+        encode(args.frames, args.overlays, args.paper, args.hold, args.phone_hold)
 
 
 if __name__ == "__main__":

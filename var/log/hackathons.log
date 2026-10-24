@@ -1,6 +1,6 @@
-# /var/log/hackathons.log — greatest hits only; the full ledger (59
-# entries, 36 wins) lives offline. logrotate keeps what mattered.
-2023-02-04  GDSC Solution Challenge  [SHIP]  SlugLoop — Top 10 Global
-2024-04-20  LA Hacks 2024  [WIN]  AdaptEd — Gemini Challenge 1st
-2024-06-22  UC Berkeley AI Hackathon  [WIN]  DispatchAI — Grand Prize
-2024-11-16  HackUTD 2024  [WIN]  TalkTuahBank — Overall 1st Place
+# hackathons.log: the four builds on my profile, newest last. I've won 36
+# of the 59 hackathons I've entered, and the rest of the builds are on Devpost.
+2023-02-04  GDSC Solution Challenge  [SHIP]  SlugLoop - Top 10 Global
+2024-04-20  LA Hacks 2024  [WIN]  AdaptEd - Gemini Challenge 1st
+2024-06-22  UC Berkeley AI Hackathon  [WIN]  DispatchAI - Grand Prize
+2024-11-16  HackUTD 2024  [WIN]  TalkTuahBank - Overall 1st Place

@@ -1,17 +1,15 @@
-the sect has gone 0 days without a spontaneous rewrite
-the elders reviewed this page. not closely.
-the steward rewrote the missions again. nobody asked. nobody objected.
-rule one of the sect: the demo must work. rule two: see rule one.
-qi deviation: three side projects at once. continuing.
-the gong was struck again. it is always struck again.
-closed-door cultivation ends when the deadline does.
-the moon is waxing. so is the backlog.
-a disciple asked for the secret technique. it was shipping.
-36-hour furnace cycle complete. artifact forged. eyebrows singed.
-sleep: listed in the scriptures. never practised.
-the sect leader is coding. leave offerings of cold brew at the gate.
-inner peace: pending code review
-the formation holds. the sect leader's sleep schedule does not.
-a meditation was scheduled for 3 a.m. an idea arrived instead.
-the spirit furnace is an RTX 5080. the elders stopped asking why.
-the voice agent spoke to the elders. they have not replied.
+Halleujeuah, MODEL WORKS FROM SEPERATE DATASET, using mobile net.
+Apparently i fixed the bugs, idk how and idk why but it works
+if you look at it weird it breaks
+Fixed funny bug if ingredient contained a comma
+Hooray api calls work, now front end
+Why client no work
+SHIFTS WORK
+Basic model has 90% accuracy, forced to use that
+Unsure why transfer learning is worse than base line
+finally fixed annoying styling bug to center
+Adding drivers and passengers theoretically should work
+Multiplayer works, but controls a bit slow
+Why is channels first
+TRNASFERS WPORKSASDASDASDASDASAD
+Update one link lmfao

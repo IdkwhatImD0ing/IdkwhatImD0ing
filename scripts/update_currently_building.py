@@ -1,16 +1,20 @@
 """The steward: posts what Bill is working on now, twice a week.
 
-The steward is an LLM. It reads Bill's real public GitHub activity, picks the
-three repos he is working on, and writes one plain sentence for each. Those
-three lines are the README's Now section (the NOW block) and live in
-assets/status.json:
+The steward is an LLM call. It reads Bill's real public GitHub activity, picks
+the three repos he is working on, and writes one short line for each, like a
+good commit message. Those three lines are the README's Now section (the NOW
+block) and live in assets/status.json:
 
-    {"obsession": "2-4 words",
-     "missions": [{"repo": "owner/name", "pushed": "YYYY-MM-DD", "line": "Building ..."}],
+    {"missions": [{"repo": "owner/name", "pushed": "YYYY-MM-DD", "line": "Added ..."}],
      "updated": "YYYY-MM-DDTHH:MM:SSZ"}
 
-"obsession" (what the Sect Leader is in closed-door cultivation on) is read by
-generate_ansi_card.py for bill.ansi; it never shows on the page.
+Voice filter. Every line, from the model or kept from an earlier run, goes
+through voice_tells(): em dashes, semicolons, colons, "not just", "X, not Y",
+"rather than", rhetorical triplets, question-then-answer, trailing "-ing"
+clauses, chatbot phrases, vague filler and a list of words that read as
+machine-written. A line with any of them is swapped for the plain line for that
+repo: a recent commit subject that passes the same test, else the repo
+description, else "Pushed new commits."
 
 Honesty rules. Candidates are only repos Bill pushed to, from the public
 events feed, never the profile repo itself. The LLM may only pick from that
@@ -20,19 +24,19 @@ candidates the list is topped up from his public repos by last push (no forks,
 nothing archived).
 
 When the model is unreachable or returns junk, the previous status.json is
-kept (its dates refreshed from the feed); only when there is no usable
-previous one, or with --fallback-only, a deterministic fallback built from the
-same candidates takes over (each line: a recent commit subject, else the repo
-description, else an excuse). With fewer than 3 repos in hand the NOW block
-is left alone.
+kept (its dates refreshed from the feed, any line with a tell swapped for the
+plain line); only when there is no usable previous one, or with
+--fallback-only, the plain lines from the same candidates take over. With
+fewer than 3 repos in hand the NOW block is left alone.
 
 --dates-only (the Saturday moon watch): no LLM. Re-read the feed, move each
 posted repo's date forward if Bill pushed again, re-render the NOW block.
 status.json is rewritten only if a date moved; BUILD_PLATE is not touched.
 
-Also owns the BUILD_PLATE block: one plain line inside the Play fold's <pre>.
-It changes every normal run, so the Mon/Thu run always commits: that commit is
-the keepalive that stops GitHub from switching off the scheduled workflows.
+Also owns the BUILD_PLATE block: one HTML comment ("steward run N, from SHA"),
+invisible on the page. It changes every normal run, so the Mon/Thu run always
+commits: that commit is the keepalive that stops GitHub from switching off the
+scheduled workflows.
 
 Contract: never blank anything. status.json is only rewritten after the whole
 payload validated; a missing marker is a warning, not a crash; any API failure
@@ -40,6 +44,7 @@ warns and exits 0. Run from the repo root:
     python scripts/update_currently_building.py --fallback-only
     python scripts/update_currently_building.py --dates-only
     python scripts/update_currently_building.py --readme .preview/README.md --status .preview/status.json
+    python scripts/update_currently_building.py --self-test
 """
 
 from __future__ import annotations
@@ -76,17 +81,70 @@ MISSIONS = 3
 MAX_CANDIDATES = 6
 SUBJECTS_PER_REPO = 5
 LINE_MAX = 64
-OBSESSION_MAX = 48
 REPO_RE = re.compile(r"^[A-Za-z0-9-]{1,39}/[A-Za-z0-9._-]{1,100}$")
 ISO_DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 MONTHS = ("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
 
-FALLBACK_OBSESSION = "voice agents"
-NO_NOTES = "the steward has no notes on this one yet."
-# The steward's own fiction stays out of the Now lines (the work itself may
-# still be about a sect scene, so the bare word "sect" is allowed).
+NO_NOTES = "Pushed new commits."
+# The sect's story stays out of the Now lines (the work itself may still be
+# about a sect scene, so the bare word "sect" is allowed).
 FICTION_WORDS = re.compile(r"\b(steward|elders?|disciples?|cultivat\w*|qi|sect leader|bill)\b", re.I)
 SCOPE_TAG = re.compile(r"^(?:[\w./-]+(?:\([^)]*\))?!?):\s+")
+
+# --- the voice filter ----------------------------------------------------------------
+# The tells that make a line read as machine-written (CLAUDE.md, "Voice"). Words
+# match as whole words, any case.
+TELL_WORDS = (
+    # words models use far more than people do
+    "delve", "delves", "delving", "delved", "tapestry", "testament", "pivotal", "crucial",
+    "underscore", "underscores", "showcase", "showcases", "showcasing", "vibrant", "intricate",
+    "landscape", "foster", "fosters", "robust", "seamless", "seamlessly", "leverage", "leverages",
+    "leveraged", "leveraging", "multifaceted", "quietly", "genuinely", "genuine", "honest",
+    "honestly", "deliberate", "deliberately", "load-bearing", "seam", "seams", "meticulous",
+    "meticulously", "realm", "journey", "elevate", "elevates", "elevating", "empower", "empowers",
+    "cutting-edge", "game-changer", "game-changing", "revolutionize", "revolutionizing", "unlock",
+    "unlocks", "harness", "harnessing", "ever-evolving", "arguably", "deeply", "fundamentally",
+    "truly", "boasts",
+    # vague filler: says less than the commit did
+    "enhance", "enhances", "enhanced", "enhancing", "enhancement", "enhancements", "various",
+    "elements", "streamline", "streamlined", "streamlining", "overall",
+    # chatbot residue
+    "certainly", "absolutely",
+)
+TELL_PHRASES = (
+    "not just", "not only", "more than just", "rather than", "the shape of", "earns its keep",
+    "matters because", "single most", "every single", "serves as", "stands as", "to the repository",
+    "to the repo", "look and feel", "great question", "i hope", "let me know", "in the world of",
+    "at the heart of", "under the hood",
+)
+TELL_SHAPES = (
+    ("em dash", re.compile(r"[—―]|\s–\s|--")),
+    ("semicolon", re.compile(r";")),
+    ("colon", re.compile(r":\s")),
+    ("X, not Y", re.compile(r",\s*not\b", re.I)),
+    ("it's not X, it's Y", re.compile(r"\b(?:it'?s|is|was|are|isn'?t|wasn'?t)\s+not\b.*\b(?:it'?s|but)\b", re.I)),
+    ("not X but Y", re.compile(r"\bnot\s+(?:a\s+|an\s+|the\s+)?\w+\s*,?\s+but\b", re.I)),
+    ("less X, more Y", re.compile(r"\bless\s+\w+,?\s+(?:and\s+)?more\b", re.I)),
+    ("rhetorical triplet", re.compile(r"\b[\w-]+(?:\s[\w-]+)?,\s+[\w-]+(?:\s[\w-]+)?,?\s+and\s+[\w-]+", re.I)),
+    ("question, then answer", re.compile(r"\?\s+\S")),
+    ("trailing -ing clause", re.compile(
+        r",\s+(?:ensuring|highlighting|showcasing|reflecting|underscoring|making|allowing|enabling|"
+        r"providing|creating|bringing|paving|marking|signaling|setting)\b", re.I)),
+    ("vague new X", re.compile(r"\b(?:new|some|minor|several|general)\s+(?:visual\s+)?"
+                               r"(?:features|improvements|updates|changes|tweaks|stuff)\b", re.I)),
+)
+_TELL_WORD_RE = re.compile(r"(?<![\w-])(?:" + "|".join(re.escape(w) for w in TELL_WORDS) + r")(?![\w-])", re.I)
+
+
+def voice_tells(text: str) -> list[str]:
+    """Why `text` reads as machine-written; an empty list means it is clean.
+    Run it on the raw text as well: sanitize_line folds an em dash into '-'."""
+    text = str(text or "")
+    found = [name for name, pattern in TELL_SHAPES if pattern.search(text)]
+    found += [f"word {m.group(0).lower()!r}" for m in _TELL_WORD_RE.finditer(text)]
+    low = text.lower()
+    found += [f"phrase {p!r}" for p in TELL_PHRASES if p in low]
+    return found
 
 
 @dataclass
@@ -254,16 +312,6 @@ def commit_line(subject: str) -> str:
     return fit_line(SCOPE_TAG.sub("", sanitize_line(subject, 240)))
 
 
-def clean_obsession(value: str) -> str:
-    """At most 4 whole words and OBSESSION_MAX chars (never cut mid-word)."""
-    kept: list[str] = []
-    for word in sanitize_line(value, 240).split()[:4]:
-        if len(" ".join(kept + [word])) > OBSESSION_MAX:
-            break
-        kept.append(word)
-    return " ".join(kept) or sanitize_line(value, OBSESSION_MAX)
-
-
 def show_date(iso: str, today: date) -> str:
     """'2026-10-24' -> 'Oct 24' this year, 'Oct 2025' for an older year."""
     d = date.fromisoformat(iso)
@@ -298,9 +346,48 @@ def finalize_missions(missions: list) -> list[dict]:
     return out
 
 
+CHANGE_VERBS = frozenset("""
+add adds adjust align allow apply build builds bump cache change check clean compress convert copy crop cut
+delete disable document drop enable extract fetch finish fix fixes format generate give handle hide implement
+improve include install keep let link load lower make makes merge migrate move open polish port publish put
+raise read rebuild record redo redraw reduce refactor remove rename render replace reset resize restore revert
+rework rewrite run save scale send set ship show shorten simplify sort split start store swap switch test tidy
+trim try tune turn tweak update upgrade use wrap write
+built drew gave hid kept let made put ran rebuilt redid rewrote set shown wrote
+""".split())
+
+
+def says_what_changed(line: str) -> bool:
+    """A Now line should open with what was done ('Added ...', 'Fix ...'), not
+    with scenery ('Ice-Fire Island's steam rises ...')."""
+    first = re.sub(r"[^a-z]", "", line.split(" ", 1)[0].lower())
+    return first in CHANGE_VERBS or (len(first) > 3 and first.endswith("ed"))
+
+
+def plain_line(candidate: Candidate) -> str:
+    """The plain line for a repo: a recent commit subject that fits, opens with
+    what was done and has no tell, else the repo description (no tell), else
+    NO_NOTES."""
+    def clean(raw: str, line: str) -> bool:
+        return bool(line) and not voice_tells(raw) and not voice_tells(line) and not FICTION_WORDS.search(line)
+
+    if not candidate.topped_up:
+        for subject in candidate.subjects:
+            if subject.startswith("Merge "):
+                continue
+            line = commit_line(subject)
+            bare = SCOPE_TAG.sub("", subject)  # 'docs: fix x' is a scope tag, not a colon lead-in
+            if 12 <= len(line) <= LINE_MAX and not line.endswith("...") and clean(bare, line) \
+                    and says_what_changed(line):
+                return line
+    description = fit_line(candidate.description)
+    return description if clean(candidate.description, description) else NO_NOTES
+
+
 def parse_llm_payload(raw: str, candidates: list[Candidate]) -> dict:
     """The model's JSON, checked against the candidate list. Any repo outside
-    the list, a duplicate, or a line that breaks the rules rejects it all."""
+    the list or a duplicate rejects it all. A line with a tell (voice_tells) or
+    the sect's story is swapped for that repo's plain line."""
     ensure_no_markers(raw)
     cleaned = re.sub(r"^```(?:json)?\s*|\s*```$", "", raw.strip())
     data = json.loads(cleaned)
@@ -320,35 +407,42 @@ def parse_llm_payload(raw: str, candidates: list[Candidate]) -> dict:
             raise ValueError(f"LLM picked a repo outside the candidates: {sanitize_line(str(repo), 60)!r}")
         if not isinstance(line, str) or not line.strip():
             raise ValueError("mission line missing")
-        line = fit_line(line)
-        first = line.split(" ", 1)[0].lower()
-        if not first.endswith("ing"):
-            raise ValueError(f"line does not start with an -ing verb: {line!r}")
-        if FICTION_WORDS.search(line):
-            raise ValueError(f"line uses the steward's fiction or a name: {line!r}")
         candidate = by_name[repo.strip().casefold()]
-        picked.append({"repo": candidate.repo, "pushed": candidate.pushed, "line": line})
-    obsession = data.get("obsession")
-    if not isinstance(obsession, str) or not obsession.strip():
-        raise ValueError("LLM payload obsession missing")
-    return {"missions": finalize_missions(picked), "obsession": clean_obsession(obsession) or FALLBACK_OBSESSION}
+        tells = voice_tells(line) + voice_tells(fit_line(line))
+        if FICTION_WORDS.search(line):
+            tells.append("the sect's story or a name")
+        if tells:
+            plain = plain_line(candidate)
+            print(f"WARNING: {candidate.repo}: model line dropped ({', '.join(sorted(set(tells)))}); "
+                  f"using {plain!r}")
+            line = plain
+        picked.append({"repo": candidate.repo, "pushed": candidate.pushed, "line": fit_line(line)})
+    return {"missions": finalize_missions(picked)}
 
 
-def fallback_line(candidate: Candidate) -> str:
-    if not candidate.topped_up:
-        for subject in candidate.subjects:
-            if subject.startswith("Merge "):
-                continue
-            line = commit_line(subject)
-            if 12 <= len(line) <= LINE_MAX and not line.endswith("..."):
-                return line
-    return fit_line(candidate.description) or NO_NOTES
-
-
-def fallback_payload(candidates: list[Candidate], obsession: str) -> dict:
+def fallback_payload(candidates: list[Candidate]) -> dict:
     """The newest three candidates, in plain words, no LLM."""
-    missions = [{"repo": c.repo, "pushed": c.pushed, "line": fallback_line(c)} for c in candidates[:MISSIONS]]
-    return {"missions": finalize_missions(missions), "obsession": clean_obsession(obsession) or FALLBACK_OBSESSION}
+    missions = [{"repo": c.repo, "pushed": c.pushed, "line": plain_line(c)} for c in candidates[:MISSIONS]]
+    return {"missions": finalize_missions(missions)}
+
+
+def scrub_missions(missions: list[dict], candidates: list[Candidate]) -> int:
+    """Swap any kept line that has a tell (written before the filter existed, or
+    edited by hand) for its repo's plain line. Returns how many were swapped."""
+    by_name = {c.repo.casefold(): c for c in candidates}
+    swapped = 0
+    for mission in missions:
+        tells = voice_tells(mission["line"])
+        if FICTION_WORDS.search(mission["line"]):
+            tells.append("the sect's story or a name")
+        if not tells:
+            continue
+        candidate = by_name.get(mission["repo"].casefold())
+        plain = plain_line(candidate) if candidate else NO_NOTES
+        print(f"WARNING: {mission['repo']}: kept line dropped ({', '.join(tells)}); using {plain!r}")
+        mission["line"] = plain
+        swapped += 1
+    return swapped
 
 
 def refresh_dates(missions: list[dict], pushes: dict[str, str]) -> bool:
@@ -369,21 +463,28 @@ def call_openai(candidates: list[Candidate], api_key: str) -> str:
         notes = "; ".join(sanitize_line(s, 100) for s in c.subjects) or (
             f"no commit subjects; repo description: {sanitize_line(c.description, 140) or 'none'}")
         rows.append(f"- {c.repo} (newest push {c.pushed}): {notes}")
+    banned = ", ".join(TELL_WORDS[:40])
     prompt = f"""
-You are the steward of the Sun Moon Divine Sect, a fictional sect whose grounds are
-Bill Zhang's GitHub profile. Twice a week you post what Bill is working on, from his
-real public activity. Return STRICT JSON only.
+Write the Now section of Bill Zhang's GitHub profile: one line for each of three repos he
+pushed to recently, saying what he did there, from his real commit messages.
+Return JSON only.
 
-Schema: {{"missions": [{{"repo": "owner/name", "line": "..."}}], "obsession": "2-4 words"}}
+Schema: {{"missions": [{{"repo": "owner/name", "line": "..."}}]}}
 
 Rules:
 - missions: exactly 3, each repo copied exactly from the candidate list below.
-- line: one plain sentence, at most 64 characters, starting with an -ing verb, saying
-  what the work in that repo is, grounded in its commit messages. No jokes, no names,
-  no sect words. Plain ASCII. Ends with a period.
-  Example: "Adding barge-in to a realtime voice agent."
-- obsession: 2-4 words: what the sect leader is in closed-door cultivation on.
-- English only. No emoji. No private data. Never invent a repo.
+- line: one short sentence, at most 64 characters, past tense, like a good commit
+  message. Say the concrete thing that changed and name the real part of the project.
+  Good: "Swapped the homepage MCP prompt for an install dropdown."
+  Good: "Added barge-in to the realtime voice agent."
+  Bad: "Updating sect background look with new visual elements." (vague)
+  Bad: "Adding the PARANOIA music video to the repository." (filler)
+- Plain words, the way a student tells a friend what he built. No jokes, no names, no
+  hype, no metaphors, no story voice.
+- Never use: em dashes, semicolons, colons, "not just", "X, not Y", "not X but Y",
+  "rather than", lists of three, a question, a trailing ", making ..." clause, or these
+  words: {banned}.
+- English, plain ASCII, ends with a period. No emoji. Never invent a repo.
 
 Candidates (repo, newest push, recent commit subjects):
 {chr(10).join(rows)}
@@ -392,7 +493,7 @@ Candidates (repo, newest push, recent commit subjects):
     body = {
         "model": model,
         "messages": [
-            {"role": "system", "content": ("You output strict JSON for the Now section of a developer's "
+            {"role": "system", "content": ("You write short, plain changelog lines for a developer's "
                                            "GitHub profile. JSON only.")},
             {"role": "user", "content": prompt},
         ],
@@ -423,11 +524,11 @@ def run_number() -> str:
 
 
 def render_build_plate() -> str:
-    """One plain line for inside the Play fold's <pre> (so: html-escaped, no markdown)."""
+    """One HTML comment, invisible on the page: which run last touched the README.
+    Only digits and hex go in, so it can never close the comment early."""
     sha = os.environ.get("GITHUB_SHA", "")
     sha = sha[:7] if re.fullmatch(r"[0-9a-f]{7,40}", sha) else "local"
-    line = f"sealed by the steward · run {run_number()} · from {sha} · the human contributes"
-    return ensure_no_markers(html.escape(line, quote=False))
+    return ensure_no_markers(f"<!-- steward run {run_number()}, from {sha} -->")
 
 
 def render_now(missions: list[dict], today: date) -> str:
@@ -471,8 +572,7 @@ def load_previous_status(path: str) -> dict | None:
         missions = finalize_missions(data.get("missions"))
     except (ValueError, TypeError, AttributeError):
         return None
-    payload = {"missions": missions,
-               "obsession": clean_obsession(str(data.get("obsession", ""))) or FALLBACK_OBSESSION}
+    payload: dict = {"missions": missions}
     if isinstance(data.get("updated"), str):
         payload["updated"] = data["updated"]
     return payload
@@ -480,8 +580,8 @@ def load_previous_status(path: str) -> dict | None:
 
 def write_status_json(payload: dict, now: datetime | None, path: str = STATUS_PATH) -> None:
     """now=None writes no fresh timestamp: reused lines keep their own, and a
-    canned fallback gets none."""
-    status = {"obsession": payload["obsession"], "missions": payload["missions"]}
+    plain fallback gets none."""
+    status: dict = {"missions": payload["missions"]}
     if now is not None:
         status["updated"] = now.strftime("%Y-%m-%dT%H:%M:%SZ")
     elif "updated" in payload:
@@ -498,7 +598,7 @@ def write_status_json(payload: dict, now: datetime | None, path: str = STATUS_PA
 
 
 def write_github_output(message: str) -> None:
-    """The commit message. Only a real rewrite starts with 'steward N:'."""
+    """The commit message, plain like Bill's own: 'Update the Now section (steward run N)'."""
     output_path = os.environ.get("GITHUB_OUTPUT")
     if not output_path:
         return
@@ -528,14 +628,97 @@ def dates_only(args: argparse.Namespace, token: str | None, today: date) -> None
         print("no posted repo was pushed again; status.json left as it was")
 
 
+def self_test() -> None:
+    """Offline checks of the voice filter and the line rules. No network, no files."""
+    with_tells = (
+        "Refined the hero — now it breathes.",
+        "Reworked the board -- simpler and faster.",
+        "Cleaned up the parser; tests pass now.",
+        "The fix: a smaller cache.",
+        "It's not a portfolio, it's a sect.",
+        "Not a rewrite, but a polish of the agent.",
+        "Swapped the cache, not the database.",
+        "Less config, more defaults in the CLI.",
+        "Added auth, rate limits, and logging.",
+        "Why rewrite it? Speed.",
+        "Moved search to Pinecone, making lookups fast.",
+        "Updating sect background look with new visual elements.",
+        "Adding PARANOIA music video to the repository.",
+        "Quietly reworked the voice agent.",
+        "Delved into the realtime API.",
+        "Made the deploy seamless.",
+        "Not just a bug fix for the board.",
+        "Leveraged Retell for the phone agent.",
+        "Added new features to the site.",
+    )
+    for line in with_tells:
+        assert voice_tells(line), f"missed a tell: {line!r}"
+    plain = (
+        "Swapped the homepage MCP prompt for an install dropdown.",
+        "Added barge-in to the realtime voice agent.",
+        "Fixed funny bug if ingredient contained a comma.",
+        "Made the sect gate load faster on phones.",
+        "Added the PARANOIA music video.",
+        "Moved the scene bake to a rented GPU.",
+        "Basic model has 90% accuracy, forced to use that.",
+        "Rebuilt the stair at the mountain gate.",
+        "Real-time bus tracker for UCSC.",
+        NO_NOTES,
+    )
+    for line in plain:
+        assert not voice_tells(line), f"false alarm on {line!r}: {voice_tells(line)}"
+
+    # A model line with a tell falls back to its repo's plain line; a clean one stays.
+    cands = [Candidate("IdkwhatImD0ing/a", "2026-10-20", ["docs: add the install dropdown to the homepage"]),
+             Candidate("IdkwhatImD0ing/b", "2026-10-19", ["/sect round 48 slice: the canopy grows; it is load-bearing"],
+                       description="Voice agent for 911 dispatch"),
+             Candidate("IdkwhatImD0ing/c", "2026-10-18", [], description="")]
+    raw = json.dumps({"missions": [
+        {"repo": "IdkwhatImD0ing/a", "line": "Quietly elevating the homepage — a seamless journey."},
+        {"repo": "IdkwhatImD0ing/b", "line": "Added barge-in to the realtime voice agent."},
+        {"repo": "IdkwhatImD0ing/c", "line": "Not just a demo, but a platform."},
+    ]})
+    lines = [m["line"] for m in parse_llm_payload(raw, cands)["missions"]]
+    assert lines == ["Add the install dropdown to the homepage.", "Added barge-in to the realtime voice agent.",
+                     NO_NOTES], lines
+    # The plain line skips a commit subject with a tell and uses the description.
+    assert plain_line(cands[1]) == "Voice agent for 911 dispatch.", plain_line(cands[1])
+    # ... and a subject that is scenery rather than a change.
+    scenery = Candidate("IdkwhatImD0ing/d", "2026-10-17", ["Ice-Fire Island's steam rises from the volcano's crater",
+                                                           "Moved the steam vent onto the crater"])
+    assert plain_line(scenery) == "Moved the steam vent onto the crater.", plain_line(scenery)
+    # A repo outside the list still rejects the whole payload.
+    try:
+        parse_llm_payload(json.dumps({"missions": [{"repo": "someone/else", "line": "Added x."}] * 3}), cands)
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("a repo outside the candidates must reject the payload")
+    # Kept lines from before the filter are scrubbed the same way.
+    kept = [{"repo": "IdkwhatImD0ing/a", "pushed": "2026-10-20",
+             "line": "Updating sect background look with new visual elements."},
+            {"repo": "IdkwhatImD0ing/b", "pushed": "2026-10-19", "line": "Added barge-in to the realtime voice agent."}]
+    assert scrub_missions(kept, cands) == 1 and kept[0]["line"] == "Add the install dropdown to the homepage."
+    # The build plate is an HTML comment that can never close early or carry a marker.
+    plate = render_build_plate()
+    assert plate.startswith("<!-- steward run ") and plate.endswith(" -->") and plate.count("--") == 2
+    assert not MARKER_RE.search(plate)
+    print("steward self-test: all assertions passed")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--readme", default="README.md")
     parser.add_argument("--status", default=STATUS_PATH, help="where to read and write status.json (testing)")
     mode = parser.add_mutually_exclusive_group()
-    mode.add_argument("--fallback-only", action="store_true", help="no LLM: the deterministic lines")
+    mode.add_argument("--fallback-only", action="store_true", help="no LLM: the plain lines")
     mode.add_argument("--dates-only", action="store_true", help="no LLM: only move the posted dates forward")
+    mode.add_argument("--self-test", action="store_true", help="check the voice filter and the line rules, offline")
     args = parser.parse_args()
+
+    if args.self_test:
+        self_test()
+        return
 
     github_token = os.environ.get("GITHUB_TOKEN")
     openai_key = os.environ.get("OPENAI_API_KEY")
@@ -569,22 +752,23 @@ def main() -> None:
         raise RuntimeError("OPENAI_API_KEY is required when REQUIRE_OPENAI=1")
 
     stamp: datetime | None = now
-    message = f"steward {run_number()}: reposted the missions around {{obsession}}, kept the good ones"
+    message = f"Update the Now section (steward run {run_number()})"
     if payload is None and not args.fallback_only:
         payload = load_previous_status(args.status)
         stamp = None
-        message = f"steward: the ink ran dry, kept the old missions (run {run_number()})"
+        message = f"Keep the Now section, no LLM this time (steward run {run_number()})"
         if payload is not None:
             refresh_dates(payload["missions"], {c.repo: c.pushed for c in candidates if not c.topped_up})
+            if scrub_missions(payload["missions"], candidates):
+                message = f"Update the Now section from commit messages (steward run {run_number()})"
     if payload is None:
         stamp = None
-        previous_obsession = str(read_status(args.status).get("obsession", ""))
         try:
-            payload = fallback_payload(candidates, previous_obsession)
-            message = f"steward: the ink ran dry, posted the standing missions (run {run_number()})"
+            payload = fallback_payload(candidates)
+            message = f"Update the Now section from commit messages (steward run {run_number()})"
         except ValueError as error:
             print(f"WARNING: no fallback ({error}); the NOW block and status.json are left alone")
-            message = f"steward: the ink ran dry, kept the old missions (run {run_number()})"
+            message = f"Keep the Now section, no LLM this time (steward run {run_number()})"
 
     plate = render_build_plate()
     print(f"--- BUILD_PLATE ---\n  {plate}")
@@ -594,8 +778,7 @@ def main() -> None:
         print(f"--- NOW ---\n{now_block}")
         safe_replace_block(args.readme, NOW_START, NOW_END, now_block, "NOW")
         write_status_json(payload, stamp, args.status)
-        message = message.format(obsession=payload["obsession"])
-    write_github_output(message.replace("{obsession}", FALLBACK_OBSESSION))
+    write_github_output(message)
 
 
 if __name__ == "__main__":

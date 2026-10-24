@@ -2,9 +2,8 @@
 
 59 swords stand in one rack (two rows of 30 and 29 on phones); the 36 that won
 are gilded, the rest stay dark iron. Gold means won, and nothing else on the
-row is gold. In the dark the gilded ones take their gold one after another as
-the picture loads; the picture without animation is the finished rack. The
-record lives in ink.WON / ink.ENTERED.
+row is gold. It is a still picture (stills only, see CLAUDE.md); in the dark
+the gold swords carry a soft glow. The record lives in ink.WON / ink.ENTERED.
 
 Run from the repo root: python scripts/generate_arena.py
 Writes assets/arena/record.svg, record-light.svg, record-phone.svg.
@@ -37,8 +36,8 @@ def sword_d(x: float, top: float, height: float, width: float = 8.0) -> str:
 
 
 def rack(x0: float, y_top: float, width: float, per_row: int, height: float, row_gap: float,
-         animate: bool, sword_w: float) -> tuple[str, str]:
-    """(svg, css). Gilded swords first: a tally, not a timeline."""
+         glow: bool, sword_w: float) -> tuple[str, str]:
+    """(svg, css). The gold swords come first in the rack."""
     pitch = width / per_row
     won, dark = [], []
     for i in range(ink.ENTERED):
@@ -49,12 +48,8 @@ def rack(x0: float, y_top: float, width: float, per_row: int, height: float, row
     out = [f'<path d="{"".join(d for _, d in dark)}" class="tk"/>',
            f'<path d="{"".join(d for _, d in dark)}" class="ln" stroke-width=".8"/>']
     css = ""
-    if animate:
-        out.append('<g class="glow">' + "".join(
-            f'<path d="{d}" class="au gd" style="animation-delay:{0.3 + i * 0.035:.2f}s"/>' for i, d in won) + "</g>")
-        css = f".gd{{animation:argild .5s ease-out backwards}}@keyframes argild{{from{{fill:{ink.palette('dark')['track']}}}}}"
-    else:
-        out.append(f'<path d="{"".join(d for _, d in won)}" class="au"/>')
+    gold = f'<path d="{"".join(d for _, d in won)}" class="au"/>'
+    out.append(f'<g class="glow">{gold}</g>' if glow else gold)
     # the rack: a stone ledge under each row
     rows = -(-ink.ENTERED // per_row)
     for r in range(rows):
@@ -66,7 +61,7 @@ def rack(x0: float, y_top: float, width: float, per_row: int, height: float, row
 def label() -> str:
     pct = round(100 * ink.WON / ink.ENTERED)
     return (f"{ink.WON} hackathons won out of {ink.ENTERED} entered ({pct}%). "
-            f"One sword per hackathon; the {ink.WON} gold swords won.")
+            f"One sword for each hackathon, gold for a win.")
 
 
 def headline(x: float, y: float, num: float, small: float, gap: float, sep: str = "") -> tuple[list[str], float]:
@@ -86,12 +81,12 @@ def headline(x: float, y: float, num: float, small: float, gap: float, sep: str 
 
 def record_svg(mode: str) -> str:
     w, h = ink.W, 136
-    animate = mode == "dark"
+    glow = mode == "dark"
     body = [ink.plate(0, 0, w, h, corner=0)]
     runs, _ = headline(24, 44, 30, 14, 20)
     body += runs
     body.append(ink.text(w - 24, 44, CAPTION, 12, "body", "mu", anchor="end"))
-    svg, css = rack(24, 60, w - 48, ink.ENTERED, 56, 0, animate, 8)
+    svg, css = rack(24, 60, w - 48, ink.ENTERED, 56, 0, glow, 8)
     body.append(svg)
     return ink.doc(w, h, "".join(body), label(), mode, extra_css=css)
 

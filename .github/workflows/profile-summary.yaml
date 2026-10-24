@@ -1,4 +1,4 @@
-name: "Steward: post what Bill is working on now"
+name: "Steward: update the Now section"
 
 on:
   schedule:
@@ -30,17 +30,17 @@ jobs:
           python-version: "3.x"
 
       # OpenAI-independent renders run first so a bad LLM day cannot block them.
-      - name: "Forge: redraw the four Shipped cards (hackathon log)"
+      - name: "Redraw the four Shipped cards (hackathon log)"
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: python scripts/render_hacklog.py
 
-      - name: "Update the disciple register (stargazers)"
+      - name: "Update the star list (register)"
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: python scripts/render_passwd.py
 
-      - name: "Steward: write the Now lines (status.json, NOW block, build plate)"
+      - name: "Write the Now lines (status.json, NOW block, build stamp)"
         id: build
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -49,8 +49,8 @@ jobs:
           GITHUB_SHA: ${{ github.sha }}
         run: python scripts/update_currently_building.py
 
-      # Runs even if the LLM step failed: it reads the obsession from the last status.json.
-      - name: Reprint the terminal talisman (bill.ansi)
+      # Runs even if the LLM step failed: it reads the Now repos from the last status.json.
+      - name: Redraw the terminal card (bill.ansi)
         if: ${{ !cancelled() }}
         run: python scripts/generate_ansi_card.py
 
@@ -59,11 +59,11 @@ jobs:
         if: ${{ !cancelled() }}
         run: git pull --rebase --autostash origin main
 
-      - name: Commit the sect's upkeep
+      - name: Commit
         if: ${{ !cancelled() }}
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "${{ steps.build.outputs.msg || 'steward: routine upkeep' }}"
+          commit_message: "${{ steps.build.outputs.msg || 'Update the profile (steward)' }}"
           # Every pathspec must exist, or git add fails and nothing commits.
           # The directory pathspec also stages pruned (retired) card files.
           file_pattern: "README.md assets/status.json assets/forge bill.ansi"

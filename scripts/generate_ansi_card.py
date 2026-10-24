@@ -1,4 +1,4 @@
-"""Render bill.ansi: the sect's talisman, as raw ANSI escapes for the terminal.
+"""Render bill.ansi: Bill's business card, as raw ANSI escapes for the terminal.
 
 Meant to be consumed with:
     curl -sL https://raw.githubusercontent.com/IdkwhatImD0ing/IdkwhatImD0ing/main/bill.ansi
@@ -7,9 +7,10 @@ Stdlib only, no figlet: the block-letter banner font lives in this file.
 Colours follow the sect's design system (scripts/ink.py), mapped to the
 nearest xterm-256 entries so the card looks the same in every terminal that
 has 256 colours (truecolor is not assumed): gold for the name and what is
-lit or won, jade only where the reader can act (and for qi), the terminal's
+lit or won, jade for what he is working on now, the terminal's
 own foreground for body text and links, greys for everything else. No
-Chinese in the card: a wide glyph would push the right border out.
+Chinese in the card: a wide glyph would push the right border out. The
+"now" line lists the repos in the README's Now section (assets/status.json).
 Run from the repo root: python scripts/generate_ansi_card.py
 """
 
@@ -58,7 +59,7 @@ LINK = INK + UNDERLINE
 
 STATUS_PATH = "assets/status.json"
 DEFAULT_STATUS = "voice agents"
-STATUS_MAX_LEN = 46
+STATUS_MAX_LEN = 52  # the value column: INNER_WIDTH minus the 13-column label, with room to centre
 
 # 5-row block font, only the glyphs the banner needs.
 BLOCK_FONT: dict[str, tuple[str, ...]] = {
@@ -106,22 +107,21 @@ def banner_rows(word: str) -> list[str]:
 
 
 def read_status(path: str = STATUS_PATH) -> str:
+    """The repos in the Now section, comma-joined and cut to whole names that
+    fit the value column; DEFAULT_STATUS when there is nothing usable."""
     try:
         payload = json.loads(Path(path).read_text(encoding="utf-8"))
     except Exception:
         return DEFAULT_STATUS
-    if isinstance(payload, dict):
-        for key in ("obsession", "status", "text", "message", "current", "building"):
-            value = payload.get(key)
-            if isinstance(value, str) and value.strip():
-                cleaned = sanitize(value)
-                if cleaned:
-                    return cleaned
-    elif isinstance(payload, str) and payload.strip():
-        cleaned = sanitize(payload)
-        if cleaned:
-            return cleaned
-    return DEFAULT_STATUS
+    missions = payload.get("missions") if isinstance(payload, dict) else None
+    names: list[str] = []
+    for mission in missions if isinstance(missions, list) else []:
+        repo = mission.get("repo") if isinstance(mission, dict) else None
+        if isinstance(repo, str) and "/" in repo:
+            name = sanitize(repo.split("/", 1)[1])
+            if name and len(", ".join(names + [name])) <= STATUS_MAX_LEN:
+                names.append(name)
+    return ", ".join(names) or DEFAULT_STATUS
 
 
 def boxed(content_lines: list[str]) -> list[str]:
@@ -154,33 +154,19 @@ def build_card(status: str) -> str:
         content.append(paint(row, fg256(shade), bold=True))
     content += [
         "",
-        paint("Sun Moon Divine Sect", GOLD) + dot + paint("art3m1s.me", JADE),
-        paint("AI engineer", INK) + dot + paint("hackathon operator", INK) + dot
-        + paint(f"{WON}/{ENTERED}", GOLD, bold=True),
+        paint("Software Engineer", INK) + dot + paint("Pinterest", INK) + dot + paint("LLM agents", INK),
+        paint(f"{WON} hackathons won", GOLD, bold=True) + paint(f" out of {ENTERED} entered", MUTED),
         "",
         field("site", "https://art3m1s.me", LINK, width=col),
+        field("email", "billzhangsc@gmail.com", LINK, width=col),
         field("github", "github.com/IdkwhatImD0ing", LINK, width=col),
         field("linkedin", "linkedin.com/in/bill-zhang1", LINK, width=col),
         "",
-        field("cultivating", status, JADE, bold=True, width=col),
-        "",
-        paint("works on my machine; my machine has 96GB of RAM", FAINT),
+        field("working on", status, JADE, bold=True, width=col),
         "",
     ]
     lines = boxed(content)
-
-    def option(flag: str, text: str) -> str:
-        return "  " + paint("bill ", MUTED) + paint(flag.ljust(11), JADE) + paint(text, MUTED)
-
-    lines += [""] * 12
-    lines += [
-        paint("$ ", GOLD, bold=True) + paint("bill --help", INK, bold=True),
-        option("--hire", "opens calendar, closes excuses"),
-        option("--demo", "ships a prototype before the meeting ends"),
-        option("--coffee", "required input voltage"),
-        option("--sect", "the talisman's other half: art3m1s.me"),
-        RESET,
-    ]
+    lines.append(RESET)
     return "\n".join(lines) + "\n"
 
 
@@ -197,7 +183,7 @@ def validate(card: str) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Generate the bill.ansi business card.")
     parser.add_argument("--out", default="bill.ansi", help="output path")
-    parser.add_argument("--status", default=STATUS_PATH, help="status.json to read the obsession from")
+    parser.add_argument("--status", default=STATUS_PATH, help="status.json to read the Now repos from")
     args = parser.parse_args()
 
     card = build_card(read_status(args.status))

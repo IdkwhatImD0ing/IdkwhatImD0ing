@@ -1,14 +1,14 @@
 {
   "DispatchAI": {
     "repo": "IdkwhatImD0ing/DispatchAI",
-    "payload": "AI copilot for overloaded 911 dispatch centers",
+    "payload": "sorts 911 calls by severity for understaffed call centers",
     "lang": "TypeScript",
     "stars": 10,
     "forks": 4
   },
   "TalkTuahBank": {
     "repo": "aurelisajuan/TalkTuahBank",
-    "payload": "voice-first banking for the people banks forgot",
+    "payload": "banking over a phone call, no app or internet needed",
     "lang": "TypeScript",
     "stars": 18,
     "forks": 7
@@ -22,7 +22,7 @@
   },
   "AdaptEd": {
     "repo": "IdkwhatImD0ing/AdaptEd",
-    "payload": "lectures that reshape themselves to the student",
+    "payload": "a voice tutor that rebuilds its slides as it lectures",
     "lang": "Jupyter Notebook",
     "stars": 20,
     "forks": 4

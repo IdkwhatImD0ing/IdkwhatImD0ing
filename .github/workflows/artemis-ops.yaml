@@ -1,4 +1,4 @@
-name: "Petitions: the formation, the gong, the register"
+name: "Minesweeper, the gong and the star list"
 
 on:
   issues:
@@ -16,8 +16,8 @@ concurrency:
 
 jobs:
   ops:
-    # Non-matching issues are left completely untouched. `sect|` is the sect's
-    # prefix; `artemis|` is the previous life's, kept so old links still work.
+    # Other issues are left alone. `sect|` is the current prefix and `artemis|`
+    # the old one, kept so old links still work.
     if: >-
       github.event_name == 'watch' ||
       startsWith(github.event.issue.title, 'sect|') ||
@@ -66,7 +66,7 @@ jobs:
         run: gh api "repos/$GH_REPO/issues/$ISSUE_NUMBER/reactions" -f content=eyes
 
       # The title is passed via env vars only, never interpolated into the script text.
-      - name: Answer the petition
+      - name: Answer the issue
         if: github.event_name == 'issues' && steps.gate.outputs.open == 'true'
         env:
           ISSUE_TITLE: ${{ github.event.issue.title }}
@@ -77,12 +77,12 @@ jobs:
           python scripts/artemis_ops.py process \
             --title="$ISSUE_TITLE" --actor="$ISSUE_ACTOR" --issue="$ISSUE_NUMBER" \
             > "$RUNNER_TEMP/reply.md" \
-            || echo "the scribe spilled ink on the reply. try again in a minute." > "$RUNNER_TEMP/reply.md"
+            || echo "Something went wrong on my end. Try again in a minute." > "$RUNNER_TEMP/reply.md"
           cat "$RUNNER_TEMP/reply.md"
 
-      # The formation answers one petition at a time: drain up to 8 other queued
-      # petitions (oldest first) through the same engine, replying to and closing each.
-      - name: Drain queued petitions
+      # One run answers one issue, then up to 8 other queued ones (oldest first)
+      # through the same engine, replying to and closing each.
+      - name: Answer queued issues
         if: github.event_name == 'issues'
         continue-on-error: true
         env:
@@ -106,7 +106,7 @@ jobs:
             gh issue close "$num" --repo "$GH_REPO" || true
           done < "$RUNNER_TEMP/queue.jsonl"
 
-      - name: Initiate the new disciple
+      - name: Add the new star to the list
         if: github.event_name == 'watch'
         continue-on-error: true
         env:
@@ -116,19 +116,19 @@ jobs:
       - name: Rebase generated changes on latest main
         run: git pull --rebase --autostash origin main
 
-      - name: Commit the formation
+      - name: Commit the board
         if: github.event_name == 'issues'
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "formation: a node was read [skip ci]"
+          commit_message: "Minesweeper move [skip ci]"
           # a directory pathspec also stages the pruned (older) status-panel files
           file_pattern: "README.md data/fsck/*.json assets/formation"
 
-      - name: Commit the register
+      - name: Commit the star list
         if: github.event_name == 'watch'
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "register: a new disciple was initiated"
+          commit_message: "Update the star list"
           file_pattern: README.md
 
       - name: Reply and close issue

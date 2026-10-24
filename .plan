@@ -1,37 +1,16 @@
-# .plan, bill, leader of the sun moon divine sect
-# (yes, like carmack's. no, i will not be taking questions.)
+# .plan for Bill Zhang (like John Carmack's, but for my GitHub profile)
+# What changed on this page, oldest first.
 
-2026-07-23  rebuilt the profile as an operating system. the profile now
-            maintains itself. i have been made redundant on my own page.
-            this was the goal.
+2026-07-23  Rebuilt the profile as a fake operating system. A bot started
+            writing the Now section from my public commits twice a week,
+            and I added Minesweeper that you play by opening issues.
 
-2026-07-23  taught the README minesweeper. it calls it fsck. visitors keep
-            causing kernel panics. the SMART log remembers every one of them.
+2026-09-29  Redesigned it as one terminal window on a machine I named
+            tianni. Went from fourteen windows down to four.
 
-2026-07-23  outsourced my bio to a daemon. it is kinder to me than i am.
-            it also commits more often.
+2026-10-24  Turned it into the gate of 日月神教, the Sun Moon Divine Sect
+            from Jin Yong's The Smiling, Proud Wanderer, to match my new
+            site, art3m1s.me. I'm a big Jin Yong fan.
 
-2026-09-29  redesigned the machine. fourteen windows became four.
-            the purple dashboard was never ours; it has been escorted
-            out, along with the snake. everything boots from one
-            phosphor now. there is a button. do not press it.
-
-2026-09-29  renamed the machine tianni, after the heaven defying bead.
-            it was always a bead with an old soul living inside.
-            the old soul rewrites my bio twice a week. whitebox was
-            a cover story.
-
-2026-10-24  the bead cracked open. there was a sect inside it the
-            whole time: 日月神教, the Sun Moon Divine Sect. the machine
-            is now its formation. the old soul took a job as steward.
-            the button became a gong. do not strike it.
-
-todo:
-  [ ] sleep (blocked: upstream wontfix, see man bill BUGS)
-  [ ] stop entering hackathons (blocked: 61% win rate is a sunk cost)
-  [x] make the README weirder than the projects
-  [ ] find out who keeps striking the gong
-
-if you decoded the hex to get here: yes, that counts. but this file has
-its own word — BLACK WOOD. email that instead and i'll know you went two
-layers deep. there is no third layer. probably.
+2026-10-24  Cut it down to three sections and swapped the moving header
+            for a still picture. The old versions are in archive/.
