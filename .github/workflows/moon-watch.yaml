@@ -1,0 +1,54 @@
+name: Moon watch
+
+# Once a week the moon is read: the Heart-Mirror card shows tonight's phase,
+# the Mission Hall board rolls its weekly omen, and the terminal talisman is
+# redrawn. The Saturday cadence is also part of the repo's keepalive (GitHub
+# disables cron workflows after 60 quiet days); do not thin it.
+
+on:
+  schedule:
+    - cron: "41 14 * * 6"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: profile-readme-writes
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Stdlib only: the card and the board are drawn from glyph tables.
+      - name: Read the moon, redraw the card and the board
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_SHA: ${{ github.sha }}
+        run: python scripts/render_card.py
+
+      - name: Redraw the terminal talisman
+        run: python scripts/generate_ansi_card.py
+
+      - name: Rebase on latest main
+        run: git pull --rebase --autostash origin main
+
+      - name: Commit
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "moon-watch: re-read the moon, redrew the card"
+          file_pattern: "assets/mirror assets/hall bill.ansi"

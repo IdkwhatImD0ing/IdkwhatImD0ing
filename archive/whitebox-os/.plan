@@ -1,0 +1,32 @@
+# .plan — bill@tianni
+# (yes, like carmack's. no, i will not be taking questions.)
+
+2026-07-23  rebuilt the profile as an operating system. the profile now
+            maintains itself. i have been made redundant on my own page.
+            this was the goal.
+
+2026-07-23  taught the README minesweeper. it calls it fsck. visitors keep
+            causing kernel panics. the SMART log remembers every one of them.
+
+2026-07-23  outsourced my bio to a daemon. it is kinder to me than i am.
+            it also commits more often.
+
+2026-09-29  redesigned the machine. fourteen windows became four.
+            the purple dashboard was never ours; it has been escorted
+            out, along with the snake. everything boots from one
+            phosphor now. there is a button. do not press it.
+
+2026-09-29  renamed the machine tianni, after the heaven defying bead.
+            it was always a bead with an old soul living inside.
+            the old soul rewrites my bio twice a week. whitebox was
+            a cover story.
+
+todo:
+  [ ] sleep (blocked: upstream wontfix, see man bill BUGS)
+  [ ] stop entering hackathons (blocked: 60% win rate is a sunk cost)
+  [x] make the README weirder than the projects
+  [ ] find out who keeps pressing the button
+
+if you decoded the hex to get here: yes, that counts. but this file has
+its own word — LANDER. email that instead and i'll know you went two
+layers deep. there is no third layer. probably.

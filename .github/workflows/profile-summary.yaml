@@ -1,4 +1,4 @@
-name: Update currently building
+name: "Steward: repost the missions"
 
 on:
   schedule:
@@ -30,20 +30,20 @@ jobs:
           python-version: "3.x"
 
       # OpenAI-independent renders run first so a bad LLM day cannot block them.
-      - name: Render ships (hackathon log)
+      - name: "Forge: redraw the four newest artifacts (hackathon log)"
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: python scripts/render_hacklog.py
 
-      - name: Render crontab and build receipts
+      - name: "Ring the timetable: workflows and the steward's ledger"
         run: python scripts/render_crontab.py
 
-      - name: Render passwd (stargazers)
+      - name: "Update the disciple register (stargazers)"
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: python scripts/render_passwd.py
 
-      - name: Rewrite own bio (status.json, build plate)
+      - name: "Steward: repost the missions (status.json, build plate)"
         id: build
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -53,14 +53,14 @@ jobs:
         run: python scripts/update_currently_building.py
 
       # Runs even if the LLM step failed: it falls back to the last status.json.
-      - name: Redraw the boot screen
+      - name: Redraw the identity card and the mission board
         if: ${{ !cancelled() }}
         env:
           GITHUB_TOKEN: ${{ github.token }}
           GITHUB_SHA: ${{ github.sha }}
-        run: python scripts/render_hero.py
+        run: python scripts/render_card.py
 
-      - name: Reprint the ANSI business card
+      - name: Reprint the terminal talisman (bill.ansi)
         if: ${{ !cancelled() }}
         run: python scripts/generate_ansi_card.py
 
@@ -69,9 +69,10 @@ jobs:
         if: ${{ !cancelled() }}
         run: git pull --rebase --autostash origin main
 
-      - name: Commit README update
+      - name: Commit the sect's upkeep
         if: ${{ !cancelled() }}
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "${{ steps.build.outputs.msg || 'artemis: routine self-maintenance' }}"
-          file_pattern: "README.md assets/status.json assets/hero*.svg assets/ships bill.ansi"
+          commit_message: "${{ steps.build.outputs.msg || 'steward: routine upkeep' }}"
+          # directory pathspecs also stage pruned (retired) artifact files
+          file_pattern: "README.md assets/status.json assets/mirror assets/hall assets/forge bill.ansi"

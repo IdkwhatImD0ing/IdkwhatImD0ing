@@ -13,10 +13,12 @@ BILL(1)                    User Commands                    BILL(1)
 
 ## DESCRIPTION
 
-**bill** is a userland process resident on tianni (ART3M1S OS, Rev 5080)
-since 2021. Accepts underspecified ideas on stdin and emits working demos
-on stdout, typically within one weekend. Known to bind to any available
-voice-AI API at runtime.
+**bill** leads 日月神教, the Sun Moon Divine Sect (the [README](../README.md)
+this page belongs to). In a previous life he was a userland process
+resident on tianni (ART3M1S OS, Rev 5080), since 2021; the machine is now
+the sect's formation. Accepts underspecified ideas on stdin and emits
+working demos on stdout, typically within one weekend. Known to bind to
+any available voice-AI API at runtime.
 
 Invoked without arguments, **bill** defaults to `--ship`.
 
@@ -45,8 +47,8 @@ Invoked without arguments, **bill** defaults to `--ship`.
 
 ## BUGS
 
-Sleeps occasionally (upstream wontfix — see `cat /mnt/pkg.list`, the
-dependency was never installed).
+Sleeps occasionally (upstream wontfix: a stele for sleep was commissioned
+in the Stele Forest and never carved).
 
 Spontaneously starts new projects while existing projects are still
 compiling. Marked WONTFIX; several maintainers consider it the core
@@ -57,5 +59,5 @@ feature.
 **art3m1s.me**(443), **hackathons.log**(5), **.plan**(7), the [README](../README.md) this page escaped from.
 
 ```text
-ART3M1S OS 5.8                  2026-07-23                  BILL(1)
+SUN MOON DIVINE SECT         2026-10-24                     BILL(1)
 ```

@@ -1,12 +1,19 @@
-"""The LLM daemon: rewrites the machine's own bio twice a week.
+"""The Mission Hall steward: reposts the sect's mission board twice a week.
 
-Reads recent public GitHub activity plus the Hackathon Playbook RSS feed, asks
-OpenAI for a tiny process table, and writes it to assets/status.json, where the
-hero's htop pane (scripts/render_hero.py) and bill.ansi pick it up. When the
-model is unreachable or returns junk, the previous status.json is kept as-is
-(the commit says 'artemis: llm offline, kept the old bio'); only when there is
-no usable previous one, or with --fallback-only, a deterministic fallback built
-from the same activity takes over.
+The steward is an LLM. It reads Bill's recent public GitHub activity plus the
+Hackathon Playbook RSS feed, asks OpenAI for 3-4 missions, one dry note and
+what the Sect Leader is in closed-door cultivation on, and writes them to
+assets/status.json. The mission board and the identity card
+(scripts/render_card.py) and bill.ansi read that file. status.json keeps its
+old schema: "processes" are the posted missions (command = mission name,
+flags = tags, cpu = qi devoted), "motd" is the steward's note, "obsession" is
+the cultivation.
+
+When the model is unreachable or returns junk, the previous status.json is
+kept as-is (the commit says 'steward: the ink ran dry, kept the old
+missions'); only when there is no usable previous one, or with
+--fallback-only, a deterministic fallback built from the same activity takes
+over.
 
 Also owns the BUILD_PLATE block: one plain line inside the footer <pre>.
 
@@ -14,7 +21,7 @@ Contract: never blank anything. status.json is only rewritten after the whole
 payload validated; a missing BUILD_PLATE marker is a warning, not a crash.
 Run from the repo root:
     python scripts/update_currently_building.py --fallback-only
-    python scripts/update_currently_building.py --readme .preview/hero/README.md --status .preview/hero/status.json
+    python scripts/update_currently_building.py --readme .preview/README.md --status .preview/status.json
 """
 
 import argparse
@@ -40,8 +47,9 @@ MARKER_RE = re.compile(r"<!--\s*[A-Z_]+:(?:START|END)\s*-->")
 
 STATUS_PATH = "assets/status.json"
 
-# Schema for the htop pane (see render_hero.py). Everything is enforced here,
-# whatever the model says.
+# Schema for the mission board (render_card.py imports the cleaners and
+# fallbacks below by name). Everything is enforced here, whatever the model
+# says.
 MIN_PROCESSES, MAX_PROCESSES = 3, 4
 COMMAND_MAX = 18
 FLAGS_MAX = 22
@@ -53,8 +61,8 @@ GITHUB_REPO_NAME = re.compile(r"\b([A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)\b")
 FLAG_RE = re.compile(r"^--?[a-z0-9][a-z0-9-]*(?:=[a-z0-9._-]+)?$")
 
 FALLBACK_OBSESSION = "voice agents"
-FALLBACK_MOTD = "all daemons nominal. the human takes credit for my commits."
-FALLBACK_FLAGS = ("--ship-it", "--no-sleep", "--demo", "--prod", "--caffeine")
+FALLBACK_MOTD = "missions posted. the sect leader takes credit for my commits."
+FALLBACK_FLAGS = ("--ship-it", "--no-sleep", "--demo", "--urgent", "--closed-door")
 SEED_PROCESSES = (
     {"command": "voice-agent", "flags": "--realtime --demo", "cpu": 97},
     {"command": "hackathon-playbook", "flags": "--draft", "cpu": 71},
@@ -148,7 +156,7 @@ def sanitize_line(value: str, limit: int = 80) -> str:
 
 
 def clean_command(value: str) -> str:
-    """Lowercase daemon-style name, at most COMMAND_MAX chars: 'Voice AI' -> 'voice-ai'."""
+    """Lowercase mission name, at most COMMAND_MAX chars: 'Voice AI' -> 'voice-ai'."""
     text = sanitize_line(value, 80).lower()
     text = re.sub(r"[\s_/]+", "-", text)
     text = re.sub(r"[^a-z0-9.-]", "", text)
@@ -227,7 +235,7 @@ def clean_processes(processes: list[dict]) -> list[dict]:
 
 
 def stable_pid(command: str) -> int:
-    """Same command, same PID, every run. render_hero.py uses the same formula."""
+    """Same mission, same number, every run. render_card.py uses the same formula."""
     digest = hashlib.sha256(command.encode("utf-8")).hexdigest()
     return int(digest, 16) % 9000 + 1000
 
@@ -326,23 +334,28 @@ def call_openai(activity: list[str], posts: list[str], api_key: str) -> str:
     model = os.environ.get("OPENAI_MODEL", "gpt-4o-mini")
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     prompt = f"""
-You maintain the htop pane of a fictional machine that renders Bill Zhang's
-GitHub profile. Return STRICT JSON only - no prose, no code fences.
+You are the steward of the Mission Hall of the Sun Moon Divine Sect, a
+fictional xianxia sect whose grounds are Bill Zhang's GitHub profile. Bill is
+the Sect Leader. Twice a week you repost the mission board from his real
+public activity. Return STRICT JSON only - no prose, no code fences.
 
 Schema:
-{{"processes": [{{"command": "voice-agent", "flags": "--elevenlabs --demo", "cpu": 97}}], "motd": "one dry line", "obsession": "2-4 words"}}
+{{"processes": [{{"command": "voice-agent", "flags": "--realtime --demo", "cpu": 97}}], "motd": "one dry line", "obsession": "2-4 words"}}
 
 Rules:
-- 3 or 4 processes, each grounded in the context below. Do not invent projects.
-- command: lowercase daemon-style name derived from a real repo/project,
+- processes are the missions posted on the board: 3 or 4, each grounded in
+  the context below. Do not invent projects.
+- command: the mission name, derived from a real repo or project: lowercase,
   at most 18 characters, letters/digits/hyphens only (e.g. "slugloop", "voice-agent").
-- flags: 0 to 2 plausible CLI flags reflecting what the work actually is,
+- flags: 0 to 2 tags in CLI-flag form saying what the work actually is,
   at most 22 characters in total (e.g. "--realtime --demo").
-- cpu: integer 1-99; higher means more current obsession.
-- motd: one deadpan sysadmin line about the current work, all lowercase like a
-  log line, at most 64 characters (e.g. "the demo worked. nobody is more surprised than the demo.").
-- obsession: 2-4 words naming the current obsession.
-- No emoji anywhere. No private data. Dry humor only.
+- cpu: integer 1-99, the qi devoted to the mission; higher means more current.
+- motd: one dry line from you, the steward, about the real current work. All
+  lowercase, at most 64 characters. Sect vocabulary is welcome (missions,
+  elders, cultivation, the sect leader), e.g.
+  "the demo held. the elders are as surprised as the demo."
+- obsession: 2-4 words: what the sect leader is in closed-door cultivation on.
+- English only, plain ASCII only. No emoji. No private data. Dry humor only.
 
 Date: {today}
 
@@ -358,7 +371,8 @@ Recent Hackathon Playbook posts:
         "messages": [
             {
                 "role": "system",
-                "content": "You output strict JSON for a machine-themed developer README. JSON only.",
+                "content": ("You output strict JSON for the mission board of a xianxia sect that "
+                            "renders a developer's GitHub profile. JSON only."),
             },
             {"role": "user", "content": prompt},
         ],
@@ -393,7 +407,7 @@ def render_build_plate() -> str:
     """One plain line for inside the footer <pre> (so: html-escaped, no markdown)."""
     sha = os.environ.get("GITHUB_SHA", "")
     sha = sha[:7] if re.fullmatch(r"[0-9a-f]{7,40}", sha) else "local"
-    line = f"build {run_number()} · compiled from {sha} · the human is a contributor"
+    line = f"sealed by the steward · run {run_number()} · from {sha} · the human contributes"
     return ensure_no_markers(html.escape(line, quote=False))
 
 
@@ -409,7 +423,7 @@ def safe_replace_block(readme_path: str, start: str, end: str, content: str, lab
 def load_previous_status(path: str) -> dict | None:
     """The last good status.json, re-gated, with its original timestamps; None if
     there is nothing usable. Used when the LLM is down, so a bad API day keeps the
-    real bio instead of replacing it with canned text."""
+    real missions instead of replacing them with canned text."""
     try:
         data = json.loads(Path(path).read_text(encoding="utf-8"))
         payload = finalize_payload(data)
@@ -421,8 +435,8 @@ def load_previous_status(path: str) -> dict | None:
 
 
 def write_status_json(payload: dict, now: datetime | None, path: str = STATUS_PATH) -> None:
-    """now=None writes no fresh timestamp: a reused bio keeps its own dates, and a
-    canned fallback gets none, so the hero's journal never dates it as news."""
+    """now=None writes no fresh timestamp: reused missions keep their own dates,
+    and a canned fallback gets none, so the notice board never dates it as news."""
     status = {
         "obsession": payload["obsession"],
         "motd": payload["motd"],
@@ -444,8 +458,9 @@ def write_status_json(payload: dict, now: datetime | None, path: str = STATUS_PA
 
 
 def write_github_output(message: str) -> None:
-    """The commit message. Only a real rewrite starts with 'artemis-build N:' (the
-    CRONTAB receipts and the hero's journal grep for it)."""
+    """The commit message. Only a real rewrite starts with 'steward N:' (the
+    CRONTAB ledger and the mission board's notices grep for it, together with
+    the older 'artemis-build N:' commits)."""
     output_path = os.environ.get("GITHUB_OUTPUT")
     if not output_path:
         return
@@ -483,20 +498,20 @@ def main() -> None:
         try:
             payload = finalize_payload(parse_llm_payload(call_openai(activity, posts, openai_key)))
         except Exception as error:
-            print(f"WARNING: OpenAI generation rejected ({error}); keeping the previous bio")
+            print(f"WARNING: OpenAI generation rejected ({error}); keeping the previous missions")
     elif require_openai:
         raise RuntimeError("OPENAI_API_KEY is required when REQUIRE_OPENAI=1")
 
     stamp = now
-    message = f"artemis-build {run_number()}: rewrote own bio around {{obsession}}, kept the good parts"
+    message = f"steward {run_number()}: reposted the missions around {{obsession}}, kept the good ones"
     if payload is None and not args.fallback_only:
         payload = load_previous_status(args.status)
         stamp = None
-        message = f"artemis: llm offline, kept the old bio (build {run_number()})"
+        message = f"steward: the ink ran dry, kept the old missions (run {run_number()})"
     if payload is None:
         payload = finalize_payload(fallback_payload(activity))
         stamp = None
-        message = f"artemis: llm offline, booted the canned bio (build {run_number()})"
+        message = f"steward: the ink ran dry, posted the standing missions (run {run_number()})"
 
     plate = render_build_plate()
     print(f"--- BUILD_PLATE ---\n  {plate}")

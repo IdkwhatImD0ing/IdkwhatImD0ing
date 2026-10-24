@@ -1,0 +1,391 @@
+<a id="top"></a>
+<p>the sect's previous life: a machine called tianni, preserved as found on 2026-10-24 at commit a864764. the board is sealed; petitions no longer reach it. <a href="../../README.md">back to the sect</a>.</p>
+
+<!--
+  you're reading the raw source. that's tty2 behavior. here's your prize:
+
+  00000000  79 6f 75 20 66 6f 75 6e 64 20 74 74 79 32 2e 20
+  00000010  6d 65 6e 74 69 6f 6e 20 41 52 54 45 4d 49 53 20
+  00000020  77 68 65 6e 20 79 6f 75 20 65 6d 61 69 6c 20 6d
+  00000030  65 20 61 6e 64 20 49 27 6c 6c 20 6b 6e 6f 77 20
+  00000040  79 6f 75 20 72 65 61 64 20 74 68 65 20 73 6f 75
+  00000050  72 63 65 2e
+
+  (xxd -r if you must. also: cat .plan)
+
+  the footnotes are gone. footnote 3 never existed.
+  you checked anyway, which tells us both something.
+-->
+
+<p align="center"><picture><source media="(max-width: 600px), (min-width: 768px) and (max-width: 900px)" srcset="assets/hero-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/hero-light.svg"><img src="assets/hero.svg" width="100%" align="top" alt="ART3M1S boots and attaches a tmux session on tianni, a PC named after the Heaven Defying Bead from Renegade Immortal. Bill Zhang: AI-first builder, hackathon operator, ships fast. 35 hackathons won out of 58 entered. Panes show what he is building right now, a clock timing your visit, and the machine's own journal of rewriting this page."></picture></p>
+
+<p align="center"><a href="man/bill.1.md"><picture><source media="(max-width: 600px)" srcset="assets/chrome/key-f1.svg"><source media="(prefers-color-scheme: light)" srcset="assets/chrome/key-f1-light.svg"><img src="assets/chrome/key-f1.svg" width="118" height="32" align="top" alt="F1 help: man bill"></picture></a><a href="https://art3m1s.me"><picture><source media="(max-width: 600px)" srcset="assets/chrome/key-f2.svg"><source media="(prefers-color-scheme: light)" srcset="assets/chrome/key-f2-light.svg"><img src="assets/chrome/key-f2.svg" width="118" height="32" align="top" alt="F2 agent: art3m1s.me, talk to my AI agent"></picture></a><a href="mailto:jzhang71@usc.edu"><picture><source media="(max-width: 600px)" srcset="assets/chrome/key-f3.svg"><source media="(prefers-color-scheme: light)" srcset="assets/chrome/key-f3-light.svg"><img src="assets/chrome/key-f3.svg" width="118" height="32" align="top" alt="F3 mail: jzhang71@usc.edu"></picture></a><a href="https://linkedin.com/in/bill-zhang1"><picture><source media="(max-width: 600px)" srcset="assets/chrome/key-f4.svg"><source media="(prefers-color-scheme: light)" srcset="assets/chrome/key-f4-light.svg"><img src="assets/chrome/key-f4.svg" width="118" height="32" align="top" alt="F4 linkedin: bill-zhang1"></picture></a><a href="https://thehackathonplaybook.dev"><picture><source media="(max-width: 600px)" srcset="assets/chrome/key-f5.svg"><source media="(prefers-color-scheme: light)" srcset="assets/chrome/key-f5-light.svg"><img src="assets/chrome/key-f5.svg" width="118" height="32" align="top" alt="F5 playbook: thehackathonplaybook.dev"></picture></a><a href="https://www.youtube.com/@hackable-projects"><picture><source media="(max-width: 600px)" srcset="assets/chrome/key-f6.svg"><source media="(prefers-color-scheme: light)" srcset="assets/chrome/key-f6-light.svg"><img src="assets/chrome/key-f6.svg" width="118" height="32" align="top" alt="F6 youtube: hackable projects"></picture></a><a href="https://discord.com/users/185544015314288641"><picture><source media="(max-width: 600px)" srcset="assets/chrome/key-f7.svg"><source media="(prefers-color-scheme: light)" srcset="assets/chrome/key-f7-light.svg"><img src="assets/chrome/key-f7.svg" width="118" height="32" align="top" alt="F7 discord: art3m1s"></picture></a></p>
+
+<a id="ships"></a>
+<p><a href="#fsck"><picture><source media="(max-width: 600px)" srcset="assets/chrome/bar-1-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/chrome/bar-1-light.svg"><img src="assets/chrome/bar-1.svg" width="100%" height="28" align="top" alt="tmux window 1: ships, the projects. click for the next window."></picture></a></p>
+
+
+<p align="center"><a href="https://github.com/aurelisajuan/TalkTuahBank"><picture><source media="(max-width: 600px)" srcset="assets/ships/talktuahbank-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/ships/talktuahbank-light.svg"><img src="assets/ships/talktuahbank.svg" width="414" align="top" alt="TalkTuahBank: Overall 1st Place at HackUTD 2024, 2024-11-16. voice-first banking for the people banks forgot."></picture></a><a href="https://github.com/IdkwhatImD0ing/DispatchAI"><picture><source media="(max-width: 600px)" srcset="assets/ships/dispatchai-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/ships/dispatchai-light.svg"><img src="assets/ships/dispatchai.svg" width="414" align="top" alt="DispatchAI: Grand Prize at UC Berkeley AI Hackathon, 2024-06-22. AI copilot for overloaded 911 dispatch centers."></picture></a><br>
+<a href="https://github.com/IdkwhatImD0ing/AdaptEd"><picture><source media="(max-width: 600px)" srcset="assets/ships/adapted-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/ships/adapted-light.svg"><img src="assets/ships/adapted.svg" width="414" align="top" alt="AdaptEd: Gemini Challenge 1st at LA Hacks 2024, 2024-04-20. lectures that reshape themselves to the student."></picture></a><a href="https://github.com/SlugLoop/SlugLoop"><picture><source media="(max-width: 600px)" srcset="assets/ships/slugloop-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/ships/slugloop-light.svg"><img src="assets/ships/slugloop.svg" width="414" align="top" alt="SlugLoop: Top 10 Global at GDSC Solution Challenge, 2023-02-04. real-time campus bus tracker, UCSC-approved."></picture></a></p>
+
+
+<a id="fsck"></a>
+<p><a href="#etc"><picture><source media="(max-width: 600px)" srcset="assets/chrome/bar-2-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/chrome/bar-2-light.svg"><img src="assets/chrome/bar-2.svg" width="100%" height="28" align="top" alt="tmux window 2: fsck, a minesweeper you play by opening issues. click for the next window."></picture></a></p>
+
+
+<p>
+<picture><source media="(max-width: 600px)" srcset="assets/fsck/panel-0-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/panel-0-light.svg"><img align="right" src="assets/fsck/panel-0.svg" width="500" alt="fsck status for /dev/sda1: a start job is running (no limit). board #3, online since 07-23. 0 of 71 sectors verified (0%). corrupt: 10 sectors, map sealed (hmac). totals: 1 operator, 2 scans, 1 panic, 0 cleans. last ops: 07-23 IdkwhatImD0ing reformat: new disk online; 07-23 IdkwhatImD0ing fsck C3: KERNEL PANIC; 07-23 IdkwhatImD0ing fsck E5: sector clean. hall of fame: vacant. hall of shame: IdkwhatImD0ing x1. click a sector, submit the issue as-is. eyes = ack. the board redraws in ~1 min. first scan is always safe."></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/cols.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/cols.svg"><img src="assets/fsck/tiles/dark/cols.svg" width="268" height="34" align="top" alt=""></picture><br>
+<picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/r1.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/r1.svg"><img src="assets/fsck/tiles/dark/r1.svg" width="10" height="28" align="top" alt=""></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan A1" title="fsck A1"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan B1" title="fsck B1"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan C1" title="fsck C1"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan D1" title="fsck D1"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan E1" title="fsck E1"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan F1" title="fsck F1"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan G1" title="fsck G1"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan H1" title="fsck H1"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan I1" title="fsck I1"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/edge.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/edge.svg"><img src="assets/fsck/tiles/dark/edge.svg" width="6" height="28" align="top" alt=""></picture><br>
+<picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/r2.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/r2.svg"><img src="assets/fsck/tiles/dark/r2.svg" width="10" height="28" align="top" alt=""></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan A2" title="fsck A2"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan B2" title="fsck B2"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan C2" title="fsck C2"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan D2" title="fsck D2"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan E2" title="fsck E2"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan F2" title="fsck F2"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan G2" title="fsck G2"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan H2" title="fsck H2"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan I2" title="fsck I2"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/edge.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/edge.svg"><img src="assets/fsck/tiles/dark/edge.svg" width="6" height="28" align="top" alt=""></picture><br>
+<picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/r3.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/r3.svg"><img src="assets/fsck/tiles/dark/r3.svg" width="10" height="28" align="top" alt=""></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan A3" title="fsck A3"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan B3" title="fsck B3"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan C3" title="fsck C3"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan D3" title="fsck D3"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan E3" title="fsck E3"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan F3" title="fsck F3"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan G3" title="fsck G3"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan H3" title="fsck H3"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan I3" title="fsck I3"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/edge.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/edge.svg"><img src="assets/fsck/tiles/dark/edge.svg" width="6" height="28" align="top" alt=""></picture><br>
+<picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/r4.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/r4.svg"><img src="assets/fsck/tiles/dark/r4.svg" width="10" height="28" align="top" alt=""></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan A4" title="fsck A4"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan B4" title="fsck B4"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan C4" title="fsck C4"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan D4" title="fsck D4"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan E4" title="fsck E4"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan F4" title="fsck F4"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan G4" title="fsck G4"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan H4" title="fsck H4"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan I4" title="fsck I4"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/edge.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/edge.svg"><img src="assets/fsck/tiles/dark/edge.svg" width="6" height="28" align="top" alt=""></picture><br>
+<picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/r5.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/r5.svg"><img src="assets/fsck/tiles/dark/r5.svg" width="10" height="28" align="top" alt=""></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan A5" title="fsck A5"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan B5" title="fsck B5"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan C5" title="fsck C5"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan D5" title="fsck D5"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan E5" title="fsck E5"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan F5" title="fsck F5"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan G5" title="fsck G5"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan H5" title="fsck H5"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan I5" title="fsck I5"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/edge.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/edge.svg"><img src="assets/fsck/tiles/dark/edge.svg" width="6" height="28" align="top" alt=""></picture><br>
+<picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/r6.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/r6.svg"><img src="assets/fsck/tiles/dark/r6.svg" width="10" height="28" align="top" alt=""></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan A6" title="fsck A6"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan B6" title="fsck B6"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan C6" title="fsck C6"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan D6" title="fsck D6"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan E6" title="fsck E6"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan F6" title="fsck F6"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan G6" title="fsck G6"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan H6" title="fsck H6"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan I6" title="fsck I6"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/edge.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/edge.svg"><img src="assets/fsck/tiles/dark/edge.svg" width="6" height="28" align="top" alt=""></picture><br>
+<picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/r7.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/r7.svg"><img src="assets/fsck/tiles/dark/r7.svg" width="10" height="28" align="top" alt=""></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan A7" title="fsck A7"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan B7" title="fsck B7"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan C7" title="fsck C7"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan D7" title="fsck D7"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan E7" title="fsck E7"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan F7" title="fsck F7"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan G7" title="fsck G7"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan H7" title="fsck H7"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan I7" title="fsck I7"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/edge.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/edge.svg"><img src="assets/fsck/tiles/dark/edge.svg" width="6" height="28" align="top" alt=""></picture><br>
+<picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/r8.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/r8.svg"><img src="assets/fsck/tiles/dark/r8.svg" width="10" height="28" align="top" alt=""></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan A8" title="fsck A8"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan B8" title="fsck B8"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan C8" title="fsck C8"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan D8" title="fsck D8"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan E8" title="fsck E8"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan F8" title="fsck F8"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan G8" title="fsck G8"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan H8" title="fsck H8"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan I8" title="fsck I8"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/edge.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/edge.svg"><img src="assets/fsck/tiles/dark/edge.svg" width="6" height="28" align="top" alt=""></picture><br>
+<picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/r9.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/r9.svg"><img src="assets/fsck/tiles/dark/r9.svg" width="10" height="28" align="top" alt=""></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan A9" title="fsck A9"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan B9" title="fsck B9"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan C9" title="fsck C9"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan D9" title="fsck D9"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan E9" title="fsck E9"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan F9" title="fsck F9"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan G9" title="fsck G9"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan H9" title="fsck H9"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan I9" title="fsck I9"></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/edge.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/edge.svg"><img src="assets/fsck/tiles/dark/edge.svg" width="6" height="28" align="top" alt=""></picture><br>
+<picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/base.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/base.svg"><img src="assets/fsck/tiles/dark/base.svg" width="268" height="6" align="top" alt=""></picture><br clear="all">
+</p>
+
+<p>
+<picture><source media="(max-width: 600px)" srcset="assets/fsck/button.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/button-light.svg"><img src="assets/fsck/button.svg" width="220" height="48" align="top" alt="DO NOT PRESS" title="nothing happens. probably."></picture>
+</p>
+
+
+<a id="etc"></a>
+<p><a href="#top"><picture><source media="(max-width: 600px)" srcset="assets/chrome/bar-3-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/chrome/bar-3-light.svg"><img src="assets/chrome/bar-3.svg" width="100%" height="28" align="top" alt="tmux window 3: etc, the daemons that rewrite this page and the users who starred it. click to go back to the top."></picture></a></p>
+
+<pre><b>bill@tianni:~$ crontab -l</b>
+CRON_TZ=UTC
+@reboot        <a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/blob/a8647642983b70c48efd6df7220e6823478ad7a5/.github/workflows/artemis-ops.yaml">artemis-ops.yaml</a>      # visitor input: fsck, the button
+17 15 * * 1,4  <a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/blob/a8647642983b70c48efd6df7220e6823478ad7a5/.github/workflows/profile-summary.yaml">profile-summary.yaml</a>  # an LLM rewrites the boot screen
+41 14 * * 6    <a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/blob/a8647642983b70c48efd6df7220e6823478ad7a5/.github/workflows/terminal-hero.yaml">terminal-hero.yaml</a>    # reroll the POST (1-in-8: panic)
+
+<b>bill@tianni:~$ git log --oneline -4 --grep "^artemis-build" |</b>
+<b>&gt; sed 's/artemis-//; s/, kept the good parts//'</b>
+<a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/commit/bda3bedcb7adf9751171106774a5cf57d538835f">bda3bed</a> build 54: rewrote own bio around hackathons and travel
+<a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/commit/03251ed5137464a8793b984f370090819564d279">03251ed</a> build 53: rewrote own bio around hackathon productivity
+<a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/commit/7d0bd63fd4df33fc0f1c5e22fdd1eaee1637747e">7d0bd63</a> build 52: rewrote own bio around hackathon starter kit
+<a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/commit/c58b213a2ecddaa0b23be628ac1f063b41d12c2a">c58b213</a> build 51: rewrote own bio around hackathon starter kit
+<b>bill@tianni:~$ # nobody reviews these. quality has improved.</b>
+</pre>
+
+<pre><b>bill@tianni:~$ tail -n 4 /etc/passwd</b>
+sleep:x:997:997:optional dependency:/nonexistent:/usr/sbin/nologin
+artemis:x:998:998:ART3M1S daemon:/var/lib/artemis:/usr/sbin/nologin
+bill:x:999:100:Bill Zhang,,,:/home/bill:/usr/bin/zsh
+<a href="https://github.com/prakhxr0">prakhxr0</a>:x:1000:100:starred 2024-06-14:/home/prakhxr0:/usr/bin/zsh
+<b>bill@tianni:~$ # uid 1001 is unclaimed. <a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing">star this repo</a> to claim it.</b>
+</pre>
+
+<details>
+<summary><code>bill@tianni:~$ ls /mnt</code></summary>
+
+<pre><b>bill@tianni:~$ file /mnt/* /mnt/.plan</b>
+/mnt/<a href="README.md.bak">README.md.bak</a>: first draft, corporate voice. kept as evidence
+/mnt/<a href="man/bill.1.md">bill.1</a>:        manual page. has a BUGS section legal made me keep
+/mnt/lander.stl:    ART3M1S descent module. drag to rotate (below)
+/mnt/pkg.list:      what is installed, and why (below)
+/mnt/<a href=".plan">.plan</a>:         plain text. the actual changelog</pre>
+
+```text
+bill@tianni:~$ cat /mnt/pkg.list
+typescript    5.x        (load-bearing)
+python        3.12       (the other load-bearing one)
+react         ∞          (cannot uninstall, dependency of everything)
+next.js       latest     (see: react)
+fastapi       latest     (default answer to most questions)
+postgres      16         (where the state actually lives)
+elevenlabs    -          (hackathon-critical)
+pytorch       2.x        (installed for one weekend, kept forever)
+ffmpeg        any        (do not ask what it is wired into)
+tmux          -          (home. you are in it)
+
+# warning: optional dependency 'sleep' is not installed
+```
+
+```stl
+solid artemis_lander
+facet normal 0.000 0.749 0.662
+ outer loop
+  vertex 7.07 7.07 14.00
+  vertex -7.07 7.07 14.00
+  vertex 0.00 0.00 22.00
+ endloop
+endfacet
+facet normal 0.000 0.749 -0.662
+ outer loop
+  vertex -7.07 7.07 14.00
+  vertex 7.07 7.07 14.00
+  vertex 0.00 0.00 6.00
+ endloop
+endfacet
+facet normal -0.749 0.000 0.662
+ outer loop
+  vertex -7.07 7.07 14.00
+  vertex -7.07 -7.07 14.00
+  vertex 0.00 0.00 22.00
+ endloop
+endfacet
+facet normal -0.749 0.000 -0.662
+ outer loop
+  vertex -7.07 -7.07 14.00
+  vertex -7.07 7.07 14.00
+  vertex 0.00 0.00 6.00
+ endloop
+endfacet
+facet normal -0.000 -0.749 0.662
+ outer loop
+  vertex -7.07 -7.07 14.00
+  vertex 7.07 -7.07 14.00
+  vertex 0.00 0.00 22.00
+ endloop
+endfacet
+facet normal -0.000 -0.749 -0.662
+ outer loop
+  vertex 7.07 -7.07 14.00
+  vertex -7.07 -7.07 14.00
+  vertex 0.00 0.00 6.00
+ endloop
+endfacet
+facet normal 0.749 -0.000 0.662
+ outer loop
+  vertex 7.07 -7.07 14.00
+  vertex 7.07 7.07 14.00
+  vertex 0.00 0.00 22.00
+ endloop
+endfacet
+facet normal 0.749 -0.000 -0.662
+ outer loop
+  vertex 7.07 7.07 14.00
+  vertex 7.07 -7.07 14.00
+  vertex 0.00 0.00 6.00
+ endloop
+endfacet
+facet normal 0.000 0.000 1.000
+ outer loop
+  vertex -8.00 -8.00 10.00
+  vertex 8.00 -8.00 10.00
+  vertex 8.00 8.00 10.00
+ endloop
+endfacet
+facet normal 0.000 0.000 1.000
+ outer loop
+  vertex -8.00 -8.00 10.00
+  vertex 8.00 8.00 10.00
+  vertex -8.00 8.00 10.00
+ endloop
+endfacet
+facet normal 0.000 0.000 -1.000
+ outer loop
+  vertex -8.00 -8.00 6.00
+  vertex -8.00 8.00 6.00
+  vertex 8.00 8.00 6.00
+ endloop
+endfacet
+facet normal 0.000 0.000 -1.000
+ outer loop
+  vertex -8.00 -8.00 6.00
+  vertex 8.00 8.00 6.00
+  vertex 8.00 -8.00 6.00
+ endloop
+endfacet
+facet normal 0.000 -1.000 0.000
+ outer loop
+  vertex -8.00 -8.00 6.00
+  vertex 8.00 -8.00 6.00
+  vertex 8.00 -8.00 10.00
+ endloop
+endfacet
+facet normal 0.000 -1.000 0.000
+ outer loop
+  vertex -8.00 -8.00 6.00
+  vertex 8.00 -8.00 10.00
+  vertex -8.00 -8.00 10.00
+ endloop
+endfacet
+facet normal 1.000 0.000 0.000
+ outer loop
+  vertex 8.00 -8.00 6.00
+  vertex 8.00 8.00 6.00
+  vertex 8.00 8.00 10.00
+ endloop
+endfacet
+facet normal 1.000 0.000 0.000
+ outer loop
+  vertex 8.00 -8.00 6.00
+  vertex 8.00 8.00 10.00
+  vertex 8.00 -8.00 10.00
+ endloop
+endfacet
+facet normal 0.000 1.000 0.000
+ outer loop
+  vertex 8.00 8.00 6.00
+  vertex -8.00 8.00 6.00
+  vertex -8.00 8.00 10.00
+ endloop
+endfacet
+facet normal 0.000 1.000 0.000
+ outer loop
+  vertex 8.00 8.00 6.00
+  vertex -8.00 8.00 10.00
+  vertex 8.00 8.00 10.00
+ endloop
+endfacet
+facet normal -1.000 0.000 0.000
+ outer loop
+  vertex -8.00 8.00 6.00
+  vertex -8.00 -8.00 6.00
+  vertex -8.00 -8.00 10.00
+ endloop
+endfacet
+facet normal -1.000 0.000 0.000
+ outer loop
+  vertex -8.00 8.00 6.00
+  vertex -8.00 -8.00 10.00
+  vertex -8.00 8.00 10.00
+ endloop
+endfacet
+facet normal 0.000 0.753 0.659
+ outer loop
+  vertex 7.00 7.00 8.00
+  vertex 14.00 14.00 0.00
+  vertex 5.60 7.00 8.00
+ endloop
+endfacet
+facet normal 0.753 0.000 0.659
+ outer loop
+  vertex 7.00 7.00 8.00
+  vertex 7.00 5.60 8.00
+  vertex 14.00 14.00 0.00
+ endloop
+endfacet
+facet normal 0.000 0.000 1.000
+ outer loop
+  vertex 12.50 12.50 0.00
+  vertex 15.50 12.50 0.00
+  vertex 15.50 15.50 0.00
+ endloop
+endfacet
+facet normal 0.000 0.000 1.000
+ outer loop
+  vertex 12.50 12.50 0.00
+  vertex 15.50 15.50 0.00
+  vertex 12.50 15.50 0.00
+ endloop
+endfacet
+facet normal 0.000 0.753 -0.659
+ outer loop
+  vertex 7.00 -7.00 8.00
+  vertex 14.00 -14.00 0.00
+  vertex 5.60 -7.00 8.00
+ endloop
+endfacet
+facet normal -0.753 0.000 -0.659
+ outer loop
+  vertex 7.00 -7.00 8.00
+  vertex 7.00 -5.60 8.00
+  vertex 14.00 -14.00 0.00
+ endloop
+endfacet
+facet normal 0.000 0.000 1.000
+ outer loop
+  vertex 12.50 -15.50 0.00
+  vertex 15.50 -15.50 0.00
+  vertex 15.50 -12.50 0.00
+ endloop
+endfacet
+facet normal 0.000 0.000 1.000
+ outer loop
+  vertex 12.50 -15.50 0.00
+  vertex 15.50 -12.50 0.00
+  vertex 12.50 -12.50 0.00
+ endloop
+endfacet
+facet normal 0.000 -0.753 -0.659
+ outer loop
+  vertex -7.00 7.00 8.00
+  vertex -14.00 14.00 0.00
+  vertex -5.60 7.00 8.00
+ endloop
+endfacet
+facet normal 0.753 0.000 -0.659
+ outer loop
+  vertex -7.00 7.00 8.00
+  vertex -7.00 5.60 8.00
+  vertex -14.00 14.00 0.00
+ endloop
+endfacet
+facet normal 0.000 0.000 1.000
+ outer loop
+  vertex -15.50 12.50 0.00
+  vertex -12.50 12.50 0.00
+  vertex -12.50 15.50 0.00
+ endloop
+endfacet
+facet normal 0.000 0.000 1.000
+ outer loop
+  vertex -15.50 12.50 0.00
+  vertex -12.50 15.50 0.00
+  vertex -15.50 15.50 0.00
+ endloop
+endfacet
+facet normal 0.000 -0.753 0.659
+ outer loop
+  vertex -7.00 -7.00 8.00
+  vertex -14.00 -14.00 0.00
+  vertex -5.60 -7.00 8.00
+ endloop
+endfacet
+facet normal -0.753 0.000 0.659
+ outer loop
+  vertex -7.00 -7.00 8.00
+  vertex -7.00 -5.60 8.00
+  vertex -14.00 -14.00 0.00
+ endloop
+endfacet
+facet normal 0.000 0.000 1.000
+ outer loop
+  vertex -15.50 -15.50 0.00
+  vertex -12.50 -15.50 0.00
+  vertex -12.50 -12.50 0.00
+ endloop
+endfacet
+facet normal 0.000 0.000 1.000
+ outer loop
+  vertex -15.50 -15.50 0.00
+  vertex -12.50 -12.50 0.00
+  vertex -15.50 -12.50 0.00
+ endloop
+endfacet
+facet normal 0.000 -1.000 0.000
+ outer loop
+  vertex 0.00 0.00 22.00
+  vertex 1.20 0.00 27.00
+  vertex -1.20 0.00 27.00
+ endloop
+endfacet
+facet normal 1.000 0.000 -0.000
+ outer loop
+  vertex 0.00 0.00 22.00
+  vertex 0.00 1.20 27.00
+  vertex 0.00 -1.20 27.00
+ endloop
+endfacet
+endsolid artemis_lander
+```
+
+</details>
+
+```text
+# also runs in your terminal. windows: use curl.exe, not the alias.
+curl -sL https://raw.githubusercontent.com/IdkwhatImD0ing/IdkwhatImD0ing/main/bill.ansi
+```
+
+<pre><b>bill@tianni:~$ tmux detach</b>
+[detached (from session tianni)]
+tianni: 0 days since last spontaneous rewrite
+
+build 55 · compiled from bda3bed · the human is a contributor
+
+<b>bill@tianni:~$</b> <a href="#top">tmux a -t tianni</a>   # or: help, <a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing">source</a></pre>

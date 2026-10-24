@@ -1,14 +1,15 @@
-"""Render bill.ansi: a raw ANSI-escape business card for the terminal.
+"""Render bill.ansi: the sect's talisman, as raw ANSI escapes for the terminal.
 
 Meant to be consumed with:
     curl -sL https://raw.githubusercontent.com/IdkwhatImD0ing/IdkwhatImD0ing/main/bill.ansi
 
 Stdlib only, no figlet: the block-letter banner font lives in this file.
-Colors follow the phosphor design system (scripts/phosphor.py), mapped
-to the nearest xterm-256 entries so the card looks the same in every terminal
-that has 256 colors (truecolor is not assumed): electric purple for lit and
-active things, amber only where the reader can act, the terminal's own
-foreground for body text and links, grays for everything else.
+Colours follow the sect's design system (scripts/ink.py), mapped to the
+nearest xterm-256 entries so the card looks the same in every terminal that
+has 256 colours (truecolor is not assumed): gold for the name and what is
+lit or won, jade only where the reader can act (and for qi), the terminal's
+own foreground for body text and links, greys for everything else. No
+Chinese in the card: a wide glyph would push the right border out.
 Run from the repo root: python scripts/generate_ansi_card.py
 """
 
@@ -18,7 +19,7 @@ import re
 import unicodedata
 from pathlib import Path
 
-from phosphor import ENTERED, WON  # the hackathon record lives in one place
+from ink import ENTERED, WON  # the hackathon record lives in one place
 
 ESC = "\x1b"
 RESET = f"{ESC}[0m"
@@ -34,28 +35,29 @@ def fg256(code: int) -> str:
     return f"{ESC}[38;5;{code}m"
 
 
-# Design token -> xterm-256 color (the 256 entry's hex in the comment).
-PHOSPHOR = fg256(171)     # acc  #C04BFF -> #d75fff  lit, won, active
-DIM_PHOSPHOR = fg256(98)  # accd #8A3FC7 -> #875fd7  borders, separators
-AMBER = fg256(214)        # warn #FFB000 -> #ffaf00  "you can act here"
-INK = f"{ESC}[39m"        # fg   the terminal's own foreground, so body text
+# Design token -> xterm-256 colour (the 256 entry's hex in the comment).
+GOLD = fg256(222)         # gold   #E9C77E -> #ffd787  the name, lit, won
+BRONZE = fg256(179)       # gold, dimmed     #d7af5f  borders, separators
+EMBER = fg256(173)        # ember  #C98A4B -> #d7875f
+JADE = fg256(115)         # jade   #8FE3C8 -> #87d7af  "you can act here", qi
+SEAL = fg256(167)         # seal   #B8412D -> #d75f5f
+INK = f"{ESC}[39m"        # text   the terminal's own foreground, so body text
 #                           never vanishes on a light-background terminal
-MUTED = fg256(246)        # mu   #9198A1 -> #949494  labels, secondary text
-FAINT = fg256(242)        #      #6c6c6c             asides, the fine print
+MUTED = fg256(246)        # muted  #A89F91 -> #949494  labels, secondary text
+FAINT = fg256(242)        #        #6c6c6c             asides, the fine print
 
-# Banner rows, top to bottom: phosphor at full beam, fading down the tube
-# into the violet end of the ramp.
-GRADIENT = (177, 171, 135, 129, 93)
+# Banner rows, top to bottom: paper-white gold fading down into bronze,
+# like gilt catching the moon.
+GRADIENT = (223, 222, 179, 137, 95)
 
-BORDER = DIM_PHOSPHOR
+BORDER = BRONZE
 LABEL = MUTED
-# Contact links: the terminal's own foreground, underlined like a hyperlink.
-# Pale phosphor looked right on black but vanished on light terminals, and
-# these three rows are the whole point of the card.
+# Contact links: the terminal's own foreground, underlined like a hyperlink,
+# so they read on dark and light terminals alike.
 LINK = INK + UNDERLINE
 
 STATUS_PATH = "assets/status.json"
-DEFAULT_STATUS = "building voice agents; the agents are also building"
+DEFAULT_STATUS = "voice agents"
 STATUS_MAX_LEN = 46
 
 # 5-row block font, only the glyphs the banner needs.
@@ -138,25 +140,29 @@ def boxed(content_lines: list[str]) -> list[str]:
     return lines
 
 
-def field(label: str, value: str, style: str, bold: bool = False) -> str:
-    return paint(label.ljust(10), LABEL) + paint(value, style, bold)
+def field(label: str, value: str, style: str, bold: bool = False, width: int = 0) -> str:
+    """label, value, and trailing padding to `width` so a block of fields
+    centres as one column."""
+    return paint(label.ljust(13), LABEL) + paint(value, style, bold) + " " * max(0, width - len(value))
 
 
 def build_card(status: str) -> str:
-    dot = paint(" · ", DIM_PHOSPHOR)
+    dot = paint(" · ", BRONZE)
+    col = max(len("linkedin.com/in/bill-zhang1"), len(status))
     content: list[str] = [""]
     for shade, row in zip(GRADIENT, banner_rows("BILL ZHANG")):
         content.append(paint(row, fg256(shade), bold=True))
     content += [
         "",
-        paint("AI-first builder", INK) + dot + paint("hackathon operator", INK) + dot
-        + paint(f"{WON}/{ENTERED}", PHOSPHOR, bold=True),
+        paint("Sun Moon Divine Sect", GOLD) + dot + paint("art3m1s.me", JADE),
+        paint("AI engineer", INK) + dot + paint("hackathon operator", INK) + dot
+        + paint(f"{WON}/{ENTERED}", GOLD, bold=True),
         "",
-        field("site", "https://art3m1s.me", LINK),
-        field("github", "github.com/IdkwhatImD0ing", LINK),
-        field("linkedin", "linkedin.com/in/bill-zhang1", LINK),
+        field("site", "https://art3m1s.me", LINK, width=col),
+        field("github", "github.com/IdkwhatImD0ing", LINK, width=col),
+        field("linkedin", "linkedin.com/in/bill-zhang1", LINK, width=col),
         "",
-        field("status", status, PHOSPHOR, bold=True),
+        field("cultivating", status, JADE, bold=True, width=col),
         "",
         paint("works on my machine; my machine has 96GB of RAM", FAINT),
         "",
@@ -164,14 +170,15 @@ def build_card(status: str) -> str:
     lines = boxed(content)
 
     def option(flag: str, text: str) -> str:
-        return "  " + paint("bill ", MUTED) + paint(flag.ljust(11), AMBER) + paint(text, MUTED)
+        return "  " + paint("bill ", MUTED) + paint(flag.ljust(11), JADE) + paint(text, MUTED)
 
     lines += [""] * 12
     lines += [
-        paint("$ ", PHOSPHOR, bold=True) + paint("bill --help", INK, bold=True),
+        paint("$ ", GOLD, bold=True) + paint("bill --help", INK, bold=True),
         option("--hire", "opens calendar, closes excuses"),
         option("--demo", "ships a prototype before the meeting ends"),
         option("--coffee", "required input voltage"),
+        option("--sect", "the talisman's other half: art3m1s.me"),
         RESET,
     ]
     return "\n".join(lines) + "\n"

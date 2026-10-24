@@ -1,4 +1,17 @@
+import unicodedata
 from pathlib import Path
+
+
+def display_cols(text: str) -> int:
+    """How many terminal columns `text` takes: wide and fullwidth characters
+    (Chinese, mostly) count 2, combining marks 0, everything else 1. Every
+    72-column check on the page goes through this."""
+    cols = 0
+    for ch in text:
+        if unicodedata.combining(ch):
+            continue
+        cols += 2 if unicodedata.east_asian_width(ch) in ("W", "F") else 1
+    return cols
 
 
 def replace_block(readme_path: str, start_marker: str, end_marker: str, content: str) -> bool:

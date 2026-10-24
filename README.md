@@ -1,389 +1,1504 @@
 <a id="top"></a>
 <!--
-  you're reading the raw source. that's tty2 behavior. here's your prize:
+  you are reading the back of the scroll. scholars do this. so do spies.
+  either way, here is your prize:
 
-  00000000  79 6f 75 20 66 6f 75 6e 64 20 74 74 79 32 2e 20
-  00000010  6d 65 6e 74 69 6f 6e 20 41 52 54 45 4d 49 53 20
-  00000020  77 68 65 6e 20 79 6f 75 20 65 6d 61 69 6c 20 6d
-  00000030  65 20 61 6e 64 20 49 27 6c 6c 20 6b 6e 6f 77 20
-  00000040  79 6f 75 20 72 65 61 64 20 74 68 65 20 73 6f 75
-  00000050  72 63 65 2e
+  00000000: 796f 7520 7265 6164 2074 6865 2062 6163
+  00000010: 6b20 6f66 2074 6865 2073 6372 6f6c 6c2e
+  00000020: 206d 656e 7469 6f6e 204d 4f4f 4e20 4741
+  00000030: 5445 2077 6865 6e20 796f 7520 656d 6169
+  00000040: 6c20 6d65 2061 6e64 2049 276c 6c20 6b6e
+  00000050: 6f77 2079 6f75 2072 6561 6420 7468 6520
+  00000060: 736f 7572 6365 2e
 
-  (xxd -r if you must. also: cat .plan)
-
-  the footnotes are gone. footnote 3 never existed.
-  you checked anyway, which tells us both something.
+  (xxd -r if you must. then read .plan.)
 -->
 
-<p align="center"><picture><source media="(max-width: 600px), (min-width: 768px) and (max-width: 900px)" srcset="assets/hero-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/hero-light.svg"><img src="assets/hero.svg" width="100%" align="top" alt="ART3M1S boots and attaches a tmux session on tianni, a PC named after the Heaven Defying Bead from Renegade Immortal. Bill Zhang: AI-first builder, hackathon operator, ships fast. 35 hackathons won out of 58 entered. Panes show what he is building right now, a clock timing your visit, and the machine's own journal of rewriting this page."></picture></p>
+<p align="center"><a href="https://art3m1s.me"><picture><source media="(max-width: 600px) and (prefers-reduced-motion: reduce)" srcset="assets/gate/hero-phone-still.webp"><source media="(max-width: 600px)" srcset="assets/gate/hero-phone.webp"><source media="(prefers-color-scheme: light)" srcset="assets/gate/hero-light.webp"><source media="(prefers-reduced-motion: reduce)" srcset="assets/gate/hero-still.webp"><img src="assets/gate/hero.webp" width="100%" align="top" alt="The Mountain Gate of 日月神教, the Sun Moon Divine Sect: the camera climbs a white stair through mist to a red and blue gate under the moon. Bill Zhang, AI engineer. Click to enter the sect at art3m1s.me."></picture></a></p>
 
-<p align="center"><a href="man/bill.1.md"><picture><source media="(max-width: 600px)" srcset="assets/chrome/key-f1.svg"><source media="(prefers-color-scheme: light)" srcset="assets/chrome/key-f1-light.svg"><img src="assets/chrome/key-f1.svg" width="118" height="32" align="top" alt="F1 help: man bill"></picture></a><a href="https://art3m1s.me"><picture><source media="(max-width: 600px)" srcset="assets/chrome/key-f2.svg"><source media="(prefers-color-scheme: light)" srcset="assets/chrome/key-f2-light.svg"><img src="assets/chrome/key-f2.svg" width="118" height="32" align="top" alt="F2 agent: art3m1s.me, talk to my AI agent"></picture></a><a href="mailto:jzhang71@usc.edu"><picture><source media="(max-width: 600px)" srcset="assets/chrome/key-f3.svg"><source media="(prefers-color-scheme: light)" srcset="assets/chrome/key-f3-light.svg"><img src="assets/chrome/key-f3.svg" width="118" height="32" align="top" alt="F3 mail: jzhang71@usc.edu"></picture></a><a href="https://linkedin.com/in/bill-zhang1"><picture><source media="(max-width: 600px)" srcset="assets/chrome/key-f4.svg"><source media="(prefers-color-scheme: light)" srcset="assets/chrome/key-f4-light.svg"><img src="assets/chrome/key-f4.svg" width="118" height="32" align="top" alt="F4 linkedin: bill-zhang1"></picture></a><a href="https://thehackathonplaybook.dev"><picture><source media="(max-width: 600px)" srcset="assets/chrome/key-f5.svg"><source media="(prefers-color-scheme: light)" srcset="assets/chrome/key-f5-light.svg"><img src="assets/chrome/key-f5.svg" width="118" height="32" align="top" alt="F5 playbook: thehackathonplaybook.dev"></picture></a><a href="https://www.youtube.com/@hackable-projects"><picture><source media="(max-width: 600px)" srcset="assets/chrome/key-f6.svg"><source media="(prefers-color-scheme: light)" srcset="assets/chrome/key-f6-light.svg"><img src="assets/chrome/key-f6.svg" width="118" height="32" align="top" alt="F6 youtube: hackable projects"></picture></a><a href="https://discord.com/users/185544015314288641"><picture><source media="(max-width: 600px)" srcset="assets/chrome/key-f7.svg"><source media="(prefers-color-scheme: light)" srcset="assets/chrome/key-f7-light.svg"><img src="assets/chrome/key-f7.svg" width="118" height="32" align="top" alt="F7 discord: art3m1s"></picture></a></p>
+<p align="center"><a href="https://art3m1s.me"><picture><source media="(max-width: 600px)" srcset="assets/keys/site.svg"><source media="(prefers-color-scheme: light)" srcset="assets/keys/site-light.svg"><img src="assets/keys/site.svg" width="118" height="40" align="top" alt="入山, enter the sect: art3m1s.me, where a senior disciple (a voice agent) shows you around"></picture></a><a href="mailto:billzhangsc@gmail.com"><picture><source media="(max-width: 600px)" srcset="assets/keys/mail.svg"><source media="(prefers-color-scheme: light)" srcset="assets/keys/mail-light.svg"><img src="assets/keys/mail.svg" width="118" height="40" align="top" alt="飞鸽, flying pigeon: billzhangsc@gmail.com"></picture></a><a href="https://linkedin.com/in/bill-zhang1"><picture><source media="(max-width: 600px)" srcset="assets/keys/linkedin.svg"><source media="(prefers-color-scheme: light)" srcset="assets/keys/linkedin-light.svg"><img src="assets/keys/linkedin.svg" width="118" height="40" align="top" alt="名帖, name card: LinkedIn bill-zhang1"></picture></a><a href="https://thehackathonplaybook.dev"><picture><source media="(max-width: 600px)" srcset="assets/keys/playbook.svg"><source media="(prefers-color-scheme: light)" srcset="assets/keys/playbook-light.svg"><img src="assets/keys/playbook.svg" width="118" height="40" align="top" alt="秘籍, secret manual: The Hackathon Playbook"></picture></a><a href="https://www.youtube.com/@hackable-projects"><picture><source media="(max-width: 600px)" srcset="assets/keys/youtube.svg"><source media="(prefers-color-scheme: light)" srcset="assets/keys/youtube-light.svg"><img src="assets/keys/youtube.svg" width="118" height="40" align="top" alt="留影, recorded image: YouTube, hackable projects"></picture></a><a href="https://discord.com/users/185544015314288641"><picture><source media="(max-width: 600px)" srcset="assets/keys/discord.svg"><source media="(prefers-color-scheme: light)" srcset="assets/keys/discord-light.svg"><img src="assets/keys/discord.svg" width="118" height="40" align="top" alt="传讯, message slip: Discord art3m1s"></picture></a><a href="man/bill.1.md"><picture><source media="(max-width: 600px)" srcset="assets/keys/dossier.svg"><source media="(prefers-color-scheme: light)" srcset="assets/keys/dossier-light.svg"><img src="assets/keys/dossier.svg" width="118" height="40" align="top" alt="卷宗, dossier: man bill"></picture></a></p>
 
-<a id="ships"></a>
-<p><a href="#fsck"><picture><source media="(max-width: 600px)" srcset="assets/chrome/bar-1-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/chrome/bar-1-light.svg"><img src="assets/chrome/bar-1.svg" width="100%" height="28" align="top" alt="tmux window 1: ships, the projects. click for the next window."></picture></a></p>
+<p align="center">You stand at the gate of 日月神教, the Sun Moon Divine Sect. Its leader, Bill Zhang, builds LLM agents at Pinterest. The rest of the sect runs itself.</p>
+
+<a id="mirror"></a>
+<p><a href="#forge"><picture><source media="(max-width: 600px)" srcset="assets/banners/02-mirror-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/banners/02-mirror-light.svg"><img src="assets/banners/02-mirror.svg" width="100%" align="top" alt="心镜台, the Heart-Mirror Terrace: who the Sect Leader is. Click to fly on to the Artifact Forge."></picture></a></p>
+
+<p><picture><source media="(max-width: 600px)" srcset="assets/mirror/card-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/mirror/card-light.svg"><img src="assets/mirror/card.svg" width="100%" alt="The Sect Leader's identity card. Bill Zhang, Software Engineer II at Pinterest: LLM agent systems and voice-first AI, San Francisco. A bronze heart-mirror shows tonight's moon. The rows give what he is in closed-door cultivation on this week (rewritten twice a week by the steward), his arena record of 35 hackathons won out of 58 entered, the day he joined GitHub (2021-09-21), the moon's phase, and his tools: TypeScript, Python, React, FastAPI and Postgres."></picture></p>
+
+<p align="center"><i>"I build voice-first agents. I care about latency, keeping a human in the loop, and what happens when the model is wrong."</i></p>
+
+<a id="forge"></a><a id="ships"></a>
+<p><a href="#arena"><picture><source media="(max-width: 600px)" srcset="assets/banners/03-forge-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/banners/03-forge-light.svg"><img src="assets/banners/03-forge.svg" width="100%" align="top" alt="炼器峰, Artifact Forge Peak: what he builds. Click to fly on to the Sword-Discussion Arena."></picture></a></p>
+
+<p align="center">Forged in weekend furnaces, mostly: the four newest artifacts to come out of the arena. Each one links to its source.</p>
 
 <!-- HACKLOG:START -->
-<p align="center"><a href="https://github.com/aurelisajuan/TalkTuahBank"><picture><source media="(max-width: 600px)" srcset="assets/ships/talktuahbank-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/ships/talktuahbank-light.svg"><img src="assets/ships/talktuahbank.svg" width="414" align="top" alt="TalkTuahBank: Overall 1st Place at HackUTD 2024, 2024-11-16. voice-first banking for the people banks forgot."></picture></a><a href="https://github.com/IdkwhatImD0ing/DispatchAI"><picture><source media="(max-width: 600px)" srcset="assets/ships/dispatchai-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/ships/dispatchai-light.svg"><img src="assets/ships/dispatchai.svg" width="414" align="top" alt="DispatchAI: Grand Prize at UC Berkeley AI Hackathon, 2024-06-22. AI copilot for overloaded 911 dispatch centers."></picture></a><br>
-<a href="https://github.com/IdkwhatImD0ing/AdaptEd"><picture><source media="(max-width: 600px)" srcset="assets/ships/adapted-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/ships/adapted-light.svg"><img src="assets/ships/adapted.svg" width="414" align="top" alt="AdaptEd: Gemini Challenge 1st at LA Hacks 2024, 2024-04-20. lectures that reshape themselves to the student."></picture></a><a href="https://github.com/SlugLoop/SlugLoop"><picture><source media="(max-width: 600px)" srcset="assets/ships/slugloop-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/ships/slugloop-light.svg"><img src="assets/ships/slugloop.svg" width="414" align="top" alt="SlugLoop: Top 10 Global at GDSC Solution Challenge, 2023-02-04. real-time campus bus tracker, UCSC-approved."></picture></a></p>
+<p align="center"><a href="https://github.com/aurelisajuan/TalkTuahBank"><picture><source media="(max-width: 600px)" srcset="assets/forge/talktuahbank-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/forge/talktuahbank-light.svg"><img src="assets/forge/talktuahbank.svg" width="414" align="top" alt="TalkTuahBank: Overall 1st Place at HackUTD 2024, 2024-11-16. voice-first banking for the people banks forgot."></picture></a><a href="https://github.com/IdkwhatImD0ing/DispatchAI"><picture><source media="(max-width: 600px)" srcset="assets/forge/dispatchai-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/forge/dispatchai-light.svg"><img src="assets/forge/dispatchai.svg" width="414" align="top" alt="DispatchAI: Grand Prize at UC Berkeley AI Hackathon, 2024-06-22. AI copilot for overloaded 911 dispatch centers."></picture></a><br>
+<a href="https://github.com/IdkwhatImD0ing/AdaptEd"><picture><source media="(max-width: 600px)" srcset="assets/forge/adapted-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/forge/adapted-light.svg"><img src="assets/forge/adapted.svg" width="414" align="top" alt="AdaptEd: Gemini Challenge 1st at LA Hacks 2024, 2024-04-20. lectures that reshape themselves to the student."></picture></a><a href="https://github.com/SlugLoop/SlugLoop"><picture><source media="(max-width: 600px)" srcset="assets/forge/slugloop-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/forge/slugloop-light.svg"><img src="assets/forge/slugloop.svg" width="414" align="top" alt="SlugLoop: Top 10 Global at GDSC Solution Challenge, 2023-02-04. real-time campus bus tracker, UCSC-approved."></picture></a></p>
 <!-- HACKLOG:END -->
 
-<a id="fsck"></a>
-<p><a href="#etc"><picture><source media="(max-width: 600px)" srcset="assets/chrome/bar-2-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/chrome/bar-2-light.svg"><img src="assets/chrome/bar-2.svg" width="100%" height="28" align="top" alt="tmux window 2: fsck, a minesweeper you play by opening issues. click for the next window."></picture></a></p>
+<a id="arena"></a>
+<p><a href="#mission"><picture><source media="(max-width: 600px)" srcset="assets/banners/04-arena-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/banners/04-arena-light.svg"><img src="assets/banners/04-arena.svg" width="100%" align="top" alt="论剑台, the Sword-Discussion Arena: his hackathon record. Click to fly on to the Mission Hall."></picture></a></p>
 
-<!-- FSCK:START -->
-<p>
-<picture><source media="(max-width: 600px)" srcset="assets/fsck/panel-0-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/panel-0-light.svg"><img align="right" src="assets/fsck/panel-0.svg" width="500" alt="fsck status for /dev/sda1: a start job is running (no limit). board #3, online since 07-23. 0 of 71 sectors verified (0%). corrupt: 10 sectors, map sealed (hmac). totals: 1 operator, 2 scans, 1 panic, 0 cleans. last ops: 07-23 IdkwhatImD0ing reformat: new disk online; 07-23 IdkwhatImD0ing fsck C3: KERNEL PANIC; 07-23 IdkwhatImD0ing fsck E5: sector clean. hall of fame: vacant. hall of shame: IdkwhatImD0ing x1. click a sector, submit the issue as-is. eyes = ack. the board redraws in ~1 min. first scan is always safe."></picture><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/cols.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/cols.svg"><img src="assets/fsck/tiles/dark/cols.svg" width="268" height="34" align="top" alt=""></picture><br>
-<picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/r1.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/r1.svg"><img src="assets/fsck/tiles/dark/r1.svg" width="10" height="28" align="top" alt=""></picture><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CA1&amp;body=Submit+this+issue+as-is+to+scan+sector+A1+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan A1" title="fsck A1"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CB1&amp;body=Submit+this+issue+as-is+to+scan+sector+B1+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan B1" title="fsck B1"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CC1&amp;body=Submit+this+issue+as-is+to+scan+sector+C1+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan C1" title="fsck C1"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CD1&amp;body=Submit+this+issue+as-is+to+scan+sector+D1+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan D1" title="fsck D1"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CE1&amp;body=Submit+this+issue+as-is+to+scan+sector+E1+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan E1" title="fsck E1"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CF1&amp;body=Submit+this+issue+as-is+to+scan+sector+F1+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan F1" title="fsck F1"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CG1&amp;body=Submit+this+issue+as-is+to+scan+sector+G1+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan G1" title="fsck G1"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CH1&amp;body=Submit+this+issue+as-is+to+scan+sector+H1+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan H1" title="fsck H1"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CI1&amp;body=Submit+this+issue+as-is+to+scan+sector+I1+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan I1" title="fsck I1"></picture></a><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/edge.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/edge.svg"><img src="assets/fsck/tiles/dark/edge.svg" width="6" height="28" align="top" alt=""></picture><br>
-<picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/r2.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/r2.svg"><img src="assets/fsck/tiles/dark/r2.svg" width="10" height="28" align="top" alt=""></picture><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CA2&amp;body=Submit+this+issue+as-is+to+scan+sector+A2+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan A2" title="fsck A2"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CB2&amp;body=Submit+this+issue+as-is+to+scan+sector+B2+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan B2" title="fsck B2"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CC2&amp;body=Submit+this+issue+as-is+to+scan+sector+C2+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan C2" title="fsck C2"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CD2&amp;body=Submit+this+issue+as-is+to+scan+sector+D2+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan D2" title="fsck D2"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CE2&amp;body=Submit+this+issue+as-is+to+scan+sector+E2+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan E2" title="fsck E2"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CF2&amp;body=Submit+this+issue+as-is+to+scan+sector+F2+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan F2" title="fsck F2"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CG2&amp;body=Submit+this+issue+as-is+to+scan+sector+G2+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan G2" title="fsck G2"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CH2&amp;body=Submit+this+issue+as-is+to+scan+sector+H2+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan H2" title="fsck H2"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CI2&amp;body=Submit+this+issue+as-is+to+scan+sector+I2+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan I2" title="fsck I2"></picture></a><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/edge.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/edge.svg"><img src="assets/fsck/tiles/dark/edge.svg" width="6" height="28" align="top" alt=""></picture><br>
-<picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/r3.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/r3.svg"><img src="assets/fsck/tiles/dark/r3.svg" width="10" height="28" align="top" alt=""></picture><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CA3&amp;body=Submit+this+issue+as-is+to+scan+sector+A3+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan A3" title="fsck A3"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CB3&amp;body=Submit+this+issue+as-is+to+scan+sector+B3+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan B3" title="fsck B3"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CC3&amp;body=Submit+this+issue+as-is+to+scan+sector+C3+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan C3" title="fsck C3"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CD3&amp;body=Submit+this+issue+as-is+to+scan+sector+D3+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan D3" title="fsck D3"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CE3&amp;body=Submit+this+issue+as-is+to+scan+sector+E3+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan E3" title="fsck E3"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CF3&amp;body=Submit+this+issue+as-is+to+scan+sector+F3+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan F3" title="fsck F3"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CG3&amp;body=Submit+this+issue+as-is+to+scan+sector+G3+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan G3" title="fsck G3"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CH3&amp;body=Submit+this+issue+as-is+to+scan+sector+H3+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan H3" title="fsck H3"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CI3&amp;body=Submit+this+issue+as-is+to+scan+sector+I3+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan I3" title="fsck I3"></picture></a><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/edge.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/edge.svg"><img src="assets/fsck/tiles/dark/edge.svg" width="6" height="28" align="top" alt=""></picture><br>
-<picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/r4.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/r4.svg"><img src="assets/fsck/tiles/dark/r4.svg" width="10" height="28" align="top" alt=""></picture><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CA4&amp;body=Submit+this+issue+as-is+to+scan+sector+A4+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan A4" title="fsck A4"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CB4&amp;body=Submit+this+issue+as-is+to+scan+sector+B4+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan B4" title="fsck B4"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CC4&amp;body=Submit+this+issue+as-is+to+scan+sector+C4+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan C4" title="fsck C4"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CD4&amp;body=Submit+this+issue+as-is+to+scan+sector+D4+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan D4" title="fsck D4"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CE4&amp;body=Submit+this+issue+as-is+to+scan+sector+E4+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan E4" title="fsck E4"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CF4&amp;body=Submit+this+issue+as-is+to+scan+sector+F4+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan F4" title="fsck F4"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CG4&amp;body=Submit+this+issue+as-is+to+scan+sector+G4+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan G4" title="fsck G4"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CH4&amp;body=Submit+this+issue+as-is+to+scan+sector+H4+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan H4" title="fsck H4"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CI4&amp;body=Submit+this+issue+as-is+to+scan+sector+I4+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan I4" title="fsck I4"></picture></a><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/edge.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/edge.svg"><img src="assets/fsck/tiles/dark/edge.svg" width="6" height="28" align="top" alt=""></picture><br>
-<picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/r5.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/r5.svg"><img src="assets/fsck/tiles/dark/r5.svg" width="10" height="28" align="top" alt=""></picture><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CA5&amp;body=Submit+this+issue+as-is+to+scan+sector+A5+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan A5" title="fsck A5"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CB5&amp;body=Submit+this+issue+as-is+to+scan+sector+B5+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan B5" title="fsck B5"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CC5&amp;body=Submit+this+issue+as-is+to+scan+sector+C5+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan C5" title="fsck C5"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CD5&amp;body=Submit+this+issue+as-is+to+scan+sector+D5+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan D5" title="fsck D5"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CE5&amp;body=Submit+this+issue+as-is+to+scan+sector+E5+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan E5" title="fsck E5"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CF5&amp;body=Submit+this+issue+as-is+to+scan+sector+F5+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan F5" title="fsck F5"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CG5&amp;body=Submit+this+issue+as-is+to+scan+sector+G5+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan G5" title="fsck G5"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CH5&amp;body=Submit+this+issue+as-is+to+scan+sector+H5+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan H5" title="fsck H5"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CI5&amp;body=Submit+this+issue+as-is+to+scan+sector+I5+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan I5" title="fsck I5"></picture></a><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/edge.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/edge.svg"><img src="assets/fsck/tiles/dark/edge.svg" width="6" height="28" align="top" alt=""></picture><br>
-<picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/r6.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/r6.svg"><img src="assets/fsck/tiles/dark/r6.svg" width="10" height="28" align="top" alt=""></picture><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CA6&amp;body=Submit+this+issue+as-is+to+scan+sector+A6+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan A6" title="fsck A6"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CB6&amp;body=Submit+this+issue+as-is+to+scan+sector+B6+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan B6" title="fsck B6"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CC6&amp;body=Submit+this+issue+as-is+to+scan+sector+C6+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan C6" title="fsck C6"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CD6&amp;body=Submit+this+issue+as-is+to+scan+sector+D6+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan D6" title="fsck D6"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CE6&amp;body=Submit+this+issue+as-is+to+scan+sector+E6+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan E6" title="fsck E6"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CF6&amp;body=Submit+this+issue+as-is+to+scan+sector+F6+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan F6" title="fsck F6"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CG6&amp;body=Submit+this+issue+as-is+to+scan+sector+G6+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan G6" title="fsck G6"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CH6&amp;body=Submit+this+issue+as-is+to+scan+sector+H6+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan H6" title="fsck H6"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CI6&amp;body=Submit+this+issue+as-is+to+scan+sector+I6+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan I6" title="fsck I6"></picture></a><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/edge.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/edge.svg"><img src="assets/fsck/tiles/dark/edge.svg" width="6" height="28" align="top" alt=""></picture><br>
-<picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/r7.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/r7.svg"><img src="assets/fsck/tiles/dark/r7.svg" width="10" height="28" align="top" alt=""></picture><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CA7&amp;body=Submit+this+issue+as-is+to+scan+sector+A7+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan A7" title="fsck A7"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CB7&amp;body=Submit+this+issue+as-is+to+scan+sector+B7+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan B7" title="fsck B7"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CC7&amp;body=Submit+this+issue+as-is+to+scan+sector+C7+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan C7" title="fsck C7"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CD7&amp;body=Submit+this+issue+as-is+to+scan+sector+D7+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan D7" title="fsck D7"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CE7&amp;body=Submit+this+issue+as-is+to+scan+sector+E7+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan E7" title="fsck E7"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CF7&amp;body=Submit+this+issue+as-is+to+scan+sector+F7+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan F7" title="fsck F7"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CG7&amp;body=Submit+this+issue+as-is+to+scan+sector+G7+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan G7" title="fsck G7"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CH7&amp;body=Submit+this+issue+as-is+to+scan+sector+H7+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan H7" title="fsck H7"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CI7&amp;body=Submit+this+issue+as-is+to+scan+sector+I7+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan I7" title="fsck I7"></picture></a><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/edge.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/edge.svg"><img src="assets/fsck/tiles/dark/edge.svg" width="6" height="28" align="top" alt=""></picture><br>
-<picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/r8.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/r8.svg"><img src="assets/fsck/tiles/dark/r8.svg" width="10" height="28" align="top" alt=""></picture><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CA8&amp;body=Submit+this+issue+as-is+to+scan+sector+A8+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan A8" title="fsck A8"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CB8&amp;body=Submit+this+issue+as-is+to+scan+sector+B8+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan B8" title="fsck B8"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CC8&amp;body=Submit+this+issue+as-is+to+scan+sector+C8+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan C8" title="fsck C8"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CD8&amp;body=Submit+this+issue+as-is+to+scan+sector+D8+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan D8" title="fsck D8"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CE8&amp;body=Submit+this+issue+as-is+to+scan+sector+E8+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan E8" title="fsck E8"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CF8&amp;body=Submit+this+issue+as-is+to+scan+sector+F8+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan F8" title="fsck F8"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CG8&amp;body=Submit+this+issue+as-is+to+scan+sector+G8+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan G8" title="fsck G8"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CH8&amp;body=Submit+this+issue+as-is+to+scan+sector+H8+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan H8" title="fsck H8"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CI8&amp;body=Submit+this+issue+as-is+to+scan+sector+I8+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan I8" title="fsck I8"></picture></a><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/edge.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/edge.svg"><img src="assets/fsck/tiles/dark/edge.svg" width="6" height="28" align="top" alt=""></picture><br>
-<picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/r9.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/r9.svg"><img src="assets/fsck/tiles/dark/r9.svg" width="10" height="28" align="top" alt=""></picture><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CA9&amp;body=Submit+this+issue+as-is+to+scan+sector+A9+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan A9" title="fsck A9"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CB9&amp;body=Submit+this+issue+as-is+to+scan+sector+B9+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan B9" title="fsck B9"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CC9&amp;body=Submit+this+issue+as-is+to+scan+sector+C9+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan C9" title="fsck C9"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CD9&amp;body=Submit+this+issue+as-is+to+scan+sector+D9+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan D9" title="fsck D9"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CE9&amp;body=Submit+this+issue+as-is+to+scan+sector+E9+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan E9" title="fsck E9"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CF9&amp;body=Submit+this+issue+as-is+to+scan+sector+F9+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan F9" title="fsck F9"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CG9&amp;body=Submit+this+issue+as-is+to+scan+sector+G9+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan G9" title="fsck G9"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CH9&amp;body=Submit+this+issue+as-is+to+scan+sector+H9+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan H9" title="fsck H9"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cfsck%7CI9&amp;body=Submit+this+issue+as-is+to+scan+sector+I9+of+%2Fdev%2Fsda1.%0AThe+single-threaded+fsck+daemon+will+ack+with+an+eyes+reaction+and+redraw+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/hidden.svg"><img src="assets/fsck/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="scan I9" title="fsck I9"></picture></a><picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/edge.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/edge.svg"><img src="assets/fsck/tiles/dark/edge.svg" width="6" height="28" align="top" alt=""></picture><br>
-<picture><source media="(max-width: 600px)" srcset="assets/fsck/tiles/dark/base.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/tiles/light/base.svg"><img src="assets/fsck/tiles/dark/base.svg" width="268" height="6" align="top" alt=""></picture><br clear="all">
-</p>
+<p><picture><source media="(max-width: 600px)" srcset="assets/arena/record-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/arena/record-light.svg"><img src="assets/arena/record.svg" width="100%" alt="Sword-Discussion Arena record: 35 hackathons won out of 58 entered (60%). One sword per hackathon; 35 are gilded."></picture></p>
 
-<p>
-<a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=artemis%7Cbutton&amp;body=Submit+this+issue+as-is.+You+were+told."><picture><source media="(max-width: 600px)" srcset="assets/fsck/button.svg"><source media="(prefers-color-scheme: light)" srcset="assets/fsck/button-light.svg"><img src="assets/fsck/button.svg" width="220" height="48" align="top" alt="DO NOT PRESS" title="nothing happens. probably."></picture></a>
-</p>
-<!-- FSCK:END -->
+<p align="center">Most of the 35 wins came in college. He still enters a few a year, and judged LA Hacks 2026. His hackathon builds are listed on <a href="https://devpost.com/IdkwhatImD0ing">Devpost</a>.</p>
 
-<a id="etc"></a>
-<p><a href="#top"><picture><source media="(max-width: 600px)" srcset="assets/chrome/bar-3-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/chrome/bar-3-light.svg"><img src="assets/chrome/bar-3.svg" width="100%" height="28" align="top" alt="tmux window 3: etc, the daemons that rewrite this page and the users who starred it. click to go back to the top."></picture></a></p>
+<a id="mission"></a>
+<p><a href="#library"><picture><source media="(max-width: 600px)" srcset="assets/banners/05-mission-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/banners/05-mission-light.svg"><img src="assets/banners/05-mission.svg" width="100%" align="top" alt="任务殿, the Mission Hall: where he has served, and what he is working on now. Click to fly on to the Scripture Pavilion."></picture></a></p>
 
-<pre><b>bill@tianni:~$ crontab -l</b><!-- CRONTAB:START -->
-CRON_TZ=UTC
-@reboot        <a href=".github/workflows/artemis-ops.yaml">artemis-ops.yaml</a>      # visitor input: fsck, the button
-17 15 * * 1,4  <a href=".github/workflows/profile-summary.yaml">profile-summary.yaml</a>  # an LLM rewrites the boot screen
-41 14 * * 6    <a href=".github/workflows/terminal-hero.yaml">terminal-hero.yaml</a>    # reroll the POST (1-in-8: panic)
+<pre><b>任务簿 the mission roster · where the Sect Leader has served</b>
+2026-now   Pinterest      Software Engineer II. LLM agent systems:
+                          agent design, tool use, RAG, guardrails.
+2025-2026  Scale AI       Applied AI, forward-deployed. Multi-agent
+                          claims system, up to 20K claims a week.
+2023-2025  RingCentral    AI engineer. LLM evals for 10,000+ weekly
+                          support chats; 8 hours of processing to 1.
+2024       Dispatch AI    Co-founder. Voice agent for 911 dispatch;
+                          $50K raised via Berkeley SkyDeck and AIC.
+2023-2024  SlugLoop       Founder. UCSC's bus tracker, 20,000+ users.
+2022-2023  X-Camp         Taught Python; coached USACO students.
 
-<b>bill@tianni:~$ git log --oneline -4 --grep "^artemis-build" |</b>
-<b>&gt; sed 's/artemis-//; s/, kept the good parts//'</b>
-<a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/commit/bda3bedcb7adf9751171106774a5cf57d538835f">bda3bed</a> build 54: rewrote own bio around hackathons and travel
-<a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/commit/03251ed5137464a8793b984f370090819564d279">03251ed</a> build 53: rewrote own bio around hackathon productivity
-<a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/commit/7d0bd63fd4df33fc0f1c5e22fdd1eaee1637747e">7d0bd63</a> build 52: rewrote own bio around hackathon starter kit
-<a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/commit/c58b213a2ecddaa0b23be628ac1f063b41d12c2a">c58b213</a> build 51: rewrote own bio around hackathon starter kit
-<b>bill@tianni:~$ # nobody reviews these. quality has improved.</b>
-<!-- CRONTAB:END --></pre>
+the full jade slip (résumé): <a href="https://art3m1s.me/resume.pdf">art3m1s.me/resume.pdf</a></pre>
 
-<pre><b>bill@tianni:~$ tail -n 4 /etc/passwd</b><!-- PASSWD:START -->
-sleep:x:997:997:optional dependency:/nonexistent:/usr/sbin/nologin
-artemis:x:998:998:ART3M1S daemon:/var/lib/artemis:/usr/sbin/nologin
-bill:x:999:100:Bill Zhang,,,:/home/bill:/usr/bin/zsh
-<a href="https://github.com/prakhxr0">prakhxr0</a>:x:1000:100:starred 2024-06-14:/home/prakhxr0:/usr/bin/zsh
-<b>bill@tianni:~$ # uid 1001 is unclaimed. <a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing">star this repo</a> to claim it.</b>
-<!-- PASSWD:END --></pre>
+<p align="center">The steward posts what the Sect Leader is working on now. The steward is an LLM: twice a week it reads his public GitHub activity and rewrites this board.</p>
+
+<p><picture><source media="(max-width: 600px)" srcset="assets/hall/board-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/hall/board-light.svg"><img src="assets/hall/board.svg" width="100%" alt="The Mission Hall board. Left: the missions the steward posted from Bill's public GitHub activity, each with a bar for the qi devoted to it, and the steward's own note. Right: notices of real events on this page (new disciples, moves in the formation, the steward's rewrites), and a stick of incense that times your visit."></picture></p>
+
+<a id="library"></a>
+<p><a href="#steles"><picture><source media="(max-width: 600px)" srcset="assets/banners/06-library-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/banners/06-library-light.svg"><img src="assets/banners/06-library.svg" width="100%" align="top" alt="藏经阁, the Scripture Pavilion: what he has studied. Click to fly on to the Stele Forest."></picture></a></p>
+
+<pre><b>藏经阁 scripture pavilion · what the sect has studied</b>
+USC    M.S. Computer Science, AI specialization     2023-2025
+UCSC   B.S. Computer Science, finished in 2.5 years  2020-2023
+
+the sect's own manual   <a href="https://thehackathonplaybook.dev">The Hackathon Playbook</a>
+recorded sermons        <a href="https://www.youtube.com/@hackable-projects">hackable projects</a>, on YouTube</pre>
 
 <details>
-<summary><code>bill@tianni:~$ ls /mnt</code></summary>
+<summary>the back shelves: relics of the sect's previous life</summary>
 
-<pre><b>bill@tianni:~$ file /mnt/* /mnt/.plan</b>
-/mnt/<a href="README.md.bak">README.md.bak</a>: first draft, corporate voice. kept as evidence
-/mnt/<a href="man/bill.1.md">bill.1</a>:        manual page. has a BUGS section legal made me keep
-/mnt/lander.stl:    ART3M1S descent module. drag to rotate (below)
-/mnt/pkg.list:      what is installed, and why (below)
-/mnt/<a href=".plan">.plan</a>:         plain text. the actual changelog</pre>
-
-```text
-bill@tianni:~$ cat /mnt/pkg.list
-typescript    5.x        (load-bearing)
-python        3.12       (the other load-bearing one)
-react         ∞          (cannot uninstall, dependency of everything)
-next.js       latest     (see: react)
-fastapi       latest     (default answer to most questions)
-postgres      16         (where the state actually lives)
-elevenlabs    -          (hackathon-critical)
-pytorch       2.x        (installed for one weekend, kept forever)
-ffmpeg        any        (do not ask what it is wired into)
-tmux          -          (home. you are in it)
-
-# warning: optional dependency 'sleep' is not installed
-```
+<pre><b>scrolls nobody asked to see</b>
+<a href=".plan">.plan</a>          the Sect Leader's own log. plain text
+<a href="man/bill.1.md">bill.1</a>         a manual from the previous life. still accurate
+<a href="README.md.bak">README.md.bak</a>  the first draft. the elders burned it; this is the ash
+<a href="archive/whitebox-os/">archive/</a>       the ruins: this page when it was a machine called tianni
+heimuling.stl  黑木令, the Black Wood Token. drag to turn it (below)</pre>
 
 ```stl
-solid artemis_lander
-facet normal 0.000 0.749 0.662
- outer loop
-  vertex 7.07 7.07 14.00
-  vertex -7.07 7.07 14.00
-  vertex 0.00 0.00 22.00
- endloop
+solid heimuling
+facet normal 0 0 1
+  outer loop
+    vertex -13 -30 6
+    vertex 13 -30 6
+    vertex 20 -23 6
+  endloop
 endfacet
-facet normal 0.000 0.749 -0.662
- outer loop
-  vertex -7.07 7.07 14.00
-  vertex 7.07 7.07 14.00
-  vertex 0.00 0.00 6.00
- endloop
+facet normal 0 0 -1
+  outer loop
+    vertex -13 -30 0
+    vertex 20 -23 0
+    vertex 13 -30 0
+  endloop
 endfacet
-facet normal -0.749 0.000 0.662
- outer loop
-  vertex -7.07 7.07 14.00
-  vertex -7.07 -7.07 14.00
-  vertex 0.00 0.00 22.00
- endloop
+facet normal 0 0 1
+  outer loop
+    vertex -13 -30 6
+    vertex 20 -23 6
+    vertex 20 23 6
+  endloop
 endfacet
-facet normal -0.749 0.000 -0.662
- outer loop
-  vertex -7.07 -7.07 14.00
-  vertex -7.07 7.07 14.00
-  vertex 0.00 0.00 6.00
- endloop
+facet normal 0 0 -1
+  outer loop
+    vertex -13 -30 0
+    vertex 20 23 0
+    vertex 20 -23 0
+  endloop
 endfacet
-facet normal -0.000 -0.749 0.662
- outer loop
-  vertex -7.07 -7.07 14.00
-  vertex 7.07 -7.07 14.00
-  vertex 0.00 0.00 22.00
- endloop
+facet normal 0 0 1
+  outer loop
+    vertex -13 -30 6
+    vertex 20 23 6
+    vertex 13 30 6
+  endloop
 endfacet
-facet normal -0.000 -0.749 -0.662
- outer loop
-  vertex 7.07 -7.07 14.00
-  vertex -7.07 -7.07 14.00
-  vertex 0.00 0.00 6.00
- endloop
+facet normal 0 0 -1
+  outer loop
+    vertex -13 -30 0
+    vertex 13 30 0
+    vertex 20 23 0
+  endloop
 endfacet
-facet normal 0.749 -0.000 0.662
- outer loop
-  vertex 7.07 -7.07 14.00
-  vertex 7.07 7.07 14.00
-  vertex 0.00 0.00 22.00
- endloop
+facet normal 0 0 1
+  outer loop
+    vertex -13 -30 6
+    vertex 13 30 6
+    vertex -13 30 6
+  endloop
 endfacet
-facet normal 0.749 -0.000 -0.662
- outer loop
-  vertex 7.07 7.07 14.00
-  vertex 7.07 -7.07 14.00
-  vertex 0.00 0.00 6.00
- endloop
+facet normal 0 0 -1
+  outer loop
+    vertex -13 -30 0
+    vertex -13 30 0
+    vertex 13 30 0
+  endloop
 endfacet
-facet normal 0.000 0.000 1.000
- outer loop
-  vertex -8.00 -8.00 10.00
-  vertex 8.00 -8.00 10.00
-  vertex 8.00 8.00 10.00
- endloop
+facet normal 0 0 1
+  outer loop
+    vertex -13 -30 6
+    vertex -13 30 6
+    vertex -20 23 6
+  endloop
 endfacet
-facet normal 0.000 0.000 1.000
- outer loop
-  vertex -8.00 -8.00 10.00
-  vertex 8.00 8.00 10.00
-  vertex -8.00 8.00 10.00
- endloop
+facet normal 0 0 -1
+  outer loop
+    vertex -13 -30 0
+    vertex -20 23 0
+    vertex -13 30 0
+  endloop
 endfacet
-facet normal 0.000 0.000 -1.000
- outer loop
-  vertex -8.00 -8.00 6.00
-  vertex -8.00 8.00 6.00
-  vertex 8.00 8.00 6.00
- endloop
+facet normal 0 0 1
+  outer loop
+    vertex -13 -30 6
+    vertex -20 23 6
+    vertex -20 -23 6
+  endloop
 endfacet
-facet normal 0.000 0.000 -1.000
- outer loop
-  vertex -8.00 -8.00 6.00
-  vertex 8.00 8.00 6.00
-  vertex 8.00 -8.00 6.00
- endloop
+facet normal 0 0 -1
+  outer loop
+    vertex -13 -30 0
+    vertex -20 -23 0
+    vertex -20 23 0
+  endloop
 endfacet
-facet normal 0.000 -1.000 0.000
- outer loop
-  vertex -8.00 -8.00 6.00
-  vertex 8.00 -8.00 6.00
-  vertex 8.00 -8.00 10.00
- endloop
+facet normal 0 -1 0
+  outer loop
+    vertex -13 -30 0
+    vertex 13 -30 0
+    vertex 13 -30 6
+  endloop
 endfacet
-facet normal 0.000 -1.000 0.000
- outer loop
-  vertex -8.00 -8.00 6.00
-  vertex 8.00 -8.00 10.00
-  vertex -8.00 -8.00 10.00
- endloop
+facet normal 0 -1 0
+  outer loop
+    vertex -13 -30 0
+    vertex 13 -30 6
+    vertex -13 -30 6
+  endloop
 endfacet
-facet normal 1.000 0.000 0.000
- outer loop
-  vertex 8.00 -8.00 6.00
-  vertex 8.00 8.00 6.00
-  vertex 8.00 8.00 10.00
- endloop
+facet normal 0.707 -0.707 0
+  outer loop
+    vertex 13 -30 0
+    vertex 20 -23 0
+    vertex 20 -23 6
+  endloop
 endfacet
-facet normal 1.000 0.000 0.000
- outer loop
-  vertex 8.00 -8.00 6.00
-  vertex 8.00 8.00 10.00
-  vertex 8.00 -8.00 10.00
- endloop
+facet normal 0.707 -0.707 0
+  outer loop
+    vertex 13 -30 0
+    vertex 20 -23 6
+    vertex 13 -30 6
+  endloop
 endfacet
-facet normal 0.000 1.000 0.000
- outer loop
-  vertex 8.00 8.00 6.00
-  vertex -8.00 8.00 6.00
-  vertex -8.00 8.00 10.00
- endloop
+facet normal 1 0 0
+  outer loop
+    vertex 20 -23 0
+    vertex 20 23 0
+    vertex 20 23 6
+  endloop
 endfacet
-facet normal 0.000 1.000 0.000
- outer loop
-  vertex 8.00 8.00 6.00
-  vertex -8.00 8.00 10.00
-  vertex 8.00 8.00 10.00
- endloop
+facet normal 1 0 0
+  outer loop
+    vertex 20 -23 0
+    vertex 20 23 6
+    vertex 20 -23 6
+  endloop
 endfacet
-facet normal -1.000 0.000 0.000
- outer loop
-  vertex -8.00 8.00 6.00
-  vertex -8.00 -8.00 6.00
-  vertex -8.00 -8.00 10.00
- endloop
+facet normal 0.707 0.707 0
+  outer loop
+    vertex 20 23 0
+    vertex 13 30 0
+    vertex 13 30 6
+  endloop
 endfacet
-facet normal -1.000 0.000 0.000
- outer loop
-  vertex -8.00 8.00 6.00
-  vertex -8.00 -8.00 10.00
-  vertex -8.00 8.00 10.00
- endloop
+facet normal 0.707 0.707 0
+  outer loop
+    vertex 20 23 0
+    vertex 13 30 6
+    vertex 20 23 6
+  endloop
 endfacet
-facet normal 0.000 0.753 0.659
- outer loop
-  vertex 7.00 7.00 8.00
-  vertex 14.00 14.00 0.00
-  vertex 5.60 7.00 8.00
- endloop
+facet normal 0 1 0
+  outer loop
+    vertex 13 30 0
+    vertex -13 30 0
+    vertex -13 30 6
+  endloop
 endfacet
-facet normal 0.753 0.000 0.659
- outer loop
-  vertex 7.00 7.00 8.00
-  vertex 7.00 5.60 8.00
-  vertex 14.00 14.00 0.00
- endloop
+facet normal 0 1 0
+  outer loop
+    vertex 13 30 0
+    vertex -13 30 6
+    vertex 13 30 6
+  endloop
 endfacet
-facet normal 0.000 0.000 1.000
- outer loop
-  vertex 12.50 12.50 0.00
-  vertex 15.50 12.50 0.00
-  vertex 15.50 15.50 0.00
- endloop
+facet normal -0.707 0.707 0
+  outer loop
+    vertex -13 30 0
+    vertex -20 23 0
+    vertex -20 23 6
+  endloop
 endfacet
-facet normal 0.000 0.000 1.000
- outer loop
-  vertex 12.50 12.50 0.00
-  vertex 15.50 15.50 0.00
-  vertex 12.50 15.50 0.00
- endloop
+facet normal -0.707 0.707 0
+  outer loop
+    vertex -13 30 0
+    vertex -20 23 6
+    vertex -13 30 6
+  endloop
 endfacet
-facet normal 0.000 0.753 -0.659
- outer loop
-  vertex 7.00 -7.00 8.00
-  vertex 14.00 -14.00 0.00
-  vertex 5.60 -7.00 8.00
- endloop
+facet normal -1 0 0
+  outer loop
+    vertex -20 23 0
+    vertex -20 -23 0
+    vertex -20 -23 6
+  endloop
 endfacet
-facet normal -0.753 0.000 -0.659
- outer loop
-  vertex 7.00 -7.00 8.00
-  vertex 7.00 -5.60 8.00
-  vertex 14.00 -14.00 0.00
- endloop
+facet normal -1 0 0
+  outer loop
+    vertex -20 23 0
+    vertex -20 -23 6
+    vertex -20 23 6
+  endloop
 endfacet
-facet normal 0.000 0.000 1.000
- outer loop
-  vertex 12.50 -15.50 0.00
-  vertex 15.50 -15.50 0.00
-  vertex 15.50 -12.50 0.00
- endloop
+facet normal -0.707 -0.707 0
+  outer loop
+    vertex -20 -23 0
+    vertex -13 -30 0
+    vertex -13 -30 6
+  endloop
 endfacet
-facet normal 0.000 0.000 1.000
- outer loop
-  vertex 12.50 -15.50 0.00
-  vertex 15.50 -12.50 0.00
-  vertex 12.50 -12.50 0.00
- endloop
+facet normal -0.707 -0.707 0
+  outer loop
+    vertex -20 -23 0
+    vertex -13 -30 6
+    vertex -20 -23 6
+  endloop
 endfacet
-facet normal 0.000 -0.753 -0.659
- outer loop
-  vertex -7.00 7.00 8.00
-  vertex -14.00 14.00 0.00
-  vertex -5.60 7.00 8.00
- endloop
+facet normal 0 0 1
+  outer loop
+    vertex -11.702 -27.8 7
+    vertex 11.702 -27.8 7
+    vertex 10.404 -25.6 7
+  endloop
 endfacet
-facet normal 0.753 0.000 -0.659
- outer loop
-  vertex -7.00 7.00 8.00
-  vertex -7.00 5.60 8.00
-  vertex -14.00 14.00 0.00
- endloop
+facet normal 0 0 -1
+  outer loop
+    vertex -11.702 -27.8 6
+    vertex 10.404 -25.6 6
+    vertex 11.702 -27.8 6
+  endloop
 endfacet
-facet normal 0.000 0.000 1.000
- outer loop
-  vertex -15.50 12.50 0.00
-  vertex -12.50 12.50 0.00
-  vertex -12.50 15.50 0.00
- endloop
+facet normal 0 0 1
+  outer loop
+    vertex -11.702 -27.8 7
+    vertex 10.404 -25.6 7
+    vertex -10.404 -25.6 7
+  endloop
 endfacet
-facet normal 0.000 0.000 1.000
- outer loop
-  vertex -15.50 12.50 0.00
-  vertex -12.50 15.50 0.00
-  vertex -15.50 15.50 0.00
- endloop
+facet normal 0 0 -1
+  outer loop
+    vertex -11.702 -27.8 6
+    vertex -10.404 -25.6 6
+    vertex 10.404 -25.6 6
+  endloop
 endfacet
-facet normal 0.000 -0.753 0.659
- outer loop
-  vertex -7.00 -7.00 8.00
-  vertex -14.00 -14.00 0.00
-  vertex -5.60 -7.00 8.00
- endloop
+facet normal 0 0 1
+  outer loop
+    vertex 11.702 -27.8 7
+    vertex 17.8 -21.702 7
+    vertex 15.6 -20.404 7
+  endloop
 endfacet
-facet normal -0.753 0.000 0.659
- outer loop
-  vertex -7.00 -7.00 8.00
-  vertex -7.00 -5.60 8.00
-  vertex -14.00 -14.00 0.00
- endloop
+facet normal 0 0 -1
+  outer loop
+    vertex 11.702 -27.8 6
+    vertex 15.6 -20.404 6
+    vertex 17.8 -21.702 6
+  endloop
 endfacet
-facet normal 0.000 0.000 1.000
- outer loop
-  vertex -15.50 -15.50 0.00
-  vertex -12.50 -15.50 0.00
-  vertex -12.50 -12.50 0.00
- endloop
+facet normal 0 0 1
+  outer loop
+    vertex 11.702 -27.8 7
+    vertex 15.6 -20.404 7
+    vertex 10.404 -25.6 7
+  endloop
 endfacet
-facet normal 0.000 0.000 1.000
- outer loop
-  vertex -15.50 -15.50 0.00
-  vertex -12.50 -12.50 0.00
-  vertex -15.50 -12.50 0.00
- endloop
+facet normal 0 0 -1
+  outer loop
+    vertex 11.702 -27.8 6
+    vertex 10.404 -25.6 6
+    vertex 15.6 -20.404 6
+  endloop
 endfacet
-facet normal 0.000 -1.000 0.000
- outer loop
-  vertex 0.00 0.00 22.00
-  vertex 1.20 0.00 27.00
-  vertex -1.20 0.00 27.00
- endloop
+facet normal 0 0 1
+  outer loop
+    vertex 17.8 -21.702 7
+    vertex 17.8 21.702 7
+    vertex 15.6 20.404 7
+  endloop
 endfacet
-facet normal 1.000 0.000 -0.000
- outer loop
-  vertex 0.00 0.00 22.00
-  vertex 0.00 1.20 27.00
-  vertex 0.00 -1.20 27.00
- endloop
+facet normal 0 0 -1
+  outer loop
+    vertex 17.8 -21.702 6
+    vertex 15.6 20.404 6
+    vertex 17.8 21.702 6
+  endloop
 endfacet
-endsolid artemis_lander
+facet normal 0 0 1
+  outer loop
+    vertex 17.8 -21.702 7
+    vertex 15.6 20.404 7
+    vertex 15.6 -20.404 7
+  endloop
+endfacet
+facet normal 0 0 -1
+  outer loop
+    vertex 17.8 -21.702 6
+    vertex 15.6 -20.404 6
+    vertex 15.6 20.404 6
+  endloop
+endfacet
+facet normal 0 0 1
+  outer loop
+    vertex 17.8 21.702 7
+    vertex 11.702 27.8 7
+    vertex 10.404 25.6 7
+  endloop
+endfacet
+facet normal 0 0 -1
+  outer loop
+    vertex 17.8 21.702 6
+    vertex 10.404 25.6 6
+    vertex 11.702 27.8 6
+  endloop
+endfacet
+facet normal 0 0 1
+  outer loop
+    vertex 17.8 21.702 7
+    vertex 10.404 25.6 7
+    vertex 15.6 20.404 7
+  endloop
+endfacet
+facet normal 0 0 -1
+  outer loop
+    vertex 17.8 21.702 6
+    vertex 15.6 20.404 6
+    vertex 10.404 25.6 6
+  endloop
+endfacet
+facet normal 0 0 1
+  outer loop
+    vertex 11.702 27.8 7
+    vertex -11.702 27.8 7
+    vertex -10.404 25.6 7
+  endloop
+endfacet
+facet normal 0 0 -1
+  outer loop
+    vertex 11.702 27.8 6
+    vertex -10.404 25.6 6
+    vertex -11.702 27.8 6
+  endloop
+endfacet
+facet normal 0 0 1
+  outer loop
+    vertex 11.702 27.8 7
+    vertex -10.404 25.6 7
+    vertex 10.404 25.6 7
+  endloop
+endfacet
+facet normal 0 0 -1
+  outer loop
+    vertex 11.702 27.8 6
+    vertex 10.404 25.6 6
+    vertex -10.404 25.6 6
+  endloop
+endfacet
+facet normal 0 0 1
+  outer loop
+    vertex -11.702 27.8 7
+    vertex -17.8 21.702 7
+    vertex -15.6 20.404 7
+  endloop
+endfacet
+facet normal 0 0 -1
+  outer loop
+    vertex -11.702 27.8 6
+    vertex -15.6 20.404 6
+    vertex -17.8 21.702 6
+  endloop
+endfacet
+facet normal 0 0 1
+  outer loop
+    vertex -11.702 27.8 7
+    vertex -15.6 20.404 7
+    vertex -10.404 25.6 7
+  endloop
+endfacet
+facet normal 0 0 -1
+  outer loop
+    vertex -11.702 27.8 6
+    vertex -10.404 25.6 6
+    vertex -15.6 20.404 6
+  endloop
+endfacet
+facet normal 0 0 1
+  outer loop
+    vertex -17.8 21.702 7
+    vertex -17.8 -21.702 7
+    vertex -15.6 -20.404 7
+  endloop
+endfacet
+facet normal 0 0 -1
+  outer loop
+    vertex -17.8 21.702 6
+    vertex -15.6 -20.404 6
+    vertex -17.8 -21.702 6
+  endloop
+endfacet
+facet normal 0 0 1
+  outer loop
+    vertex -17.8 21.702 7
+    vertex -15.6 -20.404 7
+    vertex -15.6 20.404 7
+  endloop
+endfacet
+facet normal 0 0 -1
+  outer loop
+    vertex -17.8 21.702 6
+    vertex -15.6 20.404 6
+    vertex -15.6 -20.404 6
+  endloop
+endfacet
+facet normal 0 0 1
+  outer loop
+    vertex -17.8 -21.702 7
+    vertex -11.702 -27.8 7
+    vertex -10.404 -25.6 7
+  endloop
+endfacet
+facet normal 0 0 -1
+  outer loop
+    vertex -17.8 -21.702 6
+    vertex -10.404 -25.6 6
+    vertex -11.702 -27.8 6
+  endloop
+endfacet
+facet normal 0 0 1
+  outer loop
+    vertex -17.8 -21.702 7
+    vertex -10.404 -25.6 7
+    vertex -15.6 -20.404 7
+  endloop
+endfacet
+facet normal 0 0 -1
+  outer loop
+    vertex -17.8 -21.702 6
+    vertex -15.6 -20.404 6
+    vertex -10.404 -25.6 6
+  endloop
+endfacet
+facet normal 0 -1 0
+  outer loop
+    vertex -11.702 -27.8 6
+    vertex 11.702 -27.8 6
+    vertex 11.702 -27.8 7
+  endloop
+endfacet
+facet normal 0 -1 0
+  outer loop
+    vertex -11.702 -27.8 6
+    vertex 11.702 -27.8 7
+    vertex -11.702 -27.8 7
+  endloop
+endfacet
+facet normal 0.707 -0.707 0
+  outer loop
+    vertex 11.702 -27.8 6
+    vertex 17.8 -21.702 6
+    vertex 17.8 -21.702 7
+  endloop
+endfacet
+facet normal 0.707 -0.707 0
+  outer loop
+    vertex 11.702 -27.8 6
+    vertex 17.8 -21.702 7
+    vertex 11.702 -27.8 7
+  endloop
+endfacet
+facet normal 1 0 0
+  outer loop
+    vertex 17.8 -21.702 6
+    vertex 17.8 21.702 6
+    vertex 17.8 21.702 7
+  endloop
+endfacet
+facet normal 1 0 0
+  outer loop
+    vertex 17.8 -21.702 6
+    vertex 17.8 21.702 7
+    vertex 17.8 -21.702 7
+  endloop
+endfacet
+facet normal 0.707 0.707 0
+  outer loop
+    vertex 17.8 21.702 6
+    vertex 11.702 27.8 6
+    vertex 11.702 27.8 7
+  endloop
+endfacet
+facet normal 0.707 0.707 0
+  outer loop
+    vertex 17.8 21.702 6
+    vertex 11.702 27.8 7
+    vertex 17.8 21.702 7
+  endloop
+endfacet
+facet normal 0 1 0
+  outer loop
+    vertex 11.702 27.8 6
+    vertex -11.702 27.8 6
+    vertex -11.702 27.8 7
+  endloop
+endfacet
+facet normal 0 1 0
+  outer loop
+    vertex 11.702 27.8 6
+    vertex -11.702 27.8 7
+    vertex 11.702 27.8 7
+  endloop
+endfacet
+facet normal -0.707 0.707 0
+  outer loop
+    vertex -11.702 27.8 6
+    vertex -17.8 21.702 6
+    vertex -17.8 21.702 7
+  endloop
+endfacet
+facet normal -0.707 0.707 0
+  outer loop
+    vertex -11.702 27.8 6
+    vertex -17.8 21.702 7
+    vertex -11.702 27.8 7
+  endloop
+endfacet
+facet normal -1 0 0
+  outer loop
+    vertex -17.8 21.702 6
+    vertex -17.8 -21.702 6
+    vertex -17.8 -21.702 7
+  endloop
+endfacet
+facet normal -1 0 0
+  outer loop
+    vertex -17.8 21.702 6
+    vertex -17.8 -21.702 7
+    vertex -17.8 21.702 7
+  endloop
+endfacet
+facet normal -0.707 -0.707 0
+  outer loop
+    vertex -17.8 -21.702 6
+    vertex -11.702 -27.8 6
+    vertex -11.702 -27.8 7
+  endloop
+endfacet
+facet normal -0.707 -0.707 0
+  outer loop
+    vertex -17.8 -21.702 6
+    vertex -11.702 -27.8 7
+    vertex -17.8 -21.702 7
+  endloop
+endfacet
+facet normal 1 0 0
+  outer loop
+    vertex -15.6 -20.404 6
+    vertex -15.6 20.404 6
+    vertex -15.6 20.404 7
+  endloop
+endfacet
+facet normal 1 0 0
+  outer loop
+    vertex -15.6 -20.404 6
+    vertex -15.6 20.404 7
+    vertex -15.6 -20.404 7
+  endloop
+endfacet
+facet normal 0.707 -0.707 0
+  outer loop
+    vertex -15.6 20.404 6
+    vertex -10.404 25.6 6
+    vertex -10.404 25.6 7
+  endloop
+endfacet
+facet normal 0.707 -0.707 0
+  outer loop
+    vertex -15.6 20.404 6
+    vertex -10.404 25.6 7
+    vertex -15.6 20.404 7
+  endloop
+endfacet
+facet normal 0 -1 0
+  outer loop
+    vertex -10.404 25.6 6
+    vertex 10.404 25.6 6
+    vertex 10.404 25.6 7
+  endloop
+endfacet
+facet normal 0 -1 0
+  outer loop
+    vertex -10.404 25.6 6
+    vertex 10.404 25.6 7
+    vertex -10.404 25.6 7
+  endloop
+endfacet
+facet normal -0.707 -0.707 0
+  outer loop
+    vertex 10.404 25.6 6
+    vertex 15.6 20.404 6
+    vertex 15.6 20.404 7
+  endloop
+endfacet
+facet normal -0.707 -0.707 0
+  outer loop
+    vertex 10.404 25.6 6
+    vertex 15.6 20.404 7
+    vertex 10.404 25.6 7
+  endloop
+endfacet
+facet normal -1 0 0
+  outer loop
+    vertex 15.6 20.404 6
+    vertex 15.6 -20.404 6
+    vertex 15.6 -20.404 7
+  endloop
+endfacet
+facet normal -1 0 0
+  outer loop
+    vertex 15.6 20.404 6
+    vertex 15.6 -20.404 7
+    vertex 15.6 20.404 7
+  endloop
+endfacet
+facet normal -0.707 0.707 0
+  outer loop
+    vertex 15.6 -20.404 6
+    vertex 10.404 -25.6 6
+    vertex 10.404 -25.6 7
+  endloop
+endfacet
+facet normal -0.707 0.707 0
+  outer loop
+    vertex 15.6 -20.404 6
+    vertex 10.404 -25.6 7
+    vertex 15.6 -20.404 7
+  endloop
+endfacet
+facet normal 0 1 0
+  outer loop
+    vertex 10.404 -25.6 6
+    vertex -10.404 -25.6 6
+    vertex -10.404 -25.6 7
+  endloop
+endfacet
+facet normal 0 1 0
+  outer loop
+    vertex 10.404 -25.6 6
+    vertex -10.404 -25.6 7
+    vertex 10.404 -25.6 7
+  endloop
+endfacet
+facet normal 0.707 0.707 0
+  outer loop
+    vertex -10.404 -25.6 6
+    vertex -15.6 -20.404 6
+    vertex -15.6 -20.404 7
+  endloop
+endfacet
+facet normal 0.707 0.707 0
+  outer loop
+    vertex -10.404 -25.6 6
+    vertex -15.6 -20.404 7
+    vertex -10.404 -25.6 7
+  endloop
+endfacet
+facet normal 0 0 1
+  outer loop
+    vertex -5.405 13.322 8.2
+    vertex -10.799 10.935 8.2
+    vertex -7.306 10.461 8.2
+  endloop
+endfacet
+facet normal 0 0 -1
+  outer loop
+    vertex -5.405 13.322 6
+    vertex -7.306 10.461 6
+    vertex -10.799 10.935 6
+  endloop
+endfacet
+facet normal 0 0 1
+  outer loop
+    vertex -10.799 10.935 8.2
+    vertex -14.458 6.309 8.2
+    vertex -8.134 7.128 8.2
+  endloop
+endfacet
+facet normal 0 0 -1
+  outer loop
+    vertex -10.799 10.935 6
+    vertex -8.134 7.128 6
+    vertex -14.458 6.309 6
+  endloop
+endfacet
+facet normal 0 0 1
+  outer loop
+    vertex -10.799 10.935 8.2
+    vertex -8.134 7.128 8.2
+    vertex -7.306 10.461 8.2
+  endloop
+endfacet
+facet normal 0 0 -1
+  outer loop
+    vertex -10.799 10.935 6
+    vertex -7.306 10.461 6
+    vertex -8.134 7.128 6
+  endloop
+endfacet
+facet normal 0 0 1
+  outer loop
+    vertex -14.458 6.309 8.2
+    vertex -15.539 0.511 8.2
+    vertex -7.793 3.71 8.2
+  endloop
+endfacet
+facet normal 0 0 -1
+  outer loop
+    vertex -14.458 6.309 6
+    vertex -7.793 3.71 6
+    vertex -15.539 0.511 6
+  endloop
+endfacet
+facet normal 0 0 1
+  outer loop
+    vertex -14.458 6.309 8.2
+    vertex -7.793 3.71 8.2
+    vertex -8.134 7.128 8.2
+  endloop
+endfacet
+facet normal 0 0 -1
+  outer loop
+    vertex -14.458 6.309 6
+    vertex -8.134 7.128 6
+    vertex -7.793 3.71 6
+  endloop
+endfacet
+facet normal 0 0 1
+  outer loop
+    vertex -15.539 0.511 8.2
+    vertex -13.793 -5.123 8.2
+    vertex -6.322 0.606 8.2
+  endloop
+endfacet
+facet normal 0 0 -1
+  outer loop
+    vertex -15.539 0.511 6
+    vertex -6.322 0.606 6
+    vertex -13.793 -5.123 6
+  endloop
+endfacet
+facet normal 0 0 1
+  outer loop
+    vertex -15.539 0.511 8.2
+    vertex -6.322 0.606 8.2
+    vertex -7.793 3.71 8.2
+  endloop
+endfacet
+facet normal 0 0 -1
+  outer loop
+    vertex -15.539 0.511 6
+    vertex -7.793 3.71 6
+    vertex -6.322 0.606 6
+  endloop
+endfacet
+facet normal 0 0 1
+  outer loop
+    vertex -13.793 -5.123 8.2
+    vertex -9.623 -9.293 8.2
+    vertex -3.894 -1.822 8.2
+  endloop
+endfacet
+facet normal 0 0 -1
+  outer loop
+    vertex -13.793 -5.123 6
+    vertex -3.894 -1.822 6
+    vertex -9.623 -9.293 6
+  endloop
+endfacet
+facet normal 0 0 1
+  outer loop
+    vertex -13.793 -5.123 8.2
+    vertex -3.894 -1.822 8.2
+    vertex -6.322 0.606 8.2
+  endloop
+endfacet
+facet normal 0 0 -1
+  outer loop
+    vertex -13.793 -5.123 6
+    vertex -6.322 0.606 6
+    vertex -3.894 -1.822 6
+  endloop
+endfacet
+facet normal 0 0 1
+  outer loop
+    vertex -9.623 -9.293 8.2
+    vertex -3.989 -11.039 8.2
+    vertex -0.79 -3.293 8.2
+  endloop
+endfacet
+facet normal 0 0 -1
+  outer loop
+    vertex -9.623 -9.293 6
+    vertex -0.79 -3.293 6
+    vertex -3.989 -11.039 6
+  endloop
+endfacet
+facet normal 0 0 1
+  outer loop
+    vertex -9.623 -9.293 8.2
+    vertex -0.79 -3.293 8.2
+    vertex -3.894 -1.822 8.2
+  endloop
+endfacet
+facet normal 0 0 -1
+  outer loop
+    vertex -9.623 -9.293 6
+    vertex -3.894 -1.822 6
+    vertex -0.79 -3.293 6
+  endloop
+endfacet
+facet normal 0 0 1
+  outer loop
+    vertex -3.989 -11.039 8.2
+    vertex 1.809 -9.958 8.2
+    vertex 2.628 -3.634 8.2
+  endloop
+endfacet
+facet normal 0 0 -1
+  outer loop
+    vertex -3.989 -11.039 6
+    vertex 2.628 -3.634 6
+    vertex 1.809 -9.958 6
+  endloop
+endfacet
+facet normal 0 0 1
+  outer loop
+    vertex -3.989 -11.039 8.2
+    vertex 2.628 -3.634 8.2
+    vertex -0.79 -3.293 8.2
+  endloop
+endfacet
+facet normal 0 0 -1
+  outer loop
+    vertex -3.989 -11.039 6
+    vertex -0.79 -3.293 6
+    vertex 2.628 -3.634 6
+  endloop
+endfacet
+facet normal 0 0 1
+  outer loop
+    vertex 1.809 -9.958 8.2
+    vertex 6.435 -6.299 8.2
+    vertex 5.961 -2.806 8.2
+  endloop
+endfacet
+facet normal 0 0 -1
+  outer loop
+    vertex 1.809 -9.958 6
+    vertex 5.961 -2.806 6
+    vertex 6.435 -6.299 6
+  endloop
+endfacet
+facet normal 0 0 1
+  outer loop
+    vertex 1.809 -9.958 8.2
+    vertex 5.961 -2.806 8.2
+    vertex 2.628 -3.634 8.2
+  endloop
+endfacet
+facet normal 0 0 -1
+  outer loop
+    vertex 1.809 -9.958 6
+    vertex 2.628 -3.634 6
+    vertex 5.961 -2.806 6
+  endloop
+endfacet
+facet normal 0 0 1
+  outer loop
+    vertex 6.435 -6.299 8.2
+    vertex 8.822 -0.905 8.2
+    vertex 5.961 -2.806 8.2
+  endloop
+endfacet
+facet normal 0 0 -1
+  outer loop
+    vertex 6.435 -6.299 6
+    vertex 5.961 -2.806 6
+    vertex 8.822 -0.905 6
+  endloop
+endfacet
+facet normal -0.405 0.914 0
+  outer loop
+    vertex -5.405 13.322 6
+    vertex -10.799 10.935 6
+    vertex -10.799 10.935 8.2
+  endloop
+endfacet
+facet normal -0.405 0.914 0
+  outer loop
+    vertex -5.405 13.322 6
+    vertex -10.799 10.935 8.2
+    vertex -5.405 13.322 8.2
+  endloop
+endfacet
+facet normal -0.784 0.62 0
+  outer loop
+    vertex -10.799 10.935 6
+    vertex -14.458 6.309 6
+    vertex -14.458 6.309 8.2
+  endloop
+endfacet
+facet normal -0.784 0.62 0
+  outer loop
+    vertex -10.799 10.935 6
+    vertex -14.458 6.309 8.2
+    vertex -10.799 10.935 8.2
+  endloop
+endfacet
+facet normal -0.983 0.183 0
+  outer loop
+    vertex -14.458 6.309 6
+    vertex -15.539 0.511 6
+    vertex -15.539 0.511 8.2
+  endloop
+endfacet
+facet normal -0.983 0.183 0
+  outer loop
+    vertex -14.458 6.309 6
+    vertex -15.539 0.511 8.2
+    vertex -14.458 6.309 8.2
+  endloop
+endfacet
+facet normal -0.955 -0.296 0
+  outer loop
+    vertex -15.539 0.511 6
+    vertex -13.793 -5.123 6
+    vertex -13.793 -5.123 8.2
+  endloop
+endfacet
+facet normal -0.955 -0.296 0
+  outer loop
+    vertex -15.539 0.511 6
+    vertex -13.793 -5.123 8.2
+    vertex -15.539 0.511 8.2
+  endloop
+endfacet
+facet normal -0.707 -0.707 0
+  outer loop
+    vertex -13.793 -5.123 6
+    vertex -9.623 -9.293 6
+    vertex -9.623 -9.293 8.2
+  endloop
+endfacet
+facet normal -0.707 -0.707 0
+  outer loop
+    vertex -13.793 -5.123 6
+    vertex -9.623 -9.293 8.2
+    vertex -13.793 -5.123 8.2
+  endloop
+endfacet
+facet normal -0.296 -0.955 0
+  outer loop
+    vertex -9.623 -9.293 6
+    vertex -3.989 -11.039 6
+    vertex -3.989 -11.039 8.2
+  endloop
+endfacet
+facet normal -0.296 -0.955 0
+  outer loop
+    vertex -9.623 -9.293 6
+    vertex -3.989 -11.039 8.2
+    vertex -9.623 -9.293 8.2
+  endloop
+endfacet
+facet normal 0.183 -0.983 0
+  outer loop
+    vertex -3.989 -11.039 6
+    vertex 1.809 -9.958 6
+    vertex 1.809 -9.958 8.2
+  endloop
+endfacet
+facet normal 0.183 -0.983 0
+  outer loop
+    vertex -3.989 -11.039 6
+    vertex 1.809 -9.958 8.2
+    vertex -3.989 -11.039 8.2
+  endloop
+endfacet
+facet normal 0.62 -0.784 0
+  outer loop
+    vertex 1.809 -9.958 6
+    vertex 6.435 -6.299 6
+    vertex 6.435 -6.299 8.2
+  endloop
+endfacet
+facet normal 0.62 -0.784 0
+  outer loop
+    vertex 1.809 -9.958 6
+    vertex 6.435 -6.299 8.2
+    vertex 1.809 -9.958 8.2
+  endloop
+endfacet
+facet normal 0.914 -0.405 0
+  outer loop
+    vertex 6.435 -6.299 6
+    vertex 8.822 -0.905 6
+    vertex 8.822 -0.905 8.2
+  endloop
+endfacet
+facet normal 0.914 -0.405 0
+  outer loop
+    vertex 6.435 -6.299 6
+    vertex 8.822 -0.905 8.2
+    vertex 6.435 -6.299 8.2
+  endloop
+endfacet
+facet normal -0.553 0.833 0
+  outer loop
+    vertex 8.822 -0.905 6
+    vertex 5.961 -2.806 6
+    vertex 5.961 -2.806 8.2
+  endloop
+endfacet
+facet normal -0.553 0.833 0
+  outer loop
+    vertex 8.822 -0.905 6
+    vertex 5.961 -2.806 8.2
+    vertex 8.822 -0.905 8.2
+  endloop
+endfacet
+facet normal -0.241 0.971 0
+  outer loop
+    vertex 5.961 -2.806 6
+    vertex 2.628 -3.634 6
+    vertex 2.628 -3.634 8.2
+  endloop
+endfacet
+facet normal -0.241 0.971 0
+  outer loop
+    vertex 5.961 -2.806 6
+    vertex 2.628 -3.634 8.2
+    vertex 5.961 -2.806 8.2
+  endloop
+endfacet
+facet normal 0.099 0.995 0
+  outer loop
+    vertex 2.628 -3.634 6
+    vertex -0.79 -3.293 6
+    vertex -0.79 -3.293 8.2
+  endloop
+endfacet
+facet normal 0.099 0.995 0
+  outer loop
+    vertex 2.628 -3.634 6
+    vertex -0.79 -3.293 8.2
+    vertex 2.628 -3.634 8.2
+  endloop
+endfacet
+facet normal 0.428 0.904 0
+  outer loop
+    vertex -0.79 -3.293 6
+    vertex -3.894 -1.822 6
+    vertex -3.894 -1.822 8.2
+  endloop
+endfacet
+facet normal 0.428 0.904 0
+  outer loop
+    vertex -0.79 -3.293 6
+    vertex -3.894 -1.822 8.2
+    vertex -0.79 -3.293 8.2
+  endloop
+endfacet
+facet normal 0.707 0.707 0
+  outer loop
+    vertex -3.894 -1.822 6
+    vertex -6.322 0.606 6
+    vertex -6.322 0.606 8.2
+  endloop
+endfacet
+facet normal 0.707 0.707 0
+  outer loop
+    vertex -3.894 -1.822 6
+    vertex -6.322 0.606 8.2
+    vertex -3.894 -1.822 8.2
+  endloop
+endfacet
+facet normal 0.904 0.428 0
+  outer loop
+    vertex -6.322 0.606 6
+    vertex -7.793 3.71 6
+    vertex -7.793 3.71 8.2
+  endloop
+endfacet
+facet normal 0.904 0.428 0
+  outer loop
+    vertex -6.322 0.606 6
+    vertex -7.793 3.71 8.2
+    vertex -6.322 0.606 8.2
+  endloop
+endfacet
+facet normal 0.995 0.099 0
+  outer loop
+    vertex -7.793 3.71 6
+    vertex -8.134 7.128 6
+    vertex -8.134 7.128 8.2
+  endloop
+endfacet
+facet normal 0.995 0.099 0
+  outer loop
+    vertex -7.793 3.71 6
+    vertex -8.134 7.128 8.2
+    vertex -7.793 3.71 8.2
+  endloop
+endfacet
+facet normal 0.971 -0.241 0
+  outer loop
+    vertex -8.134 7.128 6
+    vertex -7.306 10.461 6
+    vertex -7.306 10.461 8.2
+  endloop
+endfacet
+facet normal 0.971 -0.241 0
+  outer loop
+    vertex -8.134 7.128 6
+    vertex -7.306 10.461 8.2
+    vertex -8.134 7.128 8.2
+  endloop
+endfacet
+facet normal 0.833 -0.553 0
+  outer loop
+    vertex -7.306 10.461 6
+    vertex -5.405 13.322 6
+    vertex -5.405 13.322 8.2
+  endloop
+endfacet
+facet normal 0.833 -0.553 0
+  outer loop
+    vertex -7.306 10.461 6
+    vertex -5.405 13.322 8.2
+    vertex -7.306 10.461 8.2
+  endloop
+endfacet
+facet normal 0 0 1
+  outer loop
+    vertex 7.676 8.476 8.8
+    vertex 6.592 11.092 8.8
+    vertex 3.976 12.176 8.8
+  endloop
+endfacet
+facet normal 0 0 -1
+  outer loop
+    vertex 7.676 8.476 6
+    vertex 3.976 12.176 6
+    vertex 6.592 11.092 6
+  endloop
+endfacet
+facet normal 0 0 1
+  outer loop
+    vertex 7.676 8.476 8.8
+    vertex 3.976 12.176 8.8
+    vertex 1.36 11.092 8.8
+  endloop
+endfacet
+facet normal 0 0 -1
+  outer loop
+    vertex 7.676 8.476 6
+    vertex 1.36 11.092 6
+    vertex 3.976 12.176 6
+  endloop
+endfacet
+facet normal 0 0 1
+  outer loop
+    vertex 7.676 8.476 8.8
+    vertex 1.36 11.092 8.8
+    vertex 0.276 8.476 8.8
+  endloop
+endfacet
+facet normal 0 0 -1
+  outer loop
+    vertex 7.676 8.476 6
+    vertex 0.276 8.476 6
+    vertex 1.36 11.092 6
+  endloop
+endfacet
+facet normal 0 0 1
+  outer loop
+    vertex 7.676 8.476 8.8
+    vertex 0.276 8.476 8.8
+    vertex 1.36 5.86 8.8
+  endloop
+endfacet
+facet normal 0 0 -1
+  outer loop
+    vertex 7.676 8.476 6
+    vertex 1.36 5.86 6
+    vertex 0.276 8.476 6
+  endloop
+endfacet
+facet normal 0 0 1
+  outer loop
+    vertex 7.676 8.476 8.8
+    vertex 1.36 5.86 8.8
+    vertex 3.976 4.776 8.8
+  endloop
+endfacet
+facet normal 0 0 -1
+  outer loop
+    vertex 7.676 8.476 6
+    vertex 3.976 4.776 6
+    vertex 1.36 5.86 6
+  endloop
+endfacet
+facet normal 0 0 1
+  outer loop
+    vertex 7.676 8.476 8.8
+    vertex 3.976 4.776 8.8
+    vertex 6.592 5.86 8.8
+  endloop
+endfacet
+facet normal 0 0 -1
+  outer loop
+    vertex 7.676 8.476 6
+    vertex 6.592 5.86 6
+    vertex 3.976 4.776 6
+  endloop
+endfacet
+facet normal 0.924 0.383 0
+  outer loop
+    vertex 7.676 8.476 6
+    vertex 6.592 11.092 6
+    vertex 6.592 11.092 8.8
+  endloop
+endfacet
+facet normal 0.924 0.383 0
+  outer loop
+    vertex 7.676 8.476 6
+    vertex 6.592 11.092 8.8
+    vertex 7.676 8.476 8.8
+  endloop
+endfacet
+facet normal 0.383 0.924 0
+  outer loop
+    vertex 6.592 11.092 6
+    vertex 3.976 12.176 6
+    vertex 3.976 12.176 8.8
+  endloop
+endfacet
+facet normal 0.383 0.924 0
+  outer loop
+    vertex 6.592 11.092 6
+    vertex 3.976 12.176 8.8
+    vertex 6.592 11.092 8.8
+  endloop
+endfacet
+facet normal -0.383 0.924 0
+  outer loop
+    vertex 3.976 12.176 6
+    vertex 1.36 11.092 6
+    vertex 1.36 11.092 8.8
+  endloop
+endfacet
+facet normal -0.383 0.924 0
+  outer loop
+    vertex 3.976 12.176 6
+    vertex 1.36 11.092 8.8
+    vertex 3.976 12.176 8.8
+  endloop
+endfacet
+facet normal -0.924 0.383 0
+  outer loop
+    vertex 1.36 11.092 6
+    vertex 0.276 8.476 6
+    vertex 0.276 8.476 8.8
+  endloop
+endfacet
+facet normal -0.924 0.383 0
+  outer loop
+    vertex 1.36 11.092 6
+    vertex 0.276 8.476 8.8
+    vertex 1.36 11.092 8.8
+  endloop
+endfacet
+facet normal -0.924 -0.383 0
+  outer loop
+    vertex 0.276 8.476 6
+    vertex 1.36 5.86 6
+    vertex 1.36 5.86 8.8
+  endloop
+endfacet
+facet normal -0.924 -0.383 0
+  outer loop
+    vertex 0.276 8.476 6
+    vertex 1.36 5.86 8.8
+    vertex 0.276 8.476 8.8
+  endloop
+endfacet
+facet normal -0.383 -0.924 0
+  outer loop
+    vertex 1.36 5.86 6
+    vertex 3.976 4.776 6
+    vertex 3.976 4.776 8.8
+  endloop
+endfacet
+facet normal -0.383 -0.924 0
+  outer loop
+    vertex 1.36 5.86 6
+    vertex 3.976 4.776 8.8
+    vertex 1.36 5.86 8.8
+  endloop
+endfacet
+facet normal 0.383 -0.924 0
+  outer loop
+    vertex 3.976 4.776 6
+    vertex 6.592 5.86 6
+    vertex 6.592 5.86 8.8
+  endloop
+endfacet
+facet normal 0.383 -0.924 0
+  outer loop
+    vertex 3.976 4.776 6
+    vertex 6.592 5.86 8.8
+    vertex 3.976 4.776 8.8
+  endloop
+endfacet
+facet normal 0.924 -0.383 0
+  outer loop
+    vertex 6.592 5.86 6
+    vertex 7.676 8.476 6
+    vertex 7.676 8.476 8.8
+  endloop
+endfacet
+facet normal 0.924 -0.383 0
+  outer loop
+    vertex 6.592 5.86 6
+    vertex 7.676 8.476 8.8
+    vertex 6.592 5.86 8.8
+  endloop
+endfacet
+endsolid heimuling
 ```
 
 </details>
 
+<a id="steles"></a>
+<p><a href="#formation"><picture><source media="(max-width: 600px)" srcset="assets/banners/07-steles-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/banners/07-steles-light.svg"><img src="assets/banners/07-steles.svg" width="100%" align="top" alt="碑林, the Stele Forest: his skills. Click to fly on to the Grand Sect-Protecting Formation."></picture></a></p>
+
+<pre><b>碑林 stele forest · carved here, staying carved</b>
+llm agents   tool use, RAG, evals, guardrails  (the day job)
+voice ai     Retell, ElevenLabs, Hume, Twilio  (hackathon-critical)
+typescript   5.x       (load-bearing)
+python       3.12      (the other load-bearing one)
+react        forever   (dependency of everything)
+next.js      latest    (see: react)
+fastapi      latest    (default answer)
+postgres     16        (where the state lives)
+pytorch      2.x       (installed for one weekend, kept forever)
+ffmpeg       any       (do not ask what it is wired into)
+
+a stele for sleep was commissioned. it was never carved.</pre>
+
+<a id="formation"></a><a id="fsck"></a>
+<p><a href="#abode"><picture><source media="(max-width: 600px)" srcset="assets/banners/08-formation-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/banners/08-formation-light.svg"><img src="assets/banners/08-formation.svg" width="100%" align="top" alt="护宗大阵, the Grand Sect-Protecting Formation: a game you play by opening issues, and the machinery that keeps this page alive. Click to fly on to the Cave Abode."></picture></a></p>
+
+<p>The sect's guardian formation: 81 nodes, 10 of them killing traps. Break it by petition: click a node and submit the issue as-is, and the formation answers in about a minute. A number counts the traps touching that node. The first step is always safe.</p>
+
+<!-- FSCK:START -->
+<p>
+<picture><source media="(max-width: 600px)" srcset="assets/formation/panel-0-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/panel-0-light.svg"><img align="right" src="assets/formation/panel-0.svg" width="500" alt="破阵, break the formation. the formation holds (no limit). formation #3, laid 07-23. 0 of 71 safe nodes read (0%). traps: 10 killing traps, positions sealed (hmac) record: 1 disciple, 2 steps, 1 backlash, 0 breaks. ledger: 07-23 IdkwhatImD0ing re-lay: new formation; 07-23 IdkwhatImD0ing step C3: BACKLASH; 07-23 IdkwhatImD0ing step E5: node holds. breakers: (vacant). struck: 1. IdkwhatImD0ing x1. click a node, submit the petition as-is. eyes = received. the board redraws in ~1 min. the first step is always safe."></picture><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/cols.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/cols.svg"><img src="assets/formation/tiles/dark/cols.svg" width="268" height="34" align="top" alt=""></picture><br>
+<picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/r1.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/r1.svg"><img src="assets/formation/tiles/dark/r1.svg" width="10" height="28" align="top" alt=""></picture><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CA1&amp;body=Submit+this+petition+as-is+to+read+node+A1+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on A1" title="read node A1"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CB1&amp;body=Submit+this+petition+as-is+to+read+node+B1+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on B1" title="read node B1"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CC1&amp;body=Submit+this+petition+as-is+to+read+node+C1+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on C1" title="read node C1"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CD1&amp;body=Submit+this+petition+as-is+to+read+node+D1+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on D1" title="read node D1"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CE1&amp;body=Submit+this+petition+as-is+to+read+node+E1+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on E1" title="read node E1"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CF1&amp;body=Submit+this+petition+as-is+to+read+node+F1+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on F1" title="read node F1"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CG1&amp;body=Submit+this+petition+as-is+to+read+node+G1+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on G1" title="read node G1"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CH1&amp;body=Submit+this+petition+as-is+to+read+node+H1+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on H1" title="read node H1"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CI1&amp;body=Submit+this+petition+as-is+to+read+node+I1+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on I1" title="read node I1"></picture></a><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/edge.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/edge.svg"><img src="assets/formation/tiles/dark/edge.svg" width="6" height="28" align="top" alt=""></picture><br>
+<picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/r2.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/r2.svg"><img src="assets/formation/tiles/dark/r2.svg" width="10" height="28" align="top" alt=""></picture><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CA2&amp;body=Submit+this+petition+as-is+to+read+node+A2+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on A2" title="read node A2"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CB2&amp;body=Submit+this+petition+as-is+to+read+node+B2+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on B2" title="read node B2"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CC2&amp;body=Submit+this+petition+as-is+to+read+node+C2+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on C2" title="read node C2"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CD2&amp;body=Submit+this+petition+as-is+to+read+node+D2+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on D2" title="read node D2"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CE2&amp;body=Submit+this+petition+as-is+to+read+node+E2+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on E2" title="read node E2"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CF2&amp;body=Submit+this+petition+as-is+to+read+node+F2+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on F2" title="read node F2"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CG2&amp;body=Submit+this+petition+as-is+to+read+node+G2+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on G2" title="read node G2"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CH2&amp;body=Submit+this+petition+as-is+to+read+node+H2+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on H2" title="read node H2"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CI2&amp;body=Submit+this+petition+as-is+to+read+node+I2+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on I2" title="read node I2"></picture></a><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/edge.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/edge.svg"><img src="assets/formation/tiles/dark/edge.svg" width="6" height="28" align="top" alt=""></picture><br>
+<picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/r3.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/r3.svg"><img src="assets/formation/tiles/dark/r3.svg" width="10" height="28" align="top" alt=""></picture><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CA3&amp;body=Submit+this+petition+as-is+to+read+node+A3+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on A3" title="read node A3"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CB3&amp;body=Submit+this+petition+as-is+to+read+node+B3+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on B3" title="read node B3"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CC3&amp;body=Submit+this+petition+as-is+to+read+node+C3+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on C3" title="read node C3"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CD3&amp;body=Submit+this+petition+as-is+to+read+node+D3+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on D3" title="read node D3"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CE3&amp;body=Submit+this+petition+as-is+to+read+node+E3+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on E3" title="read node E3"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CF3&amp;body=Submit+this+petition+as-is+to+read+node+F3+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on F3" title="read node F3"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CG3&amp;body=Submit+this+petition+as-is+to+read+node+G3+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on G3" title="read node G3"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CH3&amp;body=Submit+this+petition+as-is+to+read+node+H3+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on H3" title="read node H3"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CI3&amp;body=Submit+this+petition+as-is+to+read+node+I3+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on I3" title="read node I3"></picture></a><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/edge.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/edge.svg"><img src="assets/formation/tiles/dark/edge.svg" width="6" height="28" align="top" alt=""></picture><br>
+<picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/r4.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/r4.svg"><img src="assets/formation/tiles/dark/r4.svg" width="10" height="28" align="top" alt=""></picture><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CA4&amp;body=Submit+this+petition+as-is+to+read+node+A4+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on A4" title="read node A4"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CB4&amp;body=Submit+this+petition+as-is+to+read+node+B4+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on B4" title="read node B4"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CC4&amp;body=Submit+this+petition+as-is+to+read+node+C4+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on C4" title="read node C4"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CD4&amp;body=Submit+this+petition+as-is+to+read+node+D4+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on D4" title="read node D4"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CE4&amp;body=Submit+this+petition+as-is+to+read+node+E4+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on E4" title="read node E4"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CF4&amp;body=Submit+this+petition+as-is+to+read+node+F4+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on F4" title="read node F4"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CG4&amp;body=Submit+this+petition+as-is+to+read+node+G4+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on G4" title="read node G4"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CH4&amp;body=Submit+this+petition+as-is+to+read+node+H4+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on H4" title="read node H4"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CI4&amp;body=Submit+this+petition+as-is+to+read+node+I4+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on I4" title="read node I4"></picture></a><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/edge.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/edge.svg"><img src="assets/formation/tiles/dark/edge.svg" width="6" height="28" align="top" alt=""></picture><br>
+<picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/r5.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/r5.svg"><img src="assets/formation/tiles/dark/r5.svg" width="10" height="28" align="top" alt=""></picture><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CA5&amp;body=Submit+this+petition+as-is+to+read+node+A5+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on A5" title="read node A5"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CB5&amp;body=Submit+this+petition+as-is+to+read+node+B5+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on B5" title="read node B5"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CC5&amp;body=Submit+this+petition+as-is+to+read+node+C5+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on C5" title="read node C5"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CD5&amp;body=Submit+this+petition+as-is+to+read+node+D5+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on D5" title="read node D5"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CE5&amp;body=Submit+this+petition+as-is+to+read+node+E5+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on E5" title="read node E5"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CF5&amp;body=Submit+this+petition+as-is+to+read+node+F5+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on F5" title="read node F5"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CG5&amp;body=Submit+this+petition+as-is+to+read+node+G5+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on G5" title="read node G5"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CH5&amp;body=Submit+this+petition+as-is+to+read+node+H5+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on H5" title="read node H5"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CI5&amp;body=Submit+this+petition+as-is+to+read+node+I5+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on I5" title="read node I5"></picture></a><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/edge.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/edge.svg"><img src="assets/formation/tiles/dark/edge.svg" width="6" height="28" align="top" alt=""></picture><br>
+<picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/r6.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/r6.svg"><img src="assets/formation/tiles/dark/r6.svg" width="10" height="28" align="top" alt=""></picture><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CA6&amp;body=Submit+this+petition+as-is+to+read+node+A6+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on A6" title="read node A6"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CB6&amp;body=Submit+this+petition+as-is+to+read+node+B6+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on B6" title="read node B6"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CC6&amp;body=Submit+this+petition+as-is+to+read+node+C6+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on C6" title="read node C6"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CD6&amp;body=Submit+this+petition+as-is+to+read+node+D6+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on D6" title="read node D6"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CE6&amp;body=Submit+this+petition+as-is+to+read+node+E6+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on E6" title="read node E6"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CF6&amp;body=Submit+this+petition+as-is+to+read+node+F6+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on F6" title="read node F6"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CG6&amp;body=Submit+this+petition+as-is+to+read+node+G6+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on G6" title="read node G6"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CH6&amp;body=Submit+this+petition+as-is+to+read+node+H6+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on H6" title="read node H6"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CI6&amp;body=Submit+this+petition+as-is+to+read+node+I6+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on I6" title="read node I6"></picture></a><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/edge.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/edge.svg"><img src="assets/formation/tiles/dark/edge.svg" width="6" height="28" align="top" alt=""></picture><br>
+<picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/r7.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/r7.svg"><img src="assets/formation/tiles/dark/r7.svg" width="10" height="28" align="top" alt=""></picture><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CA7&amp;body=Submit+this+petition+as-is+to+read+node+A7+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on A7" title="read node A7"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CB7&amp;body=Submit+this+petition+as-is+to+read+node+B7+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on B7" title="read node B7"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CC7&amp;body=Submit+this+petition+as-is+to+read+node+C7+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on C7" title="read node C7"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CD7&amp;body=Submit+this+petition+as-is+to+read+node+D7+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on D7" title="read node D7"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CE7&amp;body=Submit+this+petition+as-is+to+read+node+E7+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on E7" title="read node E7"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CF7&amp;body=Submit+this+petition+as-is+to+read+node+F7+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on F7" title="read node F7"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CG7&amp;body=Submit+this+petition+as-is+to+read+node+G7+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on G7" title="read node G7"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CH7&amp;body=Submit+this+petition+as-is+to+read+node+H7+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on H7" title="read node H7"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CI7&amp;body=Submit+this+petition+as-is+to+read+node+I7+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on I7" title="read node I7"></picture></a><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/edge.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/edge.svg"><img src="assets/formation/tiles/dark/edge.svg" width="6" height="28" align="top" alt=""></picture><br>
+<picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/r8.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/r8.svg"><img src="assets/formation/tiles/dark/r8.svg" width="10" height="28" align="top" alt=""></picture><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CA8&amp;body=Submit+this+petition+as-is+to+read+node+A8+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on A8" title="read node A8"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CB8&amp;body=Submit+this+petition+as-is+to+read+node+B8+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on B8" title="read node B8"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CC8&amp;body=Submit+this+petition+as-is+to+read+node+C8+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on C8" title="read node C8"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CD8&amp;body=Submit+this+petition+as-is+to+read+node+D8+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on D8" title="read node D8"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CE8&amp;body=Submit+this+petition+as-is+to+read+node+E8+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on E8" title="read node E8"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CF8&amp;body=Submit+this+petition+as-is+to+read+node+F8+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on F8" title="read node F8"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CG8&amp;body=Submit+this+petition+as-is+to+read+node+G8+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on G8" title="read node G8"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CH8&amp;body=Submit+this+petition+as-is+to+read+node+H8+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on H8" title="read node H8"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CI8&amp;body=Submit+this+petition+as-is+to+read+node+I8+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on I8" title="read node I8"></picture></a><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/edge.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/edge.svg"><img src="assets/formation/tiles/dark/edge.svg" width="6" height="28" align="top" alt=""></picture><br>
+<picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/r9.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/r9.svg"><img src="assets/formation/tiles/dark/r9.svg" width="10" height="28" align="top" alt=""></picture><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CA9&amp;body=Submit+this+petition+as-is+to+read+node+A9+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on A9" title="read node A9"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CB9&amp;body=Submit+this+petition+as-is+to+read+node+B9+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on B9" title="read node B9"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CC9&amp;body=Submit+this+petition+as-is+to+read+node+C9+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on C9" title="read node C9"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CD9&amp;body=Submit+this+petition+as-is+to+read+node+D9+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on D9" title="read node D9"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CE9&amp;body=Submit+this+petition+as-is+to+read+node+E9+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on E9" title="read node E9"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CF9&amp;body=Submit+this+petition+as-is+to+read+node+F9+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on F9" title="read node F9"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CG9&amp;body=Submit+this+petition+as-is+to+read+node+G9+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on G9" title="read node G9"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CH9&amp;body=Submit+this+petition+as-is+to+read+node+H9+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on H9" title="read node H9"></picture></a><a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Czhen%7CI9&amp;body=Submit+this+petition+as-is+to+read+node+I9+of+the+grand+formation.%0AThe+formation+answers+with+an+eyes+reaction+and+redraws+the+board+in+about+a+minute."><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/hidden.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/hidden.svg"><img src="assets/formation/tiles/dark/hidden.svg" width="28" height="28" align="top" alt="step on I9" title="read node I9"></picture></a><picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/edge.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/edge.svg"><img src="assets/formation/tiles/dark/edge.svg" width="6" height="28" align="top" alt=""></picture><br>
+<picture><source media="(max-width: 600px)" srcset="assets/formation/tiles/dark/base.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/tiles/light/base.svg"><img src="assets/formation/tiles/dark/base.svg" width="268" height="6" align="top" alt=""></picture><br clear="all">
+</p>
+
+<p>
+<a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sect%7Cgong&amp;body=Submit+this+petition+as-is.+You+were+told."><picture><source media="(max-width: 600px)" srcset="assets/formation/gong.svg"><source media="(prefers-color-scheme: light)" srcset="assets/formation/gong-light.svg"><img src="assets/formation/gong.svg" width="220" height="48" align="top" alt="勿敲 DO NOT STRIKE" title="nothing happens. probably."></picture></a>
+</p>
+<!-- FSCK:END -->
+
+<a id="etc"></a>
+<p>The same formation keeps this page alive. GitHub Actions are the elders, an LLM is the steward, and every petition is a GitHub issue. The timetable comes straight from the workflow files:</p>
+
+<pre><b>晨钟暮鼓 morning bell, evening drum · the timetable (UTC)</b><!-- CRONTAB:START -->
+@petition      <a href=".github/workflows/artemis-ops.yaml">artemis-ops.yaml</a>      the formation answers petitions
+17 15 * * 1,4  <a href=".github/workflows/profile-summary.yaml">profile-summary.yaml</a>  the steward reposts the missions
+41 14 * * 6    <a href=".github/workflows/moon-watch.yaml">moon-watch.yaml</a>       the moon is read, the card redrawn
+
+from the steward's ledger (git log, newest four, abridged):
+<a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/commit/a8647642983b70c48efd6df7220e6823478ad7a5">a864764</a> build 55: rewrote own bio around travel and hackathons
+<a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/commit/bda3bedcb7adf9751171106774a5cf57d538835f">bda3bed</a> build 54: rewrote own bio around hackathons and travel
+<a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/commit/03251ed5137464a8793b984f370090819564d279">03251ed</a> build 53: rewrote own bio around hackathon productivity
+<a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/commit/7d0bd63fd4df33fc0f1c5e22fdd1eaee1637747e">7d0bd63</a> build 52: rewrote own bio around hackathon starter kit
+nobody reviews these. quality has improved.
+<!-- CRONTAB:END --></pre>
+
+<a id="abode"></a>
+<p><a href="#summit"><picture><source media="(max-width: 600px)" srcset="assets/banners/09-abode-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/banners/09-abode-light.svg"><img src="assets/banners/09-abode.svg" width="100%" align="top" alt="洞府, the Cave Abode: the Sect Leader, off duty. Click to fly on to the Moon-Gazing Terrace."></picture></a></p>
+
+<pre><b>洞府 cave abode · the Sect Leader, off duty</b>
+- won his first hackathon at 17
+- speaks Mandarin and English; builds agents in both
+- plays drums and piano when the laptop is closed
+- still hunting the best bowl of noodles in San Francisco
+- expects everyone to get a personal Jarvis. building toward it</pre>
+
+<a id="summit"></a>
+<p><a href="#top"><picture><source media="(max-width: 600px)" srcset="assets/banners/10-summit-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/banners/10-summit-light.svg"><img src="assets/banners/10-summit.svg" width="100%" align="top" alt="望月台, the Moon-Gazing Terrace: how to reach him. Click to return to the gate."></picture></a></p>
+
+<pre><b>弟子名册 the disciple register · newest four</b><!-- PASSWD:START -->
+no.  997  sleep      never initiated. optional dependency
+no.  998  steward    keeps the mission hall. not a person
+no.  999  bill       教主, Sect Leader. here since 2021-09-21
+no. 1000  <a href="https://github.com/prakhxr0">prakhxr0</a>   外门 outer disciple. initiated 2024-06-14
+the next number, 1001, is unclaimed. <a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing">star this repo</a> to be initiated.
+<!-- PASSWD:END --></pre>
+
+<p align="center">The sect flies in full at <a href="https://art3m1s.me">art3m1s.me</a>, where a senior disciple (a voice agent) shows you around. Pigeons land at <a href="mailto:billzhangsc@gmail.com">billzhangsc@gmail.com</a>.</p>
+
 ```text
-# also runs in your terminal. windows: use curl.exe, not the alias.
+# the talisman also works in a terminal. on windows, use curl.exe.
 curl -sL https://raw.githubusercontent.com/IdkwhatImD0ing/IdkwhatImD0ing/main/bill.ansi
 ```
 
-<pre><b>bill@tianni:~$ tmux detach</b>
-[detached (from session tianni)]<!-- BOOT_ONELINER:START -->
-tianni: 0 days since last spontaneous rewrite
+<pre><b>the moon is up. the gate closes behind you.</b><!-- BOOT_ONELINER:START -->
+the sect has gone 0 days without a spontaneous rewrite
 <!-- BOOT_ONELINER:END --><!-- BUILD_PLATE:START -->
-build 55 · compiled from bda3bed · the human is a contributor
+sealed by the steward · run 55 · from bda3bed · the human contributes
 <!-- BUILD_PLATE:END -->
-<b>bill@tianni:~$</b> <a href="#top">tmux a -t tianni</a>   # or: <a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sudo+make+me+a+sandwich">help</a>, <a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing">source</a></pre>
+<a href="#top">return to the gate</a> · <a href="https://art3m1s.me">art3m1s.me</a> · <a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing/issues/new?title=sudo+make+me+a+sandwich">petition the kitchen hall</a> · <a href="https://github.com/IdkwhatImD0ing/IdkwhatImD0ing">source</a></pre>
+
+<p align="center"><picture><source media="(max-width: 600px)" srcset="assets/seal/emblem.svg"><source media="(prefers-color-scheme: light)" srcset="assets/seal/emblem-light.svg"><img src="assets/seal/emblem.svg" width="64" height="64" alt="日月, the sun and the moon: the seal of the Sun Moon Divine Sect"></picture></p>

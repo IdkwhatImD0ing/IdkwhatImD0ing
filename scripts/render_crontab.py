@@ -1,18 +1,21 @@
-"""Render the CRONTAB block: `crontab -l`, then the machine's own git receipts.
+"""Render the CRONTAB block: the bell-and-drum timetable, then the steward's ledger.
 
-The block lives inside an HTML <pre> in README.md, right after the first prompt:
+The block lives inside an HTML <pre> in README.md, right after its heading:
 
-    <pre><b>bill@tianni:~$ crontab -l</b><!-- CRONTAB:START -->
+    <pre><b>晨钟暮鼓 morning bell, evening drum · ...</b><!-- CRONTAB:START -->
     ...rendered here...
     <!-- CRONTAB:END --></pre>
 
-Every workflow in .github/workflows becomes one crontab line (event-driven ones
-are @reboot), its file name linked to the source. Then the newest
-`artemis-build` commits, straight from `git log`, each hash linked to the
-commit. The typed pipeline is shown in full and its output is emulated exactly
-(same git query, same two sed substitutions), so nothing on the screen is
-invented. If git is unavailable the receipts are left out and the crontab
-still renders.
+晨钟暮鼓 (morning bell, evening drum) is how a sect keeps time. Every workflow
+in .github/workflows becomes one line of the timetable: its schedule (UTC
+cron, or @petition for the event-driven ones), its file name linked to the
+source, and what it does. Then the steward's ledger: the newest real rewrites,
+straight from `git log`, each hash linked to its commit. The query is
+`git log -4 -E --grep "^(artemis-build|steward) [0-9]+:"`, so the older
+`artemis-build N:` commits of the sect's previous life still count. Subjects
+are abridged the same way every time ("artemis-" and the trailing ", kept the
+good parts/ones" are dropped), so nothing on the screen is invented. If git is
+unavailable the ledger is left out and the timetable still renders.
 
 Run from the repo root: python scripts/render_crontab.py [--readme PATH]
 """
@@ -26,35 +29,30 @@ import subprocess
 from pathlib import Path
 from typing import NamedTuple
 
-from readme_blocks import replace_block
-import phosphor as ph
+from readme_blocks import display_cols, replace_block
 
 START = "<!-- CRONTAB:START -->"
 END = "<!-- CRONTAB:END -->"
 WORKFLOWS_DIR = ".github/workflows"
 REPO_URL = "https://github.com/IdkwhatImD0ing/IdkwhatImD0ing"
-PROMPT = ph.PROMPT
-PS2 = "> "
-MAX_WIDTH = 72  # visible columns per line (links do not count, their text does)
+MAX_WIDTH = 72  # display columns per line (links do not count, their text does)
+EVENT = "@petition"  # event-driven workflows: they run when someone asks
 
 # Only the comments are hardcoded; workflows may appear or disappear freely.
 COMMENTS = {
-    "artemis-ops.yaml": "visitor input: fsck, the button",
-    "profile-summary.yaml": "an LLM rewrites the boot screen",
-    "terminal-hero.yaml": "reroll the POST (1-in-8: panic)",
+    "artemis-ops.yaml": "the formation answers petitions",
+    "profile-summary.yaml": "the steward reposts the missions",
+    "moon-watch.yaml": "the moon is read, the card redrawn",
 }
-DEFAULT_COMMENT = "undocumented daemon"
-TIMEZONE_LINE = "CRON_TZ=UTC"  # GitHub Actions cron is always UTC; say so like a real crontab
+DEFAULT_COMMENT = "an elder nobody has met"
 
-# The receipts pipeline, exactly as typed (a trailing | continues on PS2).
+# The steward's ledger. Real rewrites only: the steward's 'steward N:' commits
+# and the 'artemis-build N:' commits from when this page was a machine.
 RECEIPT_COUNT = 4
-RECEIPT_GREP = "^artemis-build"
-SED_RULES = (("artemis-", ""), (", kept the good parts", ""))  # s/// without g: first match only
-RECEIPT_COMMAND = (
-    f'git log --oneline -{RECEIPT_COUNT} --grep "{RECEIPT_GREP}" |',
-    "sed 's/artemis-//; s/, kept the good parts//'",
-)
-CLOSING_COMMENT = "# nobody reviews these. quality has improved."
+RECEIPT_GREP = r"^(artemis-build|steward) [0-9]+:"
+ABRIDGE = ((re.compile(r"^artemis-"), ""), (re.compile(r", kept the good (?:parts|ones)$"), ""))
+COUNT_WORDS = {1: "one", 2: "two", 3: "three", 4: "four"}
+CLOSING_LINE = "nobody reviews these. quality has improved."
 
 CRON_PATTERN = re.compile(r"""cron:\s*["']?([0-9*,/\- ]+?)["']?\s*(?:#.*)?$""", re.MULTILINE)
 SAFE_NAME = re.compile(r"[^A-Za-z0-9._-]")
@@ -66,18 +64,13 @@ Segment = tuple[str, "str | None"]
 
 class Line(NamedTuple):
     segments: list[Segment]
-    typed: bool = False  # keyboard input (prompt + command): drawn bold
 
 
-def typed(text: str) -> Line:
-    return Line([(text, None)], typed=True)
-
-
-# --- crontab -------------------------------------------------------------------
+# --- the timetable ---------------------------------------------------------------
 
 
 def parse_workflows(directory: Path) -> list[tuple[str, str]]:
-    """Return (schedule, filename) pairs; event-driven workflows get @reboot."""
+    """Return (schedule, filename) pairs; event-driven workflows get @petition."""
     entries: list[tuple[str, str]] = []
     for path in sorted(directory.glob("*.y*ml")):
         filename = SAFE_NAME.sub("", path.name)[:40]
@@ -91,63 +84,77 @@ def parse_workflows(directory: Path) -> list[tuple[str, str]]:
         if crons:
             entries.extend((cron[:24], filename) for cron in crons)
         else:
-            entries.append(("@reboot", filename))
+            entries.append((EVENT, filename))
     return entries
 
 
-def fit_comment(prefix_len: int, comment: str) -> str:
+def timetable_order(entry: tuple[str, str]) -> tuple:
+    """Petitions first, then the week in order (by the first weekday, hour and
+    minute of each schedule), like a timetable pinned by the bell tower."""
+    sched, name = entry
+    if sched == EVENT:
+        return (0, 0, 0, 0, name)
+    fields = sched.split()
+
+    def first_number(index: int, default: int) -> int:
+        if index >= len(fields):
+            return default
+        match = re.match(r"\d+", fields[index])
+        return int(match.group()) if match else default
+
+    return (1, first_number(4, 0), first_number(1, 0), first_number(0, 0), name)
+
+
+def fit_comment(prefix_cols: int, comment: str) -> str:
     """Trim a comment on word boundaries so the row stays inside MAX_WIDTH."""
     words = comment.split()
-    while words and prefix_len + len("# " + " ".join(words)) > MAX_WIDTH:
+    while words and prefix_cols + display_cols(" ".join(words)) > MAX_WIDTH:
         words.pop()
-    return "# " + " ".join(words) if words else ""
+    return " ".join(words)
 
 
-def crontab_lines(entries: list[tuple[str, str]]) -> list[Line]:
+def timetable_lines(entries: list[tuple[str, str]]) -> list[Line]:
     if not entries:
         raise ValueError("no workflow files found")
+    entries = sorted(entries, key=timetable_order)
     sched_width = max(len(sched) for sched, _ in entries)
     name_width = max(len(name) for _, name in entries)
-    lines = [Line([(TIMEZONE_LINE, None)])]
+    lines = []
     for sched, name in entries:
         comment = fit_comment(sched_width + 2 + name_width + 2, COMMENTS.get(name, DEFAULT_COMMENT))
-        pad = " " * (name_width - len(name))
-        segments: list[Segment] = [
-            (sched.ljust(sched_width) + "  ", None),
-            (name, f"{WORKFLOWS_DIR}/{name}"),
-        ]
+        segments: list[Segment] = [(sched.ljust(sched_width) + "  ", None), (name, f"{WORKFLOWS_DIR}/{name}")]
         if comment:
-            segments.append((pad + "  " + comment, None))
+            segments.append((" " * (name_width - len(name)) + "  " + comment, None))
         lines.append(Line(segments))
     return lines
 
 
-# --- git receipts ---------------------------------------------------------------
+# --- the steward's ledger ------------------------------------------------------------
 
 
 def clean_subject(subject: str) -> str:
     """Commit subjects are untrusted: printable ASCII only, whitespace collapsed.
-    Anything else shows as '?', the way a terminal without the glyph would."""
+    Anything else shows as '?', the way a scribe copies a glyph he cannot read."""
     text = "".join(ch if " " <= ch <= "~" else ("?" if not ch.isspace() else " ") for ch in subject)
     return " ".join(text.split())[:200]
 
 
-def apply_sed(subject: str) -> str:
-    for pattern, replacement in SED_RULES:
-        subject = subject.replace(pattern, replacement, 1)
+def abridge(subject: str) -> str:
+    for pattern, replacement in ABRIDGE:
+        subject = pattern.sub(replacement, subject, count=1)
     return subject
 
 
 def git_receipts() -> list[tuple[str, str, str]]:
-    """(full sha, abbreviated sha, subject after sed) for the newest build commits:
-    the same query as RECEIPT_COMMAND, so the screen and the data cannot drift.
-    Returns [] when git is missing, the repo is absent, or nothing matches."""
-    command = ["git", "log", f"-{RECEIPT_COUNT}", f"--grep={RECEIPT_GREP}", "--format=%H%x09%h%x09%s"]
+    """(full sha, abbreviated sha, abridged subject) for the newest real
+    rewrites. Returns [] when git is missing, the repo is absent, or nothing
+    matches."""
+    command = ["git", "log", f"-{RECEIPT_COUNT}", "-E", f"--grep={RECEIPT_GREP}", "--format=%H%x09%h%x09%s"]
     try:
         result = subprocess.run(command, capture_output=True, text=True, encoding="utf-8",
                                 errors="replace", timeout=30, check=True)
     except (OSError, subprocess.SubprocessError) as error:
-        print(f"WARNING: git receipts skipped: {error}")
+        print(f"WARNING: the steward's ledger skipped: {error}")
         return []
     receipts = []
     for raw in result.stdout.splitlines():
@@ -157,13 +164,14 @@ def git_receipts() -> list[tuple[str, str, str]]:
         full, short, subject = parts
         if len(full) != 40 or not HEX.fullmatch(full) or not HEX.fullmatch(short) or len(short) > 12:
             continue
-        receipts.append((full, short, apply_sed(clean_subject(subject))))
+        receipts.append((full, short, abridge(clean_subject(subject))))
     return receipts
 
 
 def wrap(segments: list[Segment], width: int = MAX_WIDTH) -> list[Line]:
-    """Soft-wrap output at the terminal edge, the way a 72-column tty would. Links
-    stay whole (they only ever sit at the start of a line, well inside the width)."""
+    """Soft-wrap at the column edge. Links stay whole (they only ever sit at the
+    start of a line, well inside the width). Subjects are ASCII, so one
+    character is one column here."""
     out: list[list[Segment]] = [[]]
     col = 0
     for text, href in segments:
@@ -187,17 +195,18 @@ def wrap(segments: list[Segment], width: int = MAX_WIDTH) -> list[Line]:
     return [Line(part) for part in parts]
 
 
-def receipt_lines(receipts: list[tuple[str, str, str]]) -> list[Line]:
+def ledger_lines(receipts: list[tuple[str, str, str]]) -> list[Line]:
     if not receipts:
         return []
-    lines = [Line([]), typed(PROMPT + RECEIPT_COMMAND[0]), typed(PS2 + RECEIPT_COMMAND[1])]
+    count = COUNT_WORDS.get(len(receipts), str(len(receipts)))
+    lines = [Line([]), Line([(f"from the steward's ledger (git log, newest {count}, abridged):", None)])]
     for full, short, subject in receipts:
         lines.extend(wrap([(short, f"{REPO_URL}/commit/{full}"), (" " + subject, None)]))
-    lines.append(typed(PROMPT + CLOSING_COMMENT))
+    lines.append(Line([(CLOSING_LINE, None)]))
     return lines
 
 
-# --- render --------------------------------------------------------------------
+# --- render ---------------------------------------------------------------------
 
 
 def visible(line: Line) -> str:
@@ -209,15 +218,13 @@ def line_html(line: Line) -> str:
     for text, href in line.segments:
         body = html.escape(text, quote=False)
         out.append(f'<a href="{html.escape(href)}">{body}</a>' if href else body)
-    joined = "".join(out)
-    # Typed input is bold (like a terminal's bright prompt); output stays plain.
-    return f"<b>{joined}</b>" if line.typed else joined
+    return "".join(out)
 
 
 def render(entries: list[tuple[str, str]], receipts: list[tuple[str, str, str]]) -> str:
-    lines = crontab_lines(entries) + receipt_lines(receipts)
+    lines = timetable_lines(entries) + ledger_lines(receipts)
     for line in lines:
-        if len(visible(line)) > MAX_WIDTH:
+        if display_cols(visible(line)) > MAX_WIDTH:
             raise ValueError(f"line exceeds {MAX_WIDTH} columns: {visible(line)!r}")
     content = "\n".join(line_html(line) for line in lines)
     if START in content or END in content or "<!--" in content:
@@ -229,7 +236,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Render the CRONTAB block of README.md.")
     parser.add_argument("--readme", default="README.md")
     parser.add_argument("--workflows", default=WORKFLOWS_DIR)
-    parser.add_argument("--no-git", action="store_true", help="render without the git receipts")
+    parser.add_argument("--no-git", action="store_true", help="render without the steward's ledger")
     parser.add_argument("--dry-run", action="store_true", help="print the block, write nothing")
     args = parser.parse_args()
 
@@ -237,7 +244,7 @@ def main() -> None:
         receipts = [] if args.no_git else git_receipts()
         content = render(parse_workflows(Path(args.workflows)), receipts)
     except (OSError, ValueError) as error:
-        print(f"WARNING: crontab not rendered: {error}")
+        print(f"WARNING: timetable not rendered: {error}")
         return
 
     print("--- CRONTAB ---")
@@ -250,7 +257,7 @@ def main() -> None:
     except (ValueError, OSError) as error:
         print(f"WARNING: skipped CRONTAB block: {error}")
         return
-    print("Updated crontab block" if changed else "Crontab block already current")
+    print("Updated timetable block" if changed else "Timetable block already current")
 
 
 if __name__ == "__main__":
