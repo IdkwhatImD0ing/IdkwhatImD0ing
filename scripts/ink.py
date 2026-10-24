@@ -46,7 +46,7 @@ from xml.sax.saxutils import escape
 # --- who -----------------------------------------------------------------------
 
 NAME = "Bill Zhang"
-WON, ENTERED = 35, 58          # lifetime hackathon record (the log holds only the greatest hits)
+WON, ENTERED = 36, 59          # lifetime hackathon record (the log holds only the greatest hits)
 SITE = "https://art3m1s.me"
 ACCOUNT_CREATED = datetime(2021, 9, 21, tzinfo=timezone.utc)
 SECT_ZH = "日月神教"

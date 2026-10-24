@@ -5,7 +5,9 @@ Local only (needs Pillow; CI never runs it). Two steps:
   python scripts/generate_gate.py titles
       Writes the title overlays, drawn through ink.py like every other SVG:
       assets/gate/title.svg (dark, 1200 x 600), title-light.svg, title-phone.svg
-      (720 x 720). They are not referenced by the README; they are kept so a
+      (720 x 720). "Bill Zhang" is the biggest text on the page, with his line
+      under it; 日月神教 is a small mark with its seal and English gloss in the
+      corner. They are not referenced by the README; they are kept so a
       re-capture can composite the same titles.
 
   python scripts/generate_gate.py encode --frames DIR --overlays DIR --paper PATH
@@ -62,44 +64,56 @@ def _band(w: float, h: float, top: float, mode: str) -> tuple[str, str]:
     return defs, f'<rect x="0" y="{ink.fmt(top)}" width="{ink.fmt(w)}" height="{ink.fmt(h - top)}" fill="url(#band)"/>'
 
 
-def _chip(x: float, y: float, label: str, size: float, anchor: str = "start") -> str:
-    """The site's HUD chip: letterspaced gold capitals in a hairline frame."""
-    tw = ink.measure(label, size, "medium", 0.22)
-    pad = 12
-    x0 = x if anchor == "start" else x - tw - 2 * pad if anchor == "end" else x - tw / 2 - pad
-    return (f'<rect x="{ink.fmt(x0)}" y="{ink.fmt(y - size - 8)}" width="{ink.fmt(tw + 2 * pad)}" '
-            f'height="{ink.fmt(size + 16)}" rx="2" class="bg" opacity=".55"/>'
-            f'<rect x="{ink.fmt(x0 + 0.5)}" y="{ink.fmt(y - size - 7.5)}" width="{ink.fmt(tw + 2 * pad - 1)}" '
-            f'height="{ink.fmt(size + 15)}" rx="2" class="au-s" stroke-opacity=".7" stroke-width="1"/>'
-            + ink.text(x0 + pad, y + 0.5, label, size, "medium", "au", tracking=0.22))
+NAME_LINE = "builds voice-first LLM agents · Pinterest"
+GLOSS = ink.SECT_EN.upper()
+GLOSS_TRACK = 0.22
 
 
 def title_svg(mode: str) -> str:
-    defs, band = _band(W, H, 330, mode)
-    name_cls = "tx"
+    """Two rows on one grid. Left: the name (the biggest text on the page) over
+    his line. Right, like a painter's inscription and seal: 日月神教 and the 神
+    seal over the English gloss."""
+    defs, band = _band(W, H, 300, mode)
+    right = W - 56
     body = [band, '<g filter="url(#sh)">']
-    body.append(ink.text(52, 528, ink.SECT_ZH, 70, "brush", name_cls))
-    sx = 52 + ink.measure(ink.SECT_ZH, 70, "brush") + 8
-    body.append(ink.seal(sx, 470, 34, "神"))
-    body.append(ink.text(W - 52, 520, ink.NAME, 58, "display", name_cls, anchor="end"))
+    body.append(ink.text(56, 506, ink.NAME, 92, "display", "tx"))
+    line_size = 35
+    gloss_x = right - ink.measure(GLOSS, 17, "medium", GLOSS_TRACK)
+    while 58 + ink.measure(NAME_LINE, line_size, "medium") + 40 > gloss_x and line_size > 30:
+        line_size -= 2      # the spec's one step down: 35, then 33
+    body.append(ink.text(58, 556, NAME_LINE, line_size, "medium", "tx"))
+    seal_size = 28
+    seal_x = right - seal_size
+    body.append(ink.text(seal_x - 8, 506, ink.SECT_ZH, 35, "brush", "tx", anchor="end"))
+    body.append(ink.seal(seal_x, 476, seal_size, "神"))
+    body.append(ink.text(right, 556, GLOSS, 17, "medium", "mu", anchor="end", tracking=GLOSS_TRACK))
     body.append("</g>")
-    body.append(_chip(52, 568, ink.SECT_EN.upper(), 14))
-    body.append(ink.text(W - 52, 566, "AI ENGINEER  ·  ART3M1S.ME", 15, "medium", "au", anchor="end", tracking=0.2))
-    label = "Title for the gate: 日月神教, Sun Moon Divine Sect; Bill Zhang, AI engineer, art3m1s.me"
+    label = (f"Title for the gate: {ink.NAME}, {NAME_LINE}; the mark {ink.SECT_ZH}, "
+             f"{ink.SECT_EN}, with its seal")
     return ink.doc(W, H, "".join(body), label, mode, defs=defs + _shadow_defs(mode))
 
 
 def title_phone_svg() -> str:
-    defs, band = _band(PW, PW, 380, "dark")
+    """The same three things, centred, for a square phone hero."""
+    defs, band = _band(PW, PW, 360, "dark")
     body = [band, '<g filter="url(#sh)">']
-    zw = ink.measure(ink.SECT_ZH, 84, "brush")
-    zx = (PW - zw - 44) / 2
-    body.append(ink.text(zx, 600, ink.SECT_ZH, 84, "brush", "tx"))
-    body.append(ink.seal(zx + zw + 6, 532, 38, "神"))
+    body.append(ink.text(PW / 2, 588, ink.NAME, 112, "display", "tx", anchor="middle"))
+    line_size = 29.0
+    while ink.measure(NAME_LINE, line_size, "medium") > 640 and line_size > 20:
+        line_size -= 0.5
+    body.append(ink.text(PW / 2, 636, NAME_LINE, line_size, "medium", "tx", anchor="middle"))
+    zw = ink.measure(ink.SECT_ZH, 30, "brush")
+    gw = ink.measure(GLOSS, 20, "medium", GLOSS_TRACK)
+    seal_size = 22
+    total = zw + 8 + seal_size + 16 + gw
+    x = (PW - total) / 2
+    body.append(ink.text(x, 690, ink.SECT_ZH, 30, "brush", "tx"))
+    x += zw + 8
+    body.append(ink.seal(x, 690 - seal_size - 2, seal_size, "神"))
+    x += seal_size + 16
+    body.append(ink.text(x, 690, GLOSS, 20, "medium", "mu", tracking=GLOSS_TRACK))
     body.append("</g>")
-    body.append(_chip(PW / 2, 650, ink.SECT_EN.upper(), 17, anchor="middle"))
-    body.append(ink.text(PW / 2, 696, "BILL ZHANG  ·  ART3M1S.ME", 18, "medium", "au", anchor="middle", tracking=0.2))
-    label = "Title for the gate on phones: 日月神教, Sun Moon Divine Sect; Bill Zhang, art3m1s.me"
+    label = f"Title for the gate on phones: {ink.NAME}, {NAME_LINE}; {ink.SECT_ZH}, {ink.SECT_EN}"
     return ink.doc(PW, PW, "".join(body), label, "dark", defs=defs + _shadow_defs("dark"))
 
 

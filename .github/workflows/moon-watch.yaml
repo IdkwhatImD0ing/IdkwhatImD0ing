@@ -1,8 +1,9 @@
 name: Moon watch
 
-# Once a week the moon is read: the Heart-Mirror card shows tonight's phase,
-# the Mission Hall board rolls its weekly omen, and the terminal talisman is
-# redrawn. The Saturday cadence is also part of the repo's keepalive (GitHub
+# Once a week, on Saturday, the steward re-reads the dates: if Bill pushed
+# again to a repo in the Now section, its date moves forward (no LLM, no new
+# lines), and the terminal talisman is redrawn. It commits only when a date
+# moved. The Saturday cadence is also part of the repo's keepalive (GitHub
 # disables cron workflows after 60 quiet days); do not thin it.
 
 on:
@@ -34,12 +35,11 @@ jobs:
         with:
           python-version: "3.12"
 
-      # Stdlib only: the card and the board are drawn from glyph tables.
-      - name: Read the moon, redraw the card and the board
+      # Stdlib only. Any API failure warns and changes nothing.
+      - name: The steward re-reads the dates
         env:
           GITHUB_TOKEN: ${{ github.token }}
-          GITHUB_SHA: ${{ github.sha }}
-        run: python scripts/render_card.py
+        run: python scripts/update_currently_building.py --dates-only
 
       - name: Redraw the terminal talisman
         run: python scripts/generate_ansi_card.py
@@ -50,5 +50,6 @@ jobs:
       - name: Commit
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "moon-watch: re-read the moon, redrew the card"
-          file_pattern: "assets/mirror assets/hall bill.ansi"
+          commit_message: "moon-watch: the steward re-read the dates"
+          # Every pathspec must exist, or git add fails and nothing commits.
+          file_pattern: "README.md assets/status.json bill.ansi"

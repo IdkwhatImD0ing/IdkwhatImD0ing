@@ -1,0 +1,78 @@
+name: "Steward: repost the missions"
+
+on:
+  schedule:
+    - cron: "17 15 * * 1,4"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: profile-readme-writes
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      # OpenAI-independent renders run first so a bad LLM day cannot block them.
+      - name: "Forge: redraw the four newest artifacts (hackathon log)"
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python scripts/render_hacklog.py
+
+      - name: "Ring the timetable: workflows and the steward's ledger"
+        run: python scripts/render_crontab.py
+
+      - name: "Update the disciple register (stargazers)"
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python scripts/render_passwd.py
+
+      - name: "Steward: repost the missions (status.json, build plate)"
+        id: build
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          REQUIRE_OPENAI: "1"
+          GITHUB_SHA: ${{ github.sha }}
+        run: python scripts/update_currently_building.py
+
+      # Runs even if the LLM step failed: it falls back to the last status.json.
+      - name: Redraw the identity card and the mission board
+        if: ${{ !cancelled() }}
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_SHA: ${{ github.sha }}
+        run: python scripts/render_card.py
+
+      - name: Reprint the terminal talisman (bill.ansi)
+        if: ${{ !cancelled() }}
+        run: python scripts/generate_ansi_card.py
+
+      # Commit whatever rendered even if the LLM step failed.
+      - name: Rebase generated changes on latest main
+        if: ${{ !cancelled() }}
+        run: git pull --rebase --autostash origin main
+
+      - name: Commit the sect's upkeep
+        if: ${{ !cancelled() }}
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "${{ steps.build.outputs.msg || 'steward: routine upkeep' }}"
+          # directory pathspecs also stage pruned (retired) artifact files
+          file_pattern: "README.md assets/status.json assets/mirror assets/hall assets/forge bill.ansi"

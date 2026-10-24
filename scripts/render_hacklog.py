@@ -1,28 +1,29 @@
-"""Render the Artifact Forge: the four newest hackathon builds as forged artifacts.
+"""Render the Shipped cards: the four newest hackathon builds, one quiet card each.
 
 Source of truth is var/log/hackathons.log (Bill appends one line per event):
 
     YYYY-MM-DD  EVENT  [TAG]  NAME — AWARD
 
-The newest four entries (by date) each become one artifact SVG in
-assets/forge/ (<slug>.svg dark, <slug>-light.svg for light mode,
-<slug>-phone.svg for phones), drawn by scripts/art_forge.py, and the HACKLOG
-marker block in README.md becomes a centered 2x2 grid of those artifacts,
-each linked to its repo. The newest artifact's frame still glows; the oldest
-has one tired rune.
+The newest four entries (by date) each become one card SVG in assets/forge/
+(<slug>.svg dark, <slug>-light.svg for light mode, <slug>-phone.svg for
+phones), drawn by scripts/art_forge.py, and the HACKLOG marker block in
+README.md becomes a left-aligned 2x2 grid of those cards, each linked to its
+repo. (The folder and the "forged artifact" signature keep their old names on
+purpose: they are invisible to readers.)
 
 var/lib/ships.json (hand-maintained) maps NAME -> {"repo": "owner/name",
-"payload": one line, "lang": str, "stars": int, "forks": int}. Stars, forks
-and language are refreshed live from the GitHub REST API (GITHUB_TOKEN
-optional); on any failure the ships.json values are used. This script never
+"payload": one line, "lang": str, "stars": int, "forks": int}. The cards show
+only the name, the payload and the award line; stars, forks and language are
+still refreshed from the GitHub REST API (GITHUB_TOKEN optional) for the run
+log, and on any failure the ships.json values are used. This script never
 writes ships.json. A log entry with no ships.json record still renders, just
-without a link or stats. A missing or unparseable ships.json is a failed
-render, not an empty one: one bad hand edit must not strip every link.
+without a link. A missing or unparseable ships.json is a failed render, not
+an empty one: one bad hand edit must not strip every link.
 
 Never blank: everything renders in memory first; on any failure the script
 warns, keeps the old files and exits 0. Missing markers warn and exit 0.
 Only files carrying art_forge.SIGNATURE are ever pruned.
-Run from the repo root: python scripts/render_hacklog.py [--dry-run]
+Run from the repo root: python scripts/render_hacklog.py [--offline] [--dry-run]
 """
 
 from __future__ import annotations
@@ -231,10 +232,15 @@ def verdict(ship: Ship) -> str:
 
 
 def alt_text(ship: Ship) -> str:
+    """'TalkTuahBank: Overall 1st Place at HackUTD 2024, November 2024. Voice-first
+    banking for the people banks forgot. Opens the source on GitHub.'"""
+    record = dataclasses.asdict(ship)
     award = ship.award or verdict(ship)
-    text = f"{ship.name}: {award} at {ship.event}, {ship.date}."
+    text = f"{ship.name}: {award} at {ship.event}, {af.month(record, long=True)}."
     if ship.payload:
-        text += " " + ship.payload.rstrip(".") + "."
+        text += " " + af.one_liner(record) + "."
+    if ship.repo:
+        text += " Opens the source on GitHub."
     return text
 
 
@@ -253,7 +259,7 @@ def artifact_markup(ship: Ship, prefix: str) -> str:
 
 def block_markup(ships: list[Ship], prefix: str) -> str:
     rows = ["".join(artifact_markup(s, prefix) for s in ships[i:i + 2]) for i in range(0, len(ships), 2)]
-    content = '<p align="center">' + "<br>\n".join(rows) + "</p>"
+    content = "<p>" + "<br>\n".join(rows) + "</p>"
     if START in content or END in content:
         raise ValueError("rendered markup unexpectedly contained README markers")
     return content
@@ -273,19 +279,15 @@ def render(ships: list[Ship]) -> dict[str, str]:
     """Every SVG for the given ships, in memory. Keys are file names."""
     files: dict[str, str] = {}
     records = [dataclasses.asdict(ship) for ship in ships]
-    # Desktop artifacts sit side by side, so the whole set shares one height.
-    # Phone artifacts always stack, so each keeps its own (no blank payload rows).
+    # Desktop cards sit side by side, so the whole set shares one height.
+    # Phone cards always stack, so each keeps its own (no blank payload rows).
     desk_lines = af.payload_lines_needed(records, False)
     for index, (ship, record) in enumerate(zip(ships, records)):
         phone_lines = af.payload_lines_needed([record], True)
-        active = index == 0  # the newest artifact's frame still glows
-        flaky = len(ships) > 1 and index == len(ships) - 1  # the oldest has one tired rune
-        files[f"{ship.slug}.svg"] = af.artifact_svg(record, index, active=active, mode="dark",
-                                                    payload_lines=desk_lines, flaky=flaky)
-        files[f"{ship.slug}-light.svg"] = af.artifact_svg(record, index, active=active, mode="light",
-                                                          payload_lines=desk_lines)
-        files[f"{ship.slug}-phone.svg"] = af.artifact_svg(record, index, active=active, mode="dark", phone=True,
-                                                          payload_lines=phone_lines, flaky=flaky)
+        files[f"{ship.slug}.svg"] = af.artifact_svg(record, index, mode="dark", payload_lines=desk_lines)
+        files[f"{ship.slug}-light.svg"] = af.artifact_svg(record, index, mode="light", payload_lines=desk_lines)
+        files[f"{ship.slug}-phone.svg"] = af.artifact_svg(record, index, mode="dark", phone=True,
+                                                          payload_lines=phone_lines)
     return files
 
 

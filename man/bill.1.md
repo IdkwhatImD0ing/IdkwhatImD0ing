@@ -34,7 +34,7 @@ Invoked without arguments, **bill** defaults to `--ship`.
 : Attaches an ElevenLabs pipeline to whatever the current project is. This flag is frequently implied.
 
 **--hackathon**
-: Competitive mode. Historical exit data: 35 wins across 58 invocations (60%).
+: Competitive mode. Historical exit data: 36 wins across 59 invocations (61%).
 
 **--sleep**
 : Recognized for POSIX compliance. Not implemented.

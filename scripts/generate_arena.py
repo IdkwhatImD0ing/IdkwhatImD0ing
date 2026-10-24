@@ -1,9 +1,10 @@
-"""Draw 论剑台, the Sword-Discussion Arena record: one sword per hackathon entered.
+"""Draw the sword row: one sword per hackathon entered, the winners in gold.
 
-58 swords stand in the rack (two rows of 29 on phones); the 35 that won are
-gilded, the rest stay dark iron. In the dark the gilded ones take their gold
-one after another as the picture loads; the picture without animation is the
-finished rack. The record lives in ink.WON / ink.ENTERED.
+59 swords stand in one rack (two rows of 30 and 29 on phones); the 36 that won
+are gilded, the rest stay dark iron. Gold means won, and nothing else on the
+row is gold. In the dark the gilded ones take their gold one after another as
+the picture loads; the picture without animation is the finished rack. The
+record lives in ink.WON / ink.ENTERED.
 
 Run from the repo root: python scripts/generate_arena.py
 Writes assets/arena/record.svg, record-light.svg, record-phone.svg.
@@ -16,6 +17,7 @@ from pathlib import Path
 import ink
 
 OUT = Path("assets/arena")
+CAPTION = "one sword per hackathon"
 
 
 def sword_d(x: float, top: float, height: float, width: float = 8.0) -> str:
@@ -63,31 +65,33 @@ def rack(x0: float, y_top: float, width: float, per_row: int, height: float, row
 
 def label() -> str:
     pct = round(100 * ink.WON / ink.ENTERED)
-    return (f"Sword-Discussion Arena record: {ink.WON} hackathons won out of {ink.ENTERED} entered ({pct}%). "
-            f"One sword per hackathon; {ink.WON} are gilded.")
+    return (f"{ink.WON} hackathons won out of {ink.ENTERED} entered ({pct}%). "
+            f"One sword per hackathon; the {ink.WON} gold swords won.")
 
 
-def headline(x: float, y: float, size: float, compact: bool) -> list[str]:
-    pct = round(100 * ink.WON / ink.ENTERED)
-    out = [ink.text(x, y, "论剑", size * 1.15, "brush", "au")]
-    x += ink.measure("论剑", size * 1.15, "brush") + 14
-    parts = [(str(ink.WON), "au", "display"), (" won", "mu", "body"), ("   ·   ", "mu", "body"),
-             (str(ink.ENTERED), "tx", "display"), (" entered", "mu", "body")]
-    for text_, cls, face in parts:
-        s = size * (1.3 if face == "display" else 0.55)
-        out.append(ink.text(x, y - (0 if face == "display" else 1), text_, s, face, cls))
-        x += ink.measure(text_, s, face)
-    if not compact:
-        out.append(ink.text(x + 20, y - 1, f"{pct}% of the swords drawn came back gilded", size * 0.5, "body", "mu"))
-    return out
+def headline(x: float, y: float, num: float, small: float, gap: float, sep: str = "") -> tuple[list[str], float]:
+    """'36 won', a gap (or a separator), '59 entered'. Returns (svg runs, end x)."""
+    middle = ("  " + sep + "  ", "mu", "body", small) if sep else (None, "", "", gap)
+    parts = [(str(ink.WON), "au", "display", num), (" won", "mu", "body", small), middle,
+             (str(ink.ENTERED), "tx", "display", num), (" entered", "mu", "body", small)]
+    out = []
+    for text_, cls, face, size in parts:
+        if text_ is None:
+            x += size
+            continue
+        out.append(ink.text(x, y, text_, size, face, cls))
+        x += ink.measure(text_, size, face)
+    return out, x
 
 
 def record_svg(mode: str) -> str:
-    w, h = ink.W, 168
+    w, h = ink.W, 136
     animate = mode == "dark"
-    body = [ink.plate(0, 0, w, h, corner=14)]
-    body += headline(26, 46, 24, compact=False)
-    svg, css = rack(26, 70, w - 52, ink.ENTERED, 74, 0, animate, 8)
+    body = [ink.plate(0, 0, w, h, corner=0)]
+    runs, _ = headline(24, 44, 30, 14, 20)
+    body += runs
+    body.append(ink.text(w - 24, 44, CAPTION, 12, "body", "mu", anchor="end"))
+    svg, css = rack(24, 60, w - 48, ink.ENTERED, 56, 0, animate, 8)
     body.append(svg)
     return ink.doc(w, h, "".join(body), label(), mode, extra_css=css)
 
@@ -95,14 +99,16 @@ def record_svg(mode: str) -> str:
 def record_phone_svg() -> str:
     w = ink.WP
     per_row = -(-ink.ENTERED // 2)
-    height, gap = 50, 16
-    h = 62 + 2 * height + gap + 22
-    body = [ink.plate(0, 0, w, h, corner=12)]
-    body += headline(16, 40, 20, compact=True)
-    svg, css = rack(16, 58, w - 32, per_row, height, gap, True, 7)
+    height, gap = 44, 12
+    y_rack = 52
+    y_caption = y_rack + 2 * height + gap + 6 + 24
+    h = y_caption + 16
+    body = [ink.plate(0, 0, w, h, corner=0)]
+    runs, _ = headline(16, 38, 26, 12, 0, sep="·")
+    body += runs
+    svg, css = rack(16, y_rack, w - 32, per_row, height, gap, True, 7)
     body.append(svg)
-    pct = round(100 * ink.WON / ink.ENTERED)
-    body.append(ink.text(w - 16, 40, f"{pct}%", 12, "mono", "mu", anchor="end"))
+    body.append(ink.text(16, y_caption, CAPTION, 12, "body", "mu"))
     return ink.doc(w, h, "".join(body), label(), "dark", extra_css=css)
 
 

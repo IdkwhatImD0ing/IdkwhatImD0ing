@@ -1,4 +1,4 @@
-name: "Steward: repost the missions"
+name: "Steward: post what Bill is working on now"
 
 on:
   schedule:
@@ -30,20 +30,17 @@ jobs:
           python-version: "3.x"
 
       # OpenAI-independent renders run first so a bad LLM day cannot block them.
-      - name: "Forge: redraw the four newest artifacts (hackathon log)"
+      - name: "Forge: redraw the four Shipped cards (hackathon log)"
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: python scripts/render_hacklog.py
-
-      - name: "Ring the timetable: workflows and the steward's ledger"
-        run: python scripts/render_crontab.py
 
       - name: "Update the disciple register (stargazers)"
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: python scripts/render_passwd.py
 
-      - name: "Steward: repost the missions (status.json, build plate)"
+      - name: "Steward: write the Now lines (status.json, NOW block, build plate)"
         id: build
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -52,14 +49,7 @@ jobs:
           GITHUB_SHA: ${{ github.sha }}
         run: python scripts/update_currently_building.py
 
-      # Runs even if the LLM step failed: it falls back to the last status.json.
-      - name: Redraw the identity card and the mission board
-        if: ${{ !cancelled() }}
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-          GITHUB_SHA: ${{ github.sha }}
-        run: python scripts/render_card.py
-
+      # Runs even if the LLM step failed: it reads the obsession from the last status.json.
       - name: Reprint the terminal talisman (bill.ansi)
         if: ${{ !cancelled() }}
         run: python scripts/generate_ansi_card.py
@@ -74,5 +64,6 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "${{ steps.build.outputs.msg || 'steward: routine upkeep' }}"
-          # directory pathspecs also stage pruned (retired) artifact files
-          file_pattern: "README.md assets/status.json assets/mirror assets/hall assets/forge bill.ansi"
+          # Every pathspec must exist, or git add fails and nothing commits.
+          # The directory pathspec also stages pruned (retired) card files.
+          file_pattern: "README.md assets/status.json assets/forge bill.ansi"

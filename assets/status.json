@@ -1,27 +1,20 @@
 {
   "obsession": "travel and hackathons",
-  "motd": "the updates are never-ending, much like travel plans.",
-  "processes": [
+  "missions": [
     {
-      "command": "travel-agent",
-      "flags": "--update --verbose",
-      "cpu": 95
+      "repo": "IdkwhatImD0ing/PortfolioV5",
+      "pushed": "2026-10-24",
+      "line": "Ice-Fire Island's steam rises from the volcano's crater."
     },
     {
-      "command": "portfolio-v5",
-      "flags": "--build --watch",
-      "cpu": 90
+      "repo": "IdkwhatImD0ing/hackathonstarterkit",
+      "pushed": "2026-10-14",
+      "line": "Replace homepage MCP prompt with agent install dropdown."
     },
     {
-      "command": "hackathon-kit",
-      "flags": "--merge --deploy",
-      "cpu": 85
-    },
-    {
-      "command": "llm-tuner",
-      "flags": "--rent --debug",
-      "cpu": 80
+      "repo": "IdkwhatImD0ing/claude-music-videos",
+      "pushed": "2026-10-04",
+      "line": "Make this a repo of all my Claude music videos; add PARANOIA."
     }
-  ],
-  "updated": "2026-10-22T19:12:53Z"
+  ]
 }

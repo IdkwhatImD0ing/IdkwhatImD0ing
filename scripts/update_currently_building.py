@@ -1,76 +1,107 @@
-"""The Mission Hall steward: reposts the sect's mission board twice a week.
+"""The steward: posts what Bill is working on now, twice a week.
 
-The steward is an LLM. It reads Bill's recent public GitHub activity plus the
-Hackathon Playbook RSS feed, asks OpenAI for 3-4 missions, one dry note and
-what the Sect Leader is in closed-door cultivation on, and writes them to
-assets/status.json. The mission board and the identity card
-(scripts/render_card.py) and bill.ansi read that file. status.json keeps its
-old schema: "processes" are the posted missions (command = mission name,
-flags = tags, cpu = qi devoted), "motd" is the steward's note, "obsession" is
-the cultivation.
+The steward is an LLM. It reads Bill's real public GitHub activity, picks the
+three repos he is working on, and writes one plain sentence for each. Those
+three lines are the README's Now section (the NOW block) and live in
+assets/status.json:
+
+    {"obsession": "2-4 words",
+     "missions": [{"repo": "owner/name", "pushed": "YYYY-MM-DD", "line": "Building ..."}],
+     "updated": "YYYY-MM-DDTHH:MM:SSZ"}
+
+"obsession" (what the Sect Leader is in closed-door cultivation on) is read by
+generate_ansi_card.py for bill.ansi; it never shows on the page.
+
+Honesty rules. Candidates are only repos Bill pushed to, from the public
+events feed, never the profile repo itself. The LLM may only pick from that
+list; one repo outside it rejects the whole payload. The date on each line is
+Bill's newest push, from the feed, never from the model. With fewer than 3
+candidates the list is topped up from his public repos by last push (no forks,
+nothing archived).
 
 When the model is unreachable or returns junk, the previous status.json is
-kept as-is (the commit says 'steward: the ink ran dry, kept the old
-missions'); only when there is no usable previous one, or with
---fallback-only, a deterministic fallback built from the same activity takes
-over.
+kept (its dates refreshed from the feed); only when there is no usable
+previous one, or with --fallback-only, a deterministic fallback built from the
+same candidates takes over (each line: a recent commit subject, else the repo
+description, else an excuse). With fewer than 3 repos in hand the NOW block
+is left alone.
 
-Also owns the BUILD_PLATE block: one plain line inside the footer <pre>.
+--dates-only (the Saturday moon watch): no LLM. Re-read the feed, move each
+posted repo's date forward if Bill pushed again, re-render the NOW block.
+status.json is rewritten only if a date moved; BUILD_PLATE is not touched.
+
+Also owns the BUILD_PLATE block: one plain line inside the Play fold's <pre>.
+It changes every normal run, so the Mon/Thu run always commits: that commit is
+the keepalive that stops GitHub from switching off the scheduled workflows.
 
 Contract: never blank anything. status.json is only rewritten after the whole
-payload validated; a missing BUILD_PLATE marker is a warning, not a crash.
-Run from the repo root:
+payload validated; a missing marker is a warning, not a crash; any API failure
+warns and exits 0. Run from the repo root:
     python scripts/update_currently_building.py --fallback-only
+    python scripts/update_currently_building.py --dates-only
     python scripts/update_currently_building.py --readme .preview/README.md --status .preview/status.json
 """
 
+from __future__ import annotations
+
 import argparse
-import hashlib
 import html
 import json
 import os
 import re
 import unicodedata
+import urllib.error
 import urllib.request
-from datetime import datetime, timezone
+from dataclasses import dataclass, field
+from datetime import date, datetime, timezone
 from pathlib import Path
 
 from readme_blocks import replace_block
-from update_playbook_posts import DEFAULT_RSS_URL, fetch_rss, parse_posts
-
 
 USERNAME = "IdkwhatImD0ing"
+PROFILE_REPO = f"{USERNAME}/{USERNAME}"
+# Personal repos (trip budgets and the like) never become a Now line.
+SKIP_REPOS = {"idkwhatimd0ing/travel"}
+API = "https://api.github.com"
 PLATE_START = "<!-- BUILD_PLATE:START -->"
 PLATE_END = "<!-- BUILD_PLATE:END -->"
+NOW_START = "<!-- NOW:START -->"
+NOW_END = "<!-- NOW:END -->"
 # Generated text may never smuggle in a README marker, live or retired.
 MARKER_RE = re.compile(r"<!--\s*[A-Z_]+:(?:START|END)\s*-->")
 
 STATUS_PATH = "assets/status.json"
 
-# Schema for the mission board (render_card.py imports the cleaners and
-# fallbacks below by name). Everything is enforced here, whatever the model
-# says.
-MIN_PROCESSES, MAX_PROCESSES = 3, 4
-COMMAND_MAX = 18
-FLAGS_MAX = 22
-MAX_FLAGS = 2
-MOTD_MAX = 64
+MISSIONS = 3
+MAX_CANDIDATES = 6
+SUBJECTS_PER_REPO = 5
+LINE_MAX = 64
 OBSESSION_MAX = 48
-
-GITHUB_REPO_NAME = re.compile(r"\b([A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)\b")
-FLAG_RE = re.compile(r"^--?[a-z0-9][a-z0-9-]*(?:=[a-z0-9._-]+)?$")
+REPO_RE = re.compile(r"^[A-Za-z0-9-]{1,39}/[A-Za-z0-9._-]{1,100}$")
+ISO_DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+MONTHS = ("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
 
 FALLBACK_OBSESSION = "voice agents"
-FALLBACK_MOTD = "missions posted. the sect leader takes credit for my commits."
-FALLBACK_FLAGS = ("--ship-it", "--no-sleep", "--demo", "--urgent", "--closed-door")
-SEED_PROCESSES = (
-    {"command": "voice-agent", "flags": "--realtime --demo", "cpu": 97},
-    {"command": "hackathon-playbook", "flags": "--draft", "cpu": 71},
-    {"command": "art3m1s", "flags": "--introspect", "cpu": 42},
-)
+NO_NOTES = "the steward has no notes on this one yet."
+# The steward's own fiction stays out of the Now lines (the work itself may
+# still be about a sect scene, so the bare word "sect" is allowed).
+FICTION_WORDS = re.compile(r"\b(steward|elders?|disciples?|cultivat\w*|qi|sect leader|bill)\b", re.I)
+SCOPE_TAG = re.compile(r"^(?:[\w./-]+(?:\([^)]*\))?!?):\s+")
 
 
-def request_json(url: str, token: str | None = None) -> list[dict]:
+@dataclass
+class Candidate:
+    repo: str
+    pushed: str                 # YYYY-MM-DD, Bill's newest push
+    subjects: list[str] = field(default_factory=list)
+    description: str = ""
+    topped_up: bool = False     # from the repo list, not the push feed
+
+
+# --- GitHub ------------------------------------------------------------------------
+
+
+def request_json(url: str, token: str | None = None) -> object:
     headers = {
         "Accept": "application/vnd.github+json",
         "User-Agent": "github-profile-readme-updater",
@@ -78,57 +109,104 @@ def request_json(url: str, token: str | None = None) -> list[dict]:
     }
     if token:
         headers["Authorization"] = f"Bearer {token}"
-
     request = urllib.request.Request(url, headers=headers)
     with urllib.request.urlopen(request, timeout=30) as response:
         return json.loads(response.read().decode("utf-8"))
 
 
-def fetch_recent_activity(username: str, token: str | None) -> list[str]:
-    events = request_json(f"https://api.github.com/users/{username}/events/public?per_page=30", token)
-    summaries: list[str] = []
-
-    for event in events[:18]:
-        event_type = event.get("type", "Event")
-        repo = event.get("repo", {}).get("name", "unknown/repo")
-        payload = event.get("payload", {})
-
-        if event_type == "PushEvent":
-            commits = payload.get("commits", [])
-            messages = [commit.get("message", "").splitlines()[0] for commit in commits[:2]]
-            if messages:
-                summaries.append(f"Pushed {len(commits)} commit(s) to {repo}: {'; '.join(messages)}")
-            else:
-                summaries.append(f"Pushed updates to {repo}")
-        elif event_type == "PullRequestEvent":
-            action = payload.get("action", "updated")
-            title = payload.get("pull_request", {}).get("title", "a pull request")
-            summaries.append(f"{action.title()} PR in {repo}: {title}")
-        elif event_type == "IssuesEvent":
-            action = payload.get("action", "updated")
-            title = payload.get("issue", {}).get("title", "an issue")
-            summaries.append(f"{action.title()} issue in {repo}: {title}")
-        elif event_type == "CreateEvent":
-            ref_type = payload.get("ref_type", "resource")
-            summaries.append(f"Created {ref_type} in {repo}")
-        elif event_type == "WatchEvent":
-            summaries.append(f"Starred {repo}")
-        else:
-            summaries.append(f"{event_type.replace('Event', '')} activity in {repo}")
-
-    return summaries[:12]
+def fetch_push_dates(token: str | None) -> dict[str, str]:
+    """repo -> Bill's newest public push (YYYY-MM-DD, UTC), newest repo first."""
+    events = request_json(f"{API}/users/{USERNAME}/events/public?per_page=100", token)
+    if not isinstance(events, list):
+        raise ValueError("events feed is not a list")
+    newest: dict[str, str] = {}
+    for event in events:
+        if not isinstance(event, dict) or event.get("type") != "PushEvent":
+            continue
+        if (event.get("actor") or {}).get("login", USERNAME) != USERNAME:
+            continue
+        repo = str((event.get("repo") or {}).get("name", ""))
+        stamp = str(event.get("created_at", ""))
+        if repo == PROFILE_REPO or repo.casefold() in SKIP_REPOS or not REPO_RE.match(repo) \
+                or not ISO_DATE.match(stamp[:10]):
+            continue
+        if stamp > newest.get(repo, ""):
+            newest[repo] = stamp
+    ordered = sorted(newest.items(), key=lambda kv: kv[1], reverse=True)
+    return {repo: stamp[:10] for repo, stamp in ordered}
 
 
-def fetch_recent_posts() -> list[str]:
+def fetch_subjects(repo: str, token: str | None) -> list[str]:
+    """Bill's recent commit subjects in `repo`, newest first, merges skipped.
+    The push feed no longer carries commit messages, so they come from here."""
     try:
-        _, _, posts = parse_posts(fetch_rss(DEFAULT_RSS_URL), 3)
-    except Exception as error:  # The GitHub activity summary is still useful if RSS is down.
-        return [f"RSS unavailable: {error}"]
+        commits = request_json(f"{API}/repos/{repo}/commits?author={USERNAME}&per_page=10", token)
+    except (urllib.error.URLError, OSError, ValueError) as error:
+        print(f"WARNING: {repo}: commit subjects unavailable ({error})")
+        return []
+    subjects = []
+    for commit in commits if isinstance(commits, list) else []:
+        message = str(((commit or {}).get("commit") or {}).get("message", ""))
+        subject = message.splitlines()[0].strip() if message.strip() else ""
+        if subject and not subject.startswith("Merge "):
+            subjects.append(subject)
+    return subjects[:SUBJECTS_PER_REPO]
 
-    return [f"{post['title']} - {post['description']}" for post in posts]
+
+def fetch_repo(repo: str, token: str | None) -> dict | None:
+    """The repo's public record; None when it is gone or private now (so the
+    page never links to a 404). A network error keeps it with no description."""
+    try:
+        data = request_json(f"{API}/repos/{repo}", token)
+    except urllib.error.HTTPError as error:
+        if error.code == 404:
+            return None
+        print(f"WARNING: {repo}: repo details unavailable ({error})")
+        return {}
+    except (urllib.error.URLError, OSError, ValueError) as error:
+        print(f"WARNING: {repo}: repo details unavailable ({error})")
+        return {}
+    if not isinstance(data, dict) or data.get("private") or data.get("archived"):
+        return None
+    return data
 
 
-# --- sanitizers ------------------------------------------------------------------
+def fetch_candidates(token: str | None) -> list[Candidate]:
+    """Repos Bill pushed to, newest first, topped up to 3 from his repo list."""
+    candidates: list[Candidate] = []
+    for repo, pushed in fetch_push_dates(token).items():
+        record = fetch_repo(repo, token)
+        if record is None:
+            continue
+        candidates.append(Candidate(repo=repo, pushed=pushed, subjects=fetch_subjects(repo, token),
+                                    description=str(record.get("description") or "")))
+        if len(candidates) == MAX_CANDIDATES:
+            break
+    if len(candidates) < MISSIONS:
+        try:
+            repos = request_json(f"{API}/users/{USERNAME}/repos?sort=pushed&per_page=30&type=owner", token)
+        except (urllib.error.URLError, OSError, ValueError) as error:
+            print(f"WARNING: repo list unavailable ({error})")
+            repos = []
+        taken = {c.repo.casefold() for c in candidates}
+        for repo in repos if isinstance(repos, list) else []:
+            if len(candidates) >= MISSIONS:
+                break
+            if not isinstance(repo, dict) or repo.get("fork") or repo.get("archived") or repo.get("private"):
+                continue
+            name = str(repo.get("full_name", ""))
+            pushed = str(repo.get("pushed_at", ""))[:10]
+            if name == PROFILE_REPO or name.casefold() in SKIP_REPOS or name.casefold() in taken \
+                    or not REPO_RE.match(name) \
+                    or not ISO_DATE.match(pushed):
+                continue
+            taken.add(name.casefold())
+            candidates.append(Candidate(repo=name, pushed=pushed, description=str(repo.get("description") or ""),
+                                        topped_up=True))
+    return candidates
+
+
+# --- sanitizers ----------------------------------------------------------------------
 
 
 def ensure_no_markers(content: str) -> str:
@@ -139,69 +217,41 @@ def ensure_no_markers(content: str) -> str:
 
 # Typographic punctuation folds to ASCII before accents are stripped, so
 # "it’s" stays "it's" instead of losing the apostrophe.
-PUNCTUATION = str.maketrans({"\u2018": "'", "\u2019": "'", "\u201c": '"', "\u201d": '"',
-                             "\u2013": "-", "\u2014": "-", "\u2026": "..."})
+PUNCTUATION = str.maketrans({"‘": "'", "’": "'", "“": '"', "”": '"',
+                             "–": "-", "—": "-", "…": "..."})
 
 
 def sanitize_line(value: str, limit: int = 80) -> str:
     """Strip markdown/HTML-active and control characters from untrusted text, fold it
-    to ASCII (no emoji or wide glyphs reach the 0.6em SVG grid), cap length."""
+    to plain ASCII (no emoji), cap length."""
     text = str(value or "").translate(PUNCTUATION)
     text = unicodedata.normalize("NFKD", text).encode("ascii", "ignore").decode("ascii")
     text = "".join(ch if ch.isprintable() else " " for ch in text)
     text = re.sub(r"<[^<>]*>", " ", text)  # whole tags first, so '<b>x</b>' leaves 'x', not 'bx/b'
-    text = re.sub(r"[\[\]|<>`\\{}]", "", text)
+    text = re.sub(r"[\[\]|<>`\\{}*_#]", "", text)
     text = re.sub(r"\s+", " ", text).strip()
     return text[:limit].rstrip()
 
 
-def clean_command(value: str) -> str:
-    """Lowercase mission name, at most COMMAND_MAX chars: 'Voice AI' -> 'voice-ai'."""
-    text = sanitize_line(value, 80).lower()
-    text = re.sub(r"[\s_/]+", "-", text)
-    text = re.sub(r"[^a-z0-9.-]", "", text)
-    text = re.sub(r"-{2,}", "-", text).strip("-.")
-    if len(text) > COMMAND_MAX:
-        cut = text[:COMMAND_MAX + 1].rfind("-")
-        text = text[:cut] if cut >= 4 else text[:COMMAND_MAX]
-    return text.strip("-.")
-
-
-def clean_flags(value: str) -> str:
-    """At most MAX_FLAGS well-formed flags, FLAGS_MAX chars total; drop the rest."""
-    kept: list[str] = []
-    for token in sanitize_line(value, 120).lower().split():
-        if not FLAG_RE.match(token):
-            continue
-        if len(" ".join(kept + [token])) > FLAGS_MAX:
-            break
-        kept.append(token)
-        if len(kept) == MAX_FLAGS:
-            break
-    return " ".join(kept)
-
-
-def clean_cpu(value: object) -> int:
-    try:
-        cpu = round(float(value))  # type: ignore[arg-type]
-    except (TypeError, ValueError, OverflowError):  # junk, NaN, Infinity (json.loads accepts both)
-        cpu = 50
-    return min(max(int(cpu), 1), 99)
-
-
-def fit_motd(value: str) -> str:
-    """One deadpan line, at most MOTD_MAX chars. Keeps the first sentence if the
-    whole thing is too long; otherwise trails off at a word boundary."""
-    text = sanitize_line(value, 240)
-    if len(text) > 1 and text[0].isupper() and text[1].islower():
-        text = text[0].lower() + text[1:]  # a log line, not a sentence ("AI" stays "AI")
-    if len(text) <= MOTD_MAX:
-        return text
+def fit_line(value: str) -> str:
+    """One sentence for a Now line: first letter up, at most LINE_MAX
+    characters, ending in a full stop (or '...' when it had to be cut)."""
+    text = re.sub(r"\s+([.,;:!?])", r"\1", sanitize_line(value, 240))
+    if not text:
+        return ""
+    text = text[0].upper() + text[1:]
+    if len(text) <= LINE_MAX:
+        return text if text[-1] in ".!?" else text.rstrip(",;:- ") + "."
     first = re.split(r"(?<=[.!?])\s", text, maxsplit=1)[0]
-    if 12 <= len(first) <= MOTD_MAX:
+    if 12 <= len(first) <= LINE_MAX:
         return first
-    cut = text[:MOTD_MAX - 3].rsplit(" ", 1)[0].rstrip(",;:- ")
+    cut = text[:LINE_MAX - 3].rsplit(" ", 1)[0].rstrip(",;:-. ")
     return f"{cut}..."
+
+
+def commit_line(subject: str) -> str:
+    """A commit subject as a Now line: scope tags like '/sect:' or 'docs:' dropped."""
+    return fit_line(SCOPE_TAG.sub("", sanitize_line(subject, 240)))
 
 
 def clean_obsession(value: str) -> str:
@@ -214,169 +264,140 @@ def clean_obsession(value: str) -> str:
     return " ".join(kept) or sanitize_line(value, OBSESSION_MAX)
 
 
-def clean_processes(processes: list[dict]) -> list[dict]:
-    """Normalize, dedupe, keep the MAX_PROCESSES hungriest. Order: cpu desc."""
-    cleaned: list[dict] = []
+def show_date(iso: str, today: date) -> str:
+    """'2026-10-24' -> 'Oct 24' this year, 'Oct 2025' for an older year."""
+    d = date.fromisoformat(iso)
+    return f"{MONTHS[d.month - 1]} {d.day}" if d.year == today.year else f"{MONTHS[d.month - 1]} {d.year}"
+
+
+# --- payloads ------------------------------------------------------------------------
+
+
+def finalize_missions(missions: list) -> list[dict]:
+    """The only gate to disk and to the page: exactly MISSIONS clean entries."""
+    out: list[dict] = []
     seen: set[str] = set()
-    for proc in processes:
-        if not isinstance(proc, dict):
-            continue
-        command = clean_command(str(proc.get("command", "")))
-        if not command or command in seen:
-            continue
-        seen.add(command)
-        cleaned.append({
-            "command": command,
-            "flags": clean_flags(str(proc.get("flags", ""))),
-            "cpu": clean_cpu(proc.get("cpu", 50)),
-        })
-    cleaned.sort(key=lambda p: -p["cpu"])
-    return cleaned[:MAX_PROCESSES]
+    for mission in missions if isinstance(missions, list) else []:
+        if not isinstance(mission, dict):
+            raise ValueError("mission is not an object")
+        repo = str(mission.get("repo", ""))
+        pushed = str(mission.get("pushed", ""))
+        line = fit_line(str(mission.get("line", "")))
+        if not REPO_RE.match(repo) or repo == PROFILE_REPO or repo.casefold() in seen:
+            raise ValueError(f"bad mission repo {repo!r}")
+        if not ISO_DATE.match(pushed):
+            raise ValueError(f"bad mission date {pushed!r}")
+        date.fromisoformat(pushed)
+        if not line:
+            raise ValueError(f"empty line for {repo}")
+        seen.add(repo.casefold())
+        out.append({"repo": repo, "pushed": pushed, "line": line})
+    if len(out) != MISSIONS:
+        raise ValueError(f"need {MISSIONS} missions, got {len(out)}")
+    ensure_no_markers(json.dumps(out))
+    return out
 
 
-def stable_pid(command: str) -> int:
-    """Same mission, same number, every run. render_card.py uses the same formula."""
-    digest = hashlib.sha256(command.encode("utf-8")).hexdigest()
-    return int(digest, 16) % 9000 + 1000
-
-
-# --- payloads ------------------------------------------------------------------
-
-
-def fallback_payload(activity: list[str]) -> dict:
-    processes: list[dict] = []
-    seen: set[str] = set()
-    for summary in activity:
-        if summary.startswith("Starred "):
-            continue  # starring a repo is not building it
-        match = GITHUB_REPO_NAME.search(summary)
-        if not match:
-            continue
-        full_name = match.group(1)
-        if "/" not in full_name or full_name == "unknown/repo":
-            continue
-        command = clean_command(full_name.split("/", 1)[1])
-        if not command or command in seen:
-            continue
-        seen.add(command)
-        pid = stable_pid(command)
-        processes.append(
-            {
-                "command": command,
-                "flags": FALLBACK_FLAGS[pid % len(FALLBACK_FLAGS)],
-                "cpu": pid % 55 + 40,
-            }
-        )
-        if len(processes) == MAX_PROCESSES:
-            break
-
-    if len(processes) < MIN_PROCESSES:
-        for seed in SEED_PROCESSES:
-            if seed["command"] not in seen:
-                processes.append(dict(seed))
-                seen.add(seed["command"])
-            if len(processes) >= MIN_PROCESSES:
-                break
-
-    return {"processes": processes, "motd": FALLBACK_MOTD, "obsession": FALLBACK_OBSESSION}
-
-
-def parse_llm_payload(raw: str) -> dict:
+def parse_llm_payload(raw: str, candidates: list[Candidate]) -> dict:
+    """The model's JSON, checked against the candidate list. Any repo outside
+    the list, a duplicate, or a line that breaks the rules rejects it all."""
     ensure_no_markers(raw)
     cleaned = re.sub(r"^```(?:json)?\s*|\s*```$", "", raw.strip())
     data = json.loads(cleaned)
     if not isinstance(data, dict):
         raise ValueError("LLM payload is not a JSON object")
-
-    processes = data.get("processes")
-    # One spare is tolerated: finalize_payload keeps the MAX_PROCESSES hungriest.
-    if not isinstance(processes, list) or not MIN_PROCESSES <= len(processes) <= MAX_PROCESSES + 1:
-        raise ValueError(f"LLM payload needs {MIN_PROCESSES}-{MAX_PROCESSES} processes, got "
-                         f"{len(processes) if isinstance(processes, list) else 'none'}")
-
-    validated = []
-    for proc in processes:
-        if not isinstance(proc, dict):
-            raise ValueError("process entry is not an object")
-        command = proc.get("command")
-        flags = proc.get("flags", "")
-        cpu = proc.get("cpu")
-        if not isinstance(command, str) or not command.strip():
-            raise ValueError("process command missing")
-        if not isinstance(flags, str):
-            raise ValueError("process flags must be a string")
-        if not isinstance(cpu, (int, float)) or isinstance(cpu, bool):
-            raise ValueError("process cpu must be a number")
-        validated.append({"command": command, "flags": flags, "cpu": cpu})
-
-    motd = data.get("motd")
+    missions = data.get("missions")
+    if not isinstance(missions, list) or len(missions) < MISSIONS:
+        raise ValueError(f"LLM payload needs {MISSIONS} missions, got "
+                         f"{len(missions) if isinstance(missions, list) else 'none'}")
+    by_name = {c.repo.casefold(): c for c in candidates}
+    picked = []
+    for mission in missions[:MISSIONS]:
+        if not isinstance(mission, dict):
+            raise ValueError("mission entry is not an object")
+        repo, line = mission.get("repo"), mission.get("line")
+        if not isinstance(repo, str) or repo.strip().casefold() not in by_name:
+            raise ValueError(f"LLM picked a repo outside the candidates: {sanitize_line(str(repo), 60)!r}")
+        if not isinstance(line, str) or not line.strip():
+            raise ValueError("mission line missing")
+        line = fit_line(line)
+        first = line.split(" ", 1)[0].lower()
+        if not first.endswith("ing"):
+            raise ValueError(f"line does not start with an -ing verb: {line!r}")
+        if FICTION_WORDS.search(line):
+            raise ValueError(f"line uses the steward's fiction or a name: {line!r}")
+        candidate = by_name[repo.strip().casefold()]
+        picked.append({"repo": candidate.repo, "pushed": candidate.pushed, "line": line})
     obsession = data.get("obsession")
-    if not isinstance(motd, str) or not motd.strip():
-        raise ValueError("LLM payload motd missing")
     if not isinstance(obsession, str) or not obsession.strip():
         raise ValueError("LLM payload obsession missing")
-
-    return {"processes": validated, "motd": motd, "obsession": obsession}
-
-
-def finalize_payload(payload: dict) -> dict:
-    """The only gate to disk: everything that reaches status.json passes here."""
-    processes = clean_processes(payload.get("processes", []))
-    if len(processes) < MIN_PROCESSES:
-        raise ValueError(f"only {len(processes)} renderable processes")
-    motd = fit_motd(str(payload.get("motd", ""))) or FALLBACK_MOTD
-    obsession = clean_obsession(str(payload.get("obsession", ""))) or FALLBACK_OBSESSION
-    ensure_no_markers(json.dumps(processes) + motd + obsession)
-    return {"processes": processes, "motd": motd, "obsession": obsession}
+    return {"missions": finalize_missions(picked), "obsession": clean_obsession(obsession) or FALLBACK_OBSESSION}
 
 
-def call_openai(activity: list[str], posts: list[str], api_key: str) -> str:
+def fallback_line(candidate: Candidate) -> str:
+    if not candidate.topped_up:
+        for subject in candidate.subjects:
+            if subject.startswith("Merge "):
+                continue
+            line = commit_line(subject)
+            if 12 <= len(line) <= LINE_MAX and not line.endswith("..."):
+                return line
+    return fit_line(candidate.description) or NO_NOTES
+
+
+def fallback_payload(candidates: list[Candidate], obsession: str) -> dict:
+    """The newest three candidates, in plain words, no LLM."""
+    missions = [{"repo": c.repo, "pushed": c.pushed, "line": fallback_line(c)} for c in candidates[:MISSIONS]]
+    return {"missions": finalize_missions(missions), "obsession": clean_obsession(obsession) or FALLBACK_OBSESSION}
+
+
+def refresh_dates(missions: list[dict], pushes: dict[str, str]) -> bool:
+    """Move each posted repo's date forward if Bill pushed again. True if any moved."""
+    moved = False
+    for mission in missions:
+        newer = pushes.get(mission["repo"])
+        if newer and newer > mission["pushed"]:
+            mission["pushed"] = newer
+            moved = True
+    return moved
+
+
+def call_openai(candidates: list[Candidate], api_key: str) -> str:
     model = os.environ.get("OPENAI_MODEL", "gpt-4o-mini")
-    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    rows = []
+    for c in candidates:
+        notes = "; ".join(sanitize_line(s, 100) for s in c.subjects) or (
+            f"no commit subjects; repo description: {sanitize_line(c.description, 140) or 'none'}")
+        rows.append(f"- {c.repo} (newest push {c.pushed}): {notes}")
     prompt = f"""
-You are the steward of the Mission Hall of the Sun Moon Divine Sect, a
-fictional xianxia sect whose grounds are Bill Zhang's GitHub profile. Bill is
-the Sect Leader. Twice a week you repost the mission board from his real
-public activity. Return STRICT JSON only - no prose, no code fences.
+You are the steward of the Sun Moon Divine Sect, a fictional sect whose grounds are
+Bill Zhang's GitHub profile. Twice a week you post what Bill is working on, from his
+real public activity. Return STRICT JSON only.
 
-Schema:
-{{"processes": [{{"command": "voice-agent", "flags": "--realtime --demo", "cpu": 97}}], "motd": "one dry line", "obsession": "2-4 words"}}
+Schema: {{"missions": [{{"repo": "owner/name", "line": "..."}}], "obsession": "2-4 words"}}
 
 Rules:
-- processes are the missions posted on the board: 3 or 4, each grounded in
-  the context below. Do not invent projects.
-- command: the mission name, derived from a real repo or project: lowercase,
-  at most 18 characters, letters/digits/hyphens only (e.g. "slugloop", "voice-agent").
-- flags: 0 to 2 tags in CLI-flag form saying what the work actually is,
-  at most 22 characters in total (e.g. "--realtime --demo").
-- cpu: integer 1-99, the qi devoted to the mission; higher means more current.
-- motd: one dry line from you, the steward, about the real current work. All
-  lowercase, at most 64 characters. Sect vocabulary is welcome (missions,
-  elders, cultivation, the sect leader), e.g.
-  "the demo held. the elders are as surprised as the demo."
+- missions: exactly 3, each repo copied exactly from the candidate list below.
+- line: one plain sentence, at most 64 characters, starting with an -ing verb, saying
+  what the work in that repo is, grounded in its commit messages. No jokes, no names,
+  no sect words. Plain ASCII. Ends with a period.
+  Example: "Adding barge-in to a realtime voice agent."
 - obsession: 2-4 words: what the sect leader is in closed-door cultivation on.
-- English only, plain ASCII only. No emoji. No private data. Dry humor only.
+- English only. No emoji. No private data. Never invent a repo.
 
-Date: {today}
-
-Recent public GitHub activity:
-{chr(10).join(f"- {item}" for item in activity) or "- No recent public activity found."}
-
-Recent Hackathon Playbook posts:
-{chr(10).join(f"- {item}" for item in posts) or "- No recent posts found."}
+Candidates (repo, newest push, recent commit subjects):
+{chr(10).join(rows)}
 """.strip()
 
     body = {
         "model": model,
         "messages": [
-            {
-                "role": "system",
-                "content": ("You output strict JSON for the mission board of a xianxia sect that "
-                            "renders a developer's GitHub profile. JSON only."),
-            },
+            {"role": "system", "content": ("You output strict JSON for the Now section of a developer's "
+                                           "GitHub profile. JSON only.")},
             {"role": "user", "content": prompt},
         ],
         "temperature": 0.4,
+        "response_format": {"type": "json_object"},
     }
     request = urllib.request.Request(
         "https://api.openai.com/v1/chat/completions",
@@ -388,14 +409,12 @@ Recent Hackathon Playbook posts:
         },
         method="POST",
     )
-
     with urllib.request.urlopen(request, timeout=60) as response:
         payload = json.loads(response.read().decode("utf-8"))
-
     return payload["choices"][0]["message"]["content"]
 
 
-# --- outputs -------------------------------------------------------------------
+# --- outputs -------------------------------------------------------------------------
 
 
 def run_number() -> str:
@@ -404,11 +423,26 @@ def run_number() -> str:
 
 
 def render_build_plate() -> str:
-    """One plain line for inside the footer <pre> (so: html-escaped, no markdown)."""
+    """One plain line for inside the Play fold's <pre> (so: html-escaped, no markdown)."""
     sha = os.environ.get("GITHUB_SHA", "")
     sha = sha[:7] if re.fullmatch(r"[0-9a-f]{7,40}", sha) else "local"
     line = f"sealed by the steward · run {run_number()} · from {sha} · the human contributes"
     return ensure_no_markers(html.escape(line, quote=False))
+
+
+def render_now(missions: list[dict], today: date) -> str:
+    """One <p>: three lines joined by <br>. Every URL is built here from a
+    checked repo name; all text is escaped."""
+    attr = lambda s: html.escape(s, quote=True)  # noqa: E731
+    esc = lambda s: html.escape(s, quote=False)  # noqa: E731  (text: an apostrophe stays an apostrophe)
+    lines = []
+    for mission in finalize_missions(missions):
+        owner, name = mission["repo"].split("/", 1)
+        shown = name if owner == USERNAME else mission["repo"]
+        url = f"https://github.com/{mission['repo']}"
+        lines.append(f'<b><a href="{attr(url)}">{esc(shown)}</a></b> · {esc(show_date(mission["pushed"], today))}'
+                     f' · {esc(mission["line"])}')
+    return ensure_no_markers("<p>" + "<br>\n".join(lines) + "</p>")
 
 
 def safe_replace_block(readme_path: str, start: str, end: str, content: str, label: str) -> None:
@@ -420,28 +454,34 @@ def safe_replace_block(readme_path: str, start: str, end: str, content: str, lab
     print(f"Updated {label} block" if changed else f"{label} block already current")
 
 
-def load_previous_status(path: str) -> dict | None:
-    """The last good status.json, re-gated, with its original timestamps; None if
-    there is nothing usable. Used when the LLM is down, so a bad API day keeps the
-    real missions instead of replacing them with canned text."""
+def read_status(path: str) -> dict:
     try:
         data = json.loads(Path(path).read_text(encoding="utf-8"))
-        payload = finalize_payload(data)
-    except (OSError, ValueError, TypeError, AttributeError):
+    except (OSError, ValueError):
+        return {}
+    return data if isinstance(data, dict) else {}
+
+
+def load_previous_status(path: str) -> dict | None:
+    """The last good status.json, re-gated, with its original timestamp; None if
+    there is nothing usable (an older schema counts as nothing). Used when the
+    LLM is down, so a bad API day keeps the real lines instead of canned ones."""
+    data = read_status(path)
+    try:
+        missions = finalize_missions(data.get("missions"))
+    except (ValueError, TypeError, AttributeError):
         return None
-    if "updated" in data:
+    payload = {"missions": missions,
+               "obsession": clean_obsession(str(data.get("obsession", ""))) or FALLBACK_OBSESSION}
+    if isinstance(data.get("updated"), str):
         payload["updated"] = data["updated"]
     return payload
 
 
 def write_status_json(payload: dict, now: datetime | None, path: str = STATUS_PATH) -> None:
-    """now=None writes no fresh timestamp: reused missions keep their own dates,
-    and a canned fallback gets none, so the notice board never dates it as news."""
-    status = {
-        "obsession": payload["obsession"],
-        "motd": payload["motd"],
-        "processes": payload["processes"],
-    }
+    """now=None writes no fresh timestamp: reused lines keep their own, and a
+    canned fallback gets none."""
+    status = {"obsession": payload["obsession"], "missions": payload["missions"]}
     if now is not None:
         status["updated"] = now.strftime("%Y-%m-%dT%H:%M:%SZ")
     elif "updated" in payload:
@@ -454,13 +494,11 @@ def write_status_json(payload: dict, now: datetime | None, path: str = STATUS_PA
         print(f"WARNING: could not write {path}: {error}")
         return
     print(f"Wrote {path}:")
-    print(json.dumps(status, indent=2, ensure_ascii=False))
+    print(json.dumps(status, indent=2, ensure_ascii=True))
 
 
 def write_github_output(message: str) -> None:
-    """The commit message. Only a real rewrite starts with 'steward N:' (the
-    CRONTAB ledger and the mission board's notices grep for it, together with
-    the older 'artemis-build N:' commits)."""
+    """The commit message. Only a real rewrite starts with 'steward N:'."""
     output_path = os.environ.get("GITHUB_OUTPUT")
     if not output_path:
         return
@@ -472,52 +510,92 @@ def write_github_output(message: str) -> None:
         print(f"WARNING: could not write GITHUB_OUTPUT: {error}")
 
 
+def dates_only(args: argparse.Namespace, token: str | None, today: date) -> None:
+    previous = load_previous_status(args.status)
+    if previous is None:
+        print("WARNING: no usable status.json; nothing to re-date")
+        return
+    try:
+        pushes = fetch_push_dates(token)
+    except Exception as error:  # a bad API day changes nothing
+        print(f"WARNING: GitHub activity unavailable ({error}); dates left as they were")
+        return
+    moved = refresh_dates(previous["missions"], pushes)
+    safe_replace_block(args.readme, NOW_START, NOW_END, render_now(previous["missions"], today), "NOW")
+    if moved:
+        write_status_json(previous, None, args.status)
+    else:
+        print("no posted repo was pushed again; status.json left as it was")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--readme", default="README.md")
-    parser.add_argument("--status", default=STATUS_PATH, help="where to write status.json (testing)")
-    parser.add_argument("--fallback-only", action="store_true")
+    parser.add_argument("--status", default=STATUS_PATH, help="where to read and write status.json (testing)")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--fallback-only", action="store_true", help="no LLM: the deterministic lines")
+    mode.add_argument("--dates-only", action="store_true", help="no LLM: only move the posted dates forward")
     args = parser.parse_args()
 
     github_token = os.environ.get("GITHUB_TOKEN")
     openai_key = os.environ.get("OPENAI_API_KEY")
     require_openai = os.environ.get("REQUIRE_OPENAI", "0") == "1"
     now = datetime.now(timezone.utc)
+    today = now.date()
+
+    if args.dates_only:
+        dates_only(args, github_token, today)
+        return
 
     try:
-        activity = fetch_recent_activity(USERNAME, github_token)
+        candidates = fetch_candidates(github_token)
     except Exception as error:  # A bad API day must never blank the README.
         print(f"WARNING: GitHub activity unavailable: {error}")
-        activity = []
-    posts = fetch_recent_posts()
+        candidates = []
+    print(f"candidates: {', '.join(f'{c.repo} {c.pushed}' for c in candidates) or 'none'}")
 
     payload: dict | None = None
     if args.fallback_only:
         pass
     elif openai_key:
-        try:
-            payload = finalize_payload(parse_llm_payload(call_openai(activity, posts, openai_key)))
-        except Exception as error:
-            print(f"WARNING: OpenAI generation rejected ({error}); keeping the previous missions")
+        if len(candidates) >= MISSIONS:
+            try:
+                payload = parse_llm_payload(call_openai(candidates, openai_key), candidates)
+            except Exception as error:
+                print(f"WARNING: OpenAI generation rejected ({error}); keeping the previous lines")
+        else:
+            print(f"WARNING: only {len(candidates)} candidate repos; the steward was not asked")
     elif require_openai:
         raise RuntimeError("OPENAI_API_KEY is required when REQUIRE_OPENAI=1")
 
-    stamp = now
+    stamp: datetime | None = now
     message = f"steward {run_number()}: reposted the missions around {{obsession}}, kept the good ones"
     if payload is None and not args.fallback_only:
         payload = load_previous_status(args.status)
         stamp = None
         message = f"steward: the ink ran dry, kept the old missions (run {run_number()})"
+        if payload is not None:
+            refresh_dates(payload["missions"], {c.repo: c.pushed for c in candidates if not c.topped_up})
     if payload is None:
-        payload = finalize_payload(fallback_payload(activity))
         stamp = None
-        message = f"steward: the ink ran dry, posted the standing missions (run {run_number()})"
+        previous_obsession = str(read_status(args.status).get("obsession", ""))
+        try:
+            payload = fallback_payload(candidates, previous_obsession)
+            message = f"steward: the ink ran dry, posted the standing missions (run {run_number()})"
+        except ValueError as error:
+            print(f"WARNING: no fallback ({error}); the NOW block and status.json are left alone")
+            message = f"steward: the ink ran dry, kept the old missions (run {run_number()})"
 
     plate = render_build_plate()
     print(f"--- BUILD_PLATE ---\n  {plate}")
     safe_replace_block(args.readme, PLATE_START, PLATE_END, plate, "BUILD_PLATE")
-    write_status_json(payload, stamp, args.status)
-    write_github_output(message.format(obsession=payload["obsession"]))
+    if payload is not None:
+        now_block = render_now(payload["missions"], today)
+        print(f"--- NOW ---\n{now_block}")
+        safe_replace_block(args.readme, NOW_START, NOW_END, now_block, "NOW")
+        write_status_json(payload, stamp, args.status)
+        message = message.format(obsession=payload["obsession"])
+    write_github_output(message.replace("{obsession}", FALLBACK_OBSESSION))
 
 
 if __name__ == "__main__":

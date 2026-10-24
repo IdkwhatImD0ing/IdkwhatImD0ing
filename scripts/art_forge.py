@@ -1,21 +1,23 @@
-"""The art of 炼器峰, the Artifact Forge Peak: one panel per forged artifact.
+"""The project cards: one quiet card per shipped build.
 
 Pure drawing: no README, no network. scripts/render_hacklog.py reads the
-hackathon log and ships.json, then calls artifact_svg() for every newest
-artifact (dark, light, phone) and writes the files to assets/forge/.
+hackathon log and ships.json, then calls artifact_svg() for each of the four
+newest builds (dark, light, phone) and writes the files to assets/forge/.
 
-Each panel: a title row (index and name, the award in words, a red seal:
-胜 won, 成 shipped), the name engraved on a dark nameplate, the payload,
-the event and the date, and where the artifact is kept. The newest
-artifact's frame still glows from the furnace; the oldest nameplate has one
-rune that flickers (dark only). A missing payload gets an in-fiction excuse,
-never an invented one.
+Each card: the name in Instrument Serif, the one-liner, and one small line
+with the award, the event and the month. The award words are gold when the
+build won (gold means won, nowhere else) and plain text when it shipped. The
+card links to its repo in the README, so it does not repeat the address. No
+seals, cloud corners, runes, glow or star counts: detail lives in the hero and
+the footer. A missing one-liner gets an in-fiction excuse, never an invented
+one.
 """
 
 from __future__ import annotations
 
-import hashlib
+import re
 import unicodedata
+from datetime import date
 
 import ink
 
@@ -23,25 +25,17 @@ PANE_W = 414
 SIGNATURE = 'aria-label="forged artifact '   # in the first 600 chars of every pane SVG
 GUTTER = 4          # half on each side of a desktop pane; the same under it
 PAD = 16
-DESK = {"size": 13, "lh": 19, "title": 12.5, "plate_h": 50, "name": 32}
-PHONE = {"size": 12.5, "lh": 18, "title": 12, "plate_h": 46, "name": 28}
-
-GLOW_CSS = (".live{animation:fglive 4.2s ease-in-out infinite}"
-            "@keyframes fglive{0%,100%{stroke-opacity:1}50%{stroke-opacity:.45}}")
-FLICKER_CSS = (".flk{animation:fgflk 6.7s steps(1) 2.3s infinite}"
-               "@keyframes fgflk{0%,86%{opacity:1}87%{opacity:.12}88%{opacity:1}90%{opacity:.3}91%,100%{opacity:1}}")
+NAME_SIZE = 24
+TEXT_SIZE, LINE_H = 14, 20
+SMALL_SIZE = 12
+NO_PAYLOAD = "no inscription on file. it was built anyway."
+MONTHS = ("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
+MONTHS_LONG = ("January", "February", "March", "April", "May", "June", "July", "August", "September",
+               "October", "November", "December")
 
 
 def _get(ship: dict, key: str) -> str:
     return str(ship.get(key) or "").strip()
-
-
-def _count(value: object) -> int | None:
-    try:
-        n = int(value)  # type: ignore[arg-type]
-    except (TypeError, ValueError):
-        return None
-    return n if n >= 0 else None
 
 
 def ascii_fold(s: str) -> str:
@@ -70,166 +64,87 @@ def _ok(ch: str, face: str) -> bool:
         return False
 
 
-def verdict(ship: dict) -> tuple[str, str]:
-    """(seal character, verdict word)."""
-    tag = _get(ship, "tag").upper()
-    if tag == "WIN":
-        return "胜", "won"
-    if tag == "SHIP":
-        return "成", "shipped"
-    return "成", tag.lower() or "logged"
+def won(ship: dict) -> bool:
+    return _get(ship, "tag").upper() == "WIN"
 
 
-def stats_text(ship: dict) -> str:
-    stars, forks = _count(ship.get("stars")), _count(ship.get("forks"))
-    if stars is None or forks is None:
-        return ""
-    return f"{ink.plural(stars, 'star')}  {ink.plural(forks, 'fork')}"
+def short_event(event: str) -> str:
+    """'HackUTD 2024' -> 'HackUTD': the date line already carries the year."""
+    return re.sub(r"\s+(19|20)\d\d$", "", event).strip() or event
 
 
-def _type(phone: bool) -> dict:
-    return PHONE if phone else DESK
+def month(ship: dict, long: bool = False) -> str:
+    """'2024-11-16' -> 'Nov 2024' (or 'November 2024'); the raw text if it is not a date."""
+    raw = _get(ship, "date")
+    try:
+        d = date.fromisoformat(raw)
+    except ValueError:
+        return raw
+    return f"{(MONTHS_LONG if long else MONTHS)[d.month - 1]} {d.year}"
+
+
+def one_liner(ship: dict) -> str:
+    """The payload as a tagline: first letter up, no closing full stop."""
+    text = _get(ship, "payload").rstrip(".")
+    return text[:1].upper() + text[1:] if text else ""
+
+
+def _type(phone: bool) -> tuple[float, float]:
+    """(panel x, panel width)."""
+    return (0.0, float(ink.WP)) if phone else (GUTTER / 2, PANE_W - GUTTER)
 
 
 def _text_width(phone: bool) -> float:
-    return (ink.WP if phone else PANE_W - GUTTER) - 2 * PAD
+    return _type(phone)[1] - 2 * PAD
 
 
 def payload_lines_needed(ships: list[dict], phone: bool) -> int:
-    t = _type(phone)
     width = _text_width(phone)
-    return max((min(len(ink.wrap(drawable(_get(s, "payload")), width, t["size"])), 2)
+    return max((min(len(ink.wrap(drawable(one_liner(s)), width, TEXT_SIZE)), 2)
                 for s in ships if _get(s, "payload")), default=1)
 
 
-def _rune(x: float, y: float, cls: str, extra: str = "") -> str:
-    return f'<path d="M{ink.fmt(x)} {ink.fmt(y - 3.2)}l3.2 3.2l-3.2 3.2l-3.2-3.2z" class="{cls}"{extra}/>'
-
-
-def label(ship: dict, index: int, active: bool) -> str:
-    _, word = verdict(ship)
+def label(ship: dict, index: int) -> str:
     name = _get(ship, "name") or "unnamed"
-    bits = [f"forged artifact {index}{' (newest)' if active else ''}: {name}."]
-    bits.append(f"{word}: {_get(ship, 'award') or 'logged'} at {_get(ship, 'event')}, {_get(ship, 'date')}.")
-    payload = _get(ship, "payload")
-    bits.append(payload.rstrip(".") + "." if payload else "no inscription on file. it was forged anyway.")
-    facts = [x for x in (_get(ship, "lang"), stats_text(ship).replace("  ", ", ")) if x]
-    if facts:
-        bits.append(", ".join(facts) + ".")
-    repo = _get(ship, "repo")
-    bits.append(f"kept at github.com/{repo}." if repo else "kept nowhere public.")
+    award = _get(ship, "award") or ("won" if won(ship) else "shipped")
+    bits = [f"forged artifact {index}: {name}.", f"{award} at {_get(ship, 'event')}, {month(ship, long=True)}."]
+    payload = one_liner(ship)
+    bits.append(payload + "." if payload else NO_PAYLOAD)
     return " ".join(bits)
 
 
-def artifact_svg(ship: dict, index: int, *, active: bool, mode: str, phone: bool = False,
-                 payload_lines: int = 1, flaky: bool = False) -> str:
-    t = _type(phone)
-    size, lh = t["size"], t["lh"]
-    if phone:
-        width, x0, pw = ink.WP, 0.0, float(ink.WP)
-    else:
-        width, x0, pw = PANE_W, GUTTER / 2, PANE_W - GUTTER
-    tx, rx = x0 + PAD, x0 + pw - PAD
-    tw = rx - tx
-    dark = mode == "dark"
-    flaky = flaky and dark
-    seal_ch, word = verdict(ship)
+def artifact_svg(ship: dict, index: int, *, mode: str, phone: bool = False, payload_lines: int = 1) -> str:
+    x0, pw = _type(phone)
+    width = ink.WP if phone else PANE_W
+    tx = x0 + PAD
+    tw = pw - 2 * PAD
     name = drawable(_get(ship, "name")) or "unnamed"
-    award = drawable(_get(ship, "award").lower()) or "logged"
-    payload = drawable(_get(ship, "payload"))
-    event = drawable(_get(ship, "event"))
-    repo = drawable(_get(ship, "repo"))
-    lang = drawable(_get(ship, "lang"))
-    stats = stats_text(ship)
+    payload = drawable(one_liner(ship))
+    award = drawable(_get(ship, "award")) or ("won" if won(ship) else "shipped")
+    event = drawable(short_event(_get(ship, "event")))
 
-    rows = [("event", event), ("forged", f"{_get(ship, 'date')}" + (f"  ·  {lang}" if lang else ""))]
-    if phone and stats:
-        rows.append(("kept", stats))
+    y_name = 40
+    y_pay = 66
+    y_award = y_pay + (payload_lines - 1) * LINE_H + 18
+    panel_h = y_award + 28
+    height = panel_h + GUTTER  # the gutter under a card; phones stack them
 
-    y_title = 26
-    y_plate = 38
-    plate_h = t["plate_h"]
-    y_pay = y_plate + plate_h + 24
-    y_rows = y_pay + (payload_lines - 1) * lh + lh + 6
-    y_foot = y_rows + (len(rows) - 1) * lh + lh + 8
-    panel_h = y_foot + 16
-    height = panel_h + GUTTER
-
-    css = ""
     body = [ink.plate(x0, 0, pw, panel_h, corner=0, rx=4)]
-    frame_cls = "au-s" if active else "ln"
-    live = ' class="live"' if active and dark else ""
-    body.append(f'<g{live}><rect x="{ink.fmt(x0 + 0.5)}" y="0.5" width="{ink.fmt(pw - 1)}" '
-                f'height="{ink.fmt(panel_h - 1)}" rx="4" class="{frame_cls}" stroke-width="1"/></g>')
-    body.append(ink.corners(x0 + 4, 4, pw - 8, panel_h - 8, 14, "au-s" if active else "ln", False))
-    if active and dark:
-        css += GLOW_CSS
+    body.append(ink.text(tx, y_name, ink.fit(name, tw, NAME_SIZE, "display"), NAME_SIZE, "display", "tx"))
 
-    # title row: index and name left; the award in words and the seal right
-    seal_size = 20
-    seal_x = rx - seal_size
-    right = f"{word}: {award}"
-    left_w = ink.measure(f"{index}  ", t["title"], "mono")
-    name_small = ink.fit(name, tw * 0.42, t["title"], "medium")
-    room = seal_x - 8 - (tx + left_w + ink.measure(name_small, t["title"], "medium") + 14)
-    right = ink.fit(right, room, t["title"], "body")
-    body.append(ink.text(tx, y_title, str(index), t["title"], "mono", "mu"))
-    body.append(ink.text(tx + left_w, y_title, name_small, t["title"], "medium", "au" if active else "tx"))
-    body.append(ink.text(seal_x - 8, y_title, right, t["title"], "body", "mu", anchor="end"))
-    body.append(ink.seal(seal_x, y_title - 15, seal_size, seal_ch))
-
-    # the nameplate: the name engraved in gold on a dark plate
-    body.append(ink.rect(tx, y_plate, tw, plate_h, "tk", 3))
-    body.append(f'<rect x="{ink.fmt(tx + 0.5)}" y="{ink.fmt(y_plate + 0.5)}" width="{ink.fmt(tw - 1)}" '
-                f'height="{plate_h - 1}" rx="3" class="ln" stroke-width="1"/>')
-    rune_room = 34
-    name_size = t["name"]
-    while name_size > 20 and ink.measure(name, name_size, "display") > tw - 28 - rune_room:
-        name_size -= 1
-    shown = ink.fit(name, tw - 28 - rune_room, name_size, "display")
-    base = y_plate + plate_h / 2 + name_size * 0.33
-    if dark:
-        body.append(ink.text(tx + 14, base + 1.2, shown, name_size, "display", "bg"))
-    body.append(ink.text(tx + 14, base, shown, name_size, "display", "au"))
-    pick = int(hashlib.sha256(name.encode("utf-8")).hexdigest(), 16) % 3
-    for k in range(3):
-        rx_k = rx - 12 - k * 10
-        flick = flaky and k == pick
-        rune = _rune(rx_k, y_plate + plate_h / 2, "au" if k == 0 else "em", ' opacity=".8"')
-        body.append(f'<g class="flk">{rune}</g>' if flick else rune)
-    if flaky:
-        css += FLICKER_CSS
-
-    # payload, or the excuse
     if payload:
-        for k, line in enumerate(ink.balanced(payload, tw, size, "body", payload_lines)):
-            body.append(ink.text(tx, y_pay + k * lh, line, size, "body", "tx"))
+        for k, line in enumerate(ink.balanced(payload, tw, TEXT_SIZE, "body", payload_lines)):
+            body.append(ink.text(tx, y_pay + k * LINE_H, line, TEXT_SIZE, "body", "tx"))
     else:
-        body.append(ink.text(tx, y_pay, ink.fit("no inscription on file. it was forged anyway.", tw, size),
-                             size, "body", "mu"))
+        body.append(ink.text(tx, y_pay, ink.fit(NO_PAYLOAD, tw, TEXT_SIZE), TEXT_SIZE, "body", "mu"))
 
-    label_w = 58
-    for k, (key, value) in enumerate(rows):
-        y = y_rows + k * lh
-        body.append(ink.text(tx, y, key, 11.5, "mono", "mu"))
-        body.append(ink.text(tx + label_w, y, ink.fit(value, tw - label_w, size), size, "body",
-                             "mu" if key == "kept" else "tx"))
+    tail = "  ·  ".join(x for x in (event, month(ship)) if x)
+    parts = [(award, "au" if won(ship) else "tx")]
+    if tail:
+        parts.append(("  ·  " + tail, "mu"))
+    if ink.measure("".join(p[0] for p in parts), SMALL_SIZE) > tw:
+        parts = [(ink.fit(award, tw * 0.45, SMALL_SIZE), parts[0][1]),
+                 (ink.fit("  ·  " + tail, tw * 0.55, SMALL_SIZE), "mu")]
+    body.append(ink.runs(tx, y_award, parts, SMALL_SIZE)[0])
 
-    # where it is kept, and its stars
-    body.append(ink.hline(tx, rx, y_foot - 15, "ln"))
-    right_stats = "" if phone else stats
-    if repo:
-        kept_parts = [("kept at ", "mu"), ("github.com/", "mu"), (repo, "tx")]
-    else:
-        kept_parts = [("kept nowhere public. the forge remembers.", "mu")]
-    room = tw - (ink.measure(right_stats, 12, "mono") + 14 if right_stats else 0)
-    if right_stats and ink.measure("".join(p[0] for p in kept_parts), 12) > room:
-        right_stats = ink.plural(_count(ship.get("stars")) or 0, "star")
-        room = tw - ink.measure(right_stats, 12, "mono") - 14
-    if ink.measure("".join(p[0] for p in kept_parts), 12) > room:
-        kept_parts = [("kept at ", "mu"), (ink.fit(repo, room - ink.measure("kept at ", 12), 12), "tx")]
-    body.append(ink.runs(tx, y_foot, kept_parts, 12)[0])
-    if right_stats:
-        body.append(ink.text(rx, y_foot, right_stats, 12, "mono", "mu", anchor="end"))
-
-    return ink.doc(width, height, "".join(body), label(ship, index, active), mode, extra_css=css)
+    return ink.doc(width, height, "".join(body), label(ship, index), mode)

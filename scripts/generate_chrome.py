@@ -1,13 +1,24 @@
-"""Draw the sect's static dress: talisman keys, section banners, the emblem and the seal.
+"""Draw the page's static dress: the four keys, the three section headings, the emblem and the seal.
 
 These never change between runs, so CI does not call this. Re-run it by hand
 after touching ink.py or the copy below, and commit the assets.
 Run from the repo root: python scripts/generate_chrome.py
 
-  assets/keys/<key>.svg, <key>-light.svg            118 x 40 talisman keys under the gate
-  assets/banners/<nn-name>.svg, -light, -phone      846 x 56 (phone 360 x 48) section banners
+  assets/keys/<key>.svg, <key>-light.svg            the keys under the hero:
+                                                    site 168 x 40 (the one jade key),
+                                                    mail, linkedin, resume 104 x 40.
+                                                    The right 8 px of each are clear
+                                                    space: the gap to the next key.
+  assets/banners/<name>.svg, -light, -phone         846 x 80 (phone 360 x 64) section
+                                                    headings: a word and a hairline on
+                                                    a transparent ground. The top 40 px
+                                                    are empty on purpose: the section gap.
   assets/seal/emblem.svg, emblem-light.svg          64 x 64, the sect's 日月 logo
   assets/seal/seal-riyue.svg, seal-riyue-light.svg  96 x 96, the full seal
+
+The design rules (one accent, six sizes, an 8 px grid) are in CLAUDE.md. Jade
+fills exactly one key; nothing else on the page is jade. No brush lettering,
+seals or cloud corners here: those belong to the hero and the footer.
 
 The emblem and the seal are the site's own logo (PortfolioV5
 client/src/lib/sect/logo.ts, ported in ink.logo_markup): a sun cradled in a
@@ -21,107 +32,66 @@ from pathlib import Path
 
 import ink
 
-KEY_W, KEY_H = 118, 40
-BANNER_W, BANNER_H = ink.W, 56
-PHONE_W, PHONE_H = ink.WP, 48
+GAP = 8                      # clear space baked into each key's right edge
+KEY_H = 40
+PRIMARY_W, SECONDARY_W = 168, 104
+LABEL_SIZE = 14
 
-# (file, brush label, gloss) in README order; the README wraps each in its link.
-KEYS = (
-    ("site", "入山", "enter"),
-    ("mail", "飞鸽", "mail"),
-    ("linkedin", "名帖", "linkedin"),
-    ("playbook", "秘籍", "playbook"),
-    ("youtube", "留影", "youtube"),
-    ("discord", "传讯", "discord"),
-    ("dossier", "卷宗", "dossier"),
+# (file, label, accessible label) in README order; the README wraps each in its link.
+PRIMARY = ("site", "Enter art3m1s.me", "Enter art3m1s.me")
+SECONDARY = (
+    ("mail", "Email", "Email"),
+    ("linkedin", "LinkedIn", "LinkedIn"),
+    ("resume", "Résumé", "Résumé"),
 )
 
-# (file, number, Chinese name, English name, gloss, what the right end says)
+# (file, heading) in README order.
 BANNERS = (
-    ("02-mirror", "02", "心镜台", "Heart-Mirror Terrace", "about", "fly on"),
-    ("03-forge", "03", "炼器峰", "Artifact Forge Peak", "projects", "fly on"),
-    ("04-arena", "04", "论剑台", "Sword-Discussion Arena", "hackathons", "fly on"),
-    ("05-mission", "05", "任务殿", "Mission Hall", "experience", "fly on"),
-    ("06-library", "06", "藏经阁", "Scripture Pavilion", "education", "fly on"),
-    ("07-steles", "07", "碑林", "Stele Forest", "skills", "fly on"),
-    ("08-formation", "08", "护宗大阵", "Grand Sect-Protecting Formation", "the game", "fly on"),
-    ("09-abode", "09", "洞府", "Cave Abode", "off duty", "fly on"),
-    ("10-summit", "10", "望月台", "Moon-Gazing Terrace", "contact", "return to the gate"),
+    ("shipped", "Shipped"),
+    ("work", "Work"),
+    ("now", "Now"),
 )
-SHORT_NAMES = {"Grand Sect-Protecting Formation": "Sect-Protecting Formation",
-               "Sword-Discussion Arena": "Sword Arena"}
+BANNER_W, BANNER_H = ink.W, 80
+PHONE_W, PHONE_H = ink.WP, 64
 
 
-def key_svg(name: str, brush: str, gloss: str, mode: str) -> str:
-    primary = name == "site"
-    brush_cls = "jd" if primary else "au"
-    frame = "jd-s" if primary else "ln"
-    bsize, gsize = 17, 12.5
-    bw = ink.measure(brush, bsize, "brush")
-    gw = ink.measure(gloss, gsize, "body")
-    total = bw + 9 + gw
-    x = (KEY_W - total) / 2
-    body = (ink.plate(0, 0, KEY_W, KEY_H, corner=9, frame=frame, corner_cls="jd-s" if primary else "au-s",
-                      fill="rs" if primary else "bg", rx=3)
-            + ink.text(x, 26.5, brush, bsize, "brush", brush_cls)
-            + ink.text(x + bw + 9, 25, gloss, gsize, "body", "tx"))
-    return ink.doc(KEY_W, KEY_H, body, f"{brush}, {gloss}", mode)
+def _label_x(label: str, size: float, face: str, box_w: float) -> float:
+    return (box_w - ink.measure(label, size, face)) / 2
 
 
-def banner_svg(number: str, zh: str, en: str, gloss: str, right: str, mode: str) -> str:
-    w, h = BANNER_W, BANNER_H
-    body = [ink.plate(0, 0, w, h, corner=13)]
-    x = 26
-    body.append(ink.text(x, 33, number, 11, "mono", "mu", tracking=0.05))
-    body.append(ink.vline(x + 24.5, 17, 39, "ln"))
-    x += 38
-    bsize = 30
-    body.append(ink.text(x, 39.5, zh, bsize, "brush", "au"))
-    x += ink.measure(zh, bsize, "brush") + 5
-    body.append(ink.seal(x, 11, 17, "神"))
-    x += 17 + 14
-    body.append(ink.text(x, 36.5, en, 23, "display", "tx"))
-    x += ink.measure(en, 23, "display") + 12
-    body.append(ink.text(x, 35.5, gloss.upper(), 10.5, "medium", "mu", tracking=0.14))
-    x += ink.measure(gloss.upper(), 10.5, "medium", 0.14) + 18
-    rw = ink.measure(right, 12, "body")
-    end = w - 26
-    arrow = right == "fly on"
-    tail = rw + (14 if arrow else 0)
-    if end - tail - 18 - x > 40:
-        body.append(ink.brush_rule(x, 28.5, end - tail - 18 - x, 6, "au", ' opacity=".42"'))
-    if arrow:
-        body.append(ink.text(end, 35, "▾", 12, "body", "jd", anchor="end"))
-        body.append(ink.text(end - 14, 35, right, 12, "body", "jd", anchor="end"))
-    else:
-        body.append(ink.text(end, 35, right, 12, "body", "jd", anchor="end"))
-    label = f"{zh}, {en}: {gloss}. " + ("Click to fly on to the next section." if arrow
-                                         else "Click to return to the gate.")
-    return ink.doc(w, h, "".join(body), label, mode)
+def primary_key_svg(mode: str) -> str:
+    """The one filled key: jade, with the label in the ground colour."""
+    name, label, aria = PRIMARY
+    w = PRIMARY_W - GAP
+    body = (ink.rect(0, 0, w, KEY_H, "jd", 4)
+            + ink.text(_label_x(label, LABEL_SIZE, "medium", w), 25, label, LABEL_SIZE, "medium", "bg"))
+    return ink.doc(PRIMARY_W, KEY_H, body, aria, mode)
 
 
-def banner_phone_svg(number: str, zh: str, en: str, gloss: str, right: str) -> str:
-    w, h = PHONE_W, PHONE_H
-    body = [ink.plate(0, 0, w, h, corner=11)]
-    x = 16
-    body.append(ink.text(x, 29, number, 10, "mono", "mu"))
-    x += 22
-    bsize = 24
-    body.append(ink.text(x, 33.5, zh, bsize, "brush", "au"))
-    x += ink.measure(zh, bsize, "brush") + 4
-    body.append(ink.seal(x, 10, 14, "神"))
-    x += 14 + 10
-    room = w - 16 - 14 - x
-    name, size = en, 18.0
-    while ink.measure(name, size, "display") > room and size > 15:
-        size -= 0.5
-    if ink.measure(name, size, "display") > room:
-        name = SHORT_NAMES.get(en, en)
-    name = ink.fit(name, room, size, "display")
-    body.append(ink.text(x, 31.5, name, size, "display", "tx"))
-    body.append(ink.text(w - 16, 30, "▾" if right == "fly on" else "▸", 12, "body", "jd", anchor="end"))
-    label = f"{zh}, {en}: {gloss}."
-    return ink.doc(w, h, "".join(body), label, "dark")
+def secondary_key_svg(label: str, aria: str, mode: str) -> str:
+    """A quiet key: ground fill, a 1 px hairline, the label in text colour."""
+    w = SECONDARY_W - GAP
+    body = (ink.rect(0, 0, w, KEY_H, "bg", 4)
+            + f'<rect x="0.5" y="0.5" width="{w - 1}" height="{KEY_H - 1}" rx="4" class="ln" stroke-width="1"/>'
+            + ink.text(_label_x(label, LABEL_SIZE, "body", w), 25, label, LABEL_SIZE, "body", "tx"))
+    return ink.doc(SECONDARY_W, KEY_H, body, aria, mode)
+
+
+def banner_svg(heading: str, mode: str) -> str:
+    """A section start: the word, then a hairline to the column's edge."""
+    size = 30
+    body = [ink.text(0, 66, heading, size, "display", "tx")]
+    x = ink.measure(heading, size, "display") + 20
+    body.append(ink.hline(x, BANNER_W, 58.5, "ln"))
+    return ink.doc(BANNER_W, BANNER_H, "".join(body), heading, mode)
+
+
+def banner_phone_svg(heading: str) -> str:
+    """Phones always get this dark file, light theme too, so it carries its own ground."""
+    size = 26
+    body = [ink.rect(0, 12, PHONE_W, 52, "bg", 4),
+            ink.text(16, 47, heading, size, "display", "tx")]
+    return ink.doc(PHONE_W, PHONE_H, "".join(body), heading, "dark")
 
 
 def emblem_svg(mode: str) -> str:
@@ -137,14 +107,15 @@ def seal_svg(mode: str) -> str:
 def render_all() -> dict[str, str]:
     files: dict[str, str] = {}
     for mode, suffix in ink.MODES:
-        for name, brush, gloss in KEYS:
-            files[f"assets/keys/{name}{suffix}.svg"] = key_svg(name, brush, gloss, mode)
-        for name, number, zh, en, gloss, right in BANNERS:
-            files[f"assets/banners/{name}{suffix}.svg"] = banner_svg(number, zh, en, gloss, right, mode)
+        files[f"assets/keys/{PRIMARY[0]}{suffix}.svg"] = primary_key_svg(mode)
+        for name, label, aria in SECONDARY:
+            files[f"assets/keys/{name}{suffix}.svg"] = secondary_key_svg(label, aria, mode)
+        for name, heading in BANNERS:
+            files[f"assets/banners/{name}{suffix}.svg"] = banner_svg(heading, mode)
         files[f"assets/seal/emblem{suffix}.svg"] = emblem_svg(mode)
         files[f"assets/seal/seal-riyue{suffix}.svg"] = seal_svg(mode)
-    for name, number, zh, en, gloss, right in BANNERS:
-        files[f"assets/banners/{name}-phone.svg"] = banner_phone_svg(number, zh, en, gloss, right)
+    for name, heading in BANNERS:
+        files[f"assets/banners/{name}-phone.svg"] = banner_phone_svg(heading)
     return files
 
 
