@@ -1,22 +1,39 @@
-"""Draw the sword row: one sword per hackathon entered, the winners in gold.
+"""Draw the record plate: 36 / 59 over the sword row, and one line of mine.
 
-59 swords stand in one rack (two rows of 30 and 29 on phones); the 36 that won
-are gilded, the rest stay dark iron. Gold means won, and nothing else on the
-row is gold. It is a still picture (stills only, see CLAUDE.md); in the dark
-the gold swords carry a soft glow. The record lives in ink.WON / ink.ENTERED.
+The plate is stop 04 of the map, 论剑台 (the Sword-Discussion Arena), where the
+map's Hackathons row lands. It reads like a game's record screen: the place's
+name in the brush hand with its English name and stop number (as on the title
+cards), the record set big (the 36 in gold, the one number on this screen),
+one thing I said in an interview, and under it the rack: one sword per
+hackathon entered, the 36 that won gilded, the rest dark iron.
+
+Gold means won (and, in the tag, the place's name, as on the map). It is a
+still picture (stills only, see CLAUDE.md); in the dark the gold swords carry
+a soft glow, which is a filter, not motion. The record lives in ink.WON /
+ink.ENTERED; the place's names come from art_map.STOPS. The quote is mine,
+word for word, from the interview in IdkwhatImD0ing/hackathonstarterkit
+(.deslop/voice-profile.md, Stance 3, approved 2026-09-14).
 
 Run from the repo root: python scripts/generate_arena.py
-Writes assets/arena/record.svg, record-light.svg, record-phone.svg.
+Writes assets/arena/record.svg, record-light.svg, record-phone.svg. The
+README's alt text for the plate is label() below; keep the two the same.
 """
 
 from __future__ import annotations
 
+import html
+import re
 from pathlib import Path
 
+import art_journal
+import art_map
 import ink
 
 OUT = Path("assets/arena")
-CAPTION = "one sword per hackathon"
+QUOTE = "Just cause you lost at a hackathon doesn’t mean it’s a bad project."   # curly apostrophes: drawn type
+QUOTE_FROM = "ME, IN AN INTERVIEW, SEP 2026"
+QUOTE_FROM_SPOKEN = "Me, in an interview, September 2026"
+COUNT_LABEL = "HACKATHONS WON"
 
 
 def sword_d(x: float, top: float, height: float, width: float = 8.0) -> str:
@@ -36,75 +53,141 @@ def sword_d(x: float, top: float, height: float, width: float = 8.0) -> str:
 
 
 def rack(x0: float, y_top: float, width: float, per_row: int, height: float, row_gap: float,
-         glow: bool, sword_w: float) -> tuple[str, str]:
-    """(svg, css). The gold swords come first in the rack."""
+         glow: bool, sword_w: float) -> str:
+    """The swords, gold first, on a stone ledge under each row."""
     pitch = width / per_row
     won, dark = [], []
     for i in range(ink.ENTERED):
         r, c = divmod(i, per_row)
         x = x0 + pitch * (c + 0.5)
         top = y_top + r * (height + row_gap)
-        (won if i < ink.WON else dark).append((i, sword_d(x, top, height, sword_w)))
-    out = [f'<path d="{"".join(d for _, d in dark)}" class="tk"/>',
-           f'<path d="{"".join(d for _, d in dark)}" class="ln" stroke-width=".8"/>']
-    css = ""
-    gold = f'<path d="{"".join(d for _, d in won)}" class="au"/>'
+        (won if i < ink.WON else dark).append(sword_d(x, top, height, sword_w))
+    out = [f'<path d="{"".join(dark)}" class="tk"/>',
+           f'<path d="{"".join(dark)}" class="ln" stroke-width=".8"/>']
+    gold = f'<path d="{"".join(won)}" class="au"/>'
     out.append(f'<g class="glow">{gold}</g>' if glow else gold)
-    # the rack: a stone ledge under each row
     rows = -(-ink.ENTERED // per_row)
     for r in range(rows):
         y = y_top + r * (height + row_gap) + height + 3
         out.append(ink.rect(x0 - 4, y, width + 8, 3, "lnf", 1.5))
-    return "".join(out), css
+    return "".join(out)
+
+
+def stop() -> tuple[int, str, str]:
+    """(number, Chinese name, English name) of the arena on the map."""
+    _sid, n, zh, en, *_ = next(s for s in art_map.STOPS if s[0] == "arena")
+    return n, zh, en
 
 
 def label() -> str:
+    """The plate's alt text: every word it draws, in plain words."""
+    n, zh, en = stop()
     pct = round(100 * ink.WON / ink.ENTERED)
-    return (f"{ink.WON} hackathons won out of {ink.ENTERED} entered ({pct}%). "
-            f"One sword for each hackathon, gold for a win.")
+    return (f"Stop {n:02d} of {len(art_map.STOPS)} on the map, {zh} ({en}): Hackathons. "
+            f"{ink.WON} hackathons won out of {ink.ENTERED} entered ({pct}%). "
+            f"One sword for each hackathon, gold for a win. "
+            f"“{QUOTE}” {QUOTE_FROM_SPOKEN}.")
 
 
-def headline(x: float, y: float, num: float, small: float, gap: float, sep: str = "") -> tuple[list[str], float]:
-    """'36 won', a gap (or a separator), '59 entered'. Returns (svg runs, end x)."""
-    middle = ("  " + sep + "  ", "mu", "body", small) if sep else (None, "", "", gap)
-    parts = [(str(ink.WON), "au", "display", num), (" won", "mu", "body", small), middle,
-             (str(ink.ENTERED), "tx", "display", num), (" entered", "mu", "body", small)]
+def tag(n: int, en: str, short: bool = False) -> str:
+    return f"{en.upper()}  ·  STOP {n:02d}" + ("" if short else f" OF {len(art_map.STOPS)}")
+
+
+def eyebrow(x: float, y: float, size_zh: float, size_tag: float, width: float) -> str:
+    """The place, as on the title cards: its name in the brush hand, then its
+    English name and stop number in gold caps (shorter when the line is narrow)."""
+    n, zh, en = stop()
+    out = [ink.text(x, y + 1, zh, size_zh, "brush", "tx")]
+    tx = x + ink.measure(zh, size_zh, "brush") + 12
+    for s in (tag(n, en), tag(n, en, short=True), en.upper()):
+        if tx + ink.measure(s, size_tag, "medium", 0.16) <= x + width:
+            break
+    out.append(ink.text(tx, y, s, size_tag, "medium", "au", tracking=0.16, extra=' opacity=".9"'))
+    return "".join(out)
+
+
+def numbers(x: float, base: float, big: float, small: float, label_size: float) -> tuple[str, float]:
+    """36 big in gold; / 59 raised so its top meets the 36's; HACKATHONS WON on
+    the 36's baseline under the 59. Returns (svg, right edge)."""
+    cap = 0.73          # Instrument Serif's figures stand 730 units of 1000
+    out = [ink.text(x, base, str(ink.WON), big, "display", "au")]
+    x2 = x + ink.measure(str(ink.WON), big, "display") + big * 0.16
+    raised = base - (big - small) * cap
+    out.append(ink.text(x2, raised, f"/ {ink.ENTERED}", small, "display", "tx"))
+    lx = x2 + small * 0.05
+    out.append(art_journal.caps(lx, base, COUNT_LABEL, "mu", label_size, 0.14))
+    right = max(x2 + ink.measure(f"/ {ink.ENTERED}", small, "display"),
+                lx + ink.measure(COUNT_LABEL, label_size, "medium", 0.14))
+    return "".join(out), right
+
+
+def quote(x1: float, y: float, width: float, size: float, lh: float, attr_size: float,
+          attr_gap: float) -> tuple[str, float]:
+    """My line, right-aligned, drawn whole or not at all. Returns (svg, last baseline)."""
+    text = f"“{QUOTE}”"
+    lines = ink.balanced(text, width, size, "display", 3)
+    if "".join(lines).replace(" ", "") != text.replace(" ", ""):
+        raise ValueError("the record's quote does not fit whole")
     out = []
-    for text_, cls, face, size in parts:
-        if text_ is None:
-            x += size
-            continue
-        out.append(ink.text(x, y, text_, size, face, cls))
-        x += ink.measure(text_, size, face)
-    return out, x
+    for i, line in enumerate(lines):
+        out.append(ink.text(x1, y + i * lh, line, size, "display", "tx", anchor="end"))
+    y += (len(lines) - 1) * lh + attr_gap
+    out.append(art_journal.caps(x1, y, QUOTE_FROM, "mu", attr_size, 0.14, anchor="end"))
+    return "".join(out), y
+
+
+DESK = dict(W=ink.W, H=172, x0=40, eyebrow=35, base=101, big=64, small=30, quote=24, quote_lh=28,
+            quote_top=57, rack_top=117, sword_h=40, sword_w=8)
+PHONE = dict(W=ink.WP, x0=26, eyebrow=40, base=98, big=46, small=26, quote=20, quote_lh=25,
+             sword_h=40, row_gap=12, sword_w=7)
 
 
 def record_svg(mode: str) -> str:
-    w, h = ink.W, 136
-    glow = mode == "dark"
-    body = [ink.plate(0, 0, w, h, corner=0)]
-    runs, _ = headline(24, 44, 30, 14, 20)
-    body += runs
-    body.append(ink.text(w - 24, 44, CAPTION, 12, "body", "mu", anchor="end"))
-    svg, css = rack(24, 60, w - 48, ink.ENTERED, 56, 0, glow, 8)
-    body.append(svg)
-    return ink.doc(w, h, "".join(body), label(), mode, extra_css=css)
+    k = DESK
+    w, h, x0 = k["W"], k["H"], k["x0"]
+    x1 = w - x0
+    body = [eyebrow(x0, k["eyebrow"], 24, 12, w / 2 + 40 - x0)]
+    nums, right = numbers(x0, k["base"], k["big"], k["small"], 12)
+    body.append(nums)
+    q, last = quote(x1, k["quote_top"], x1 - right - 120, k["quote"], k["quote_lh"], 12, 20)
+    body.append(q)
+    if last > k["rack_top"] - 8:
+        raise ValueError("the record's quote runs into the swords")
+    body.append(rack(x0, k["rack_top"], x1 - x0, ink.ENTERED, k["sword_h"], 0, mode == "dark", k["sword_w"]))
+    defs, page = art_journal.sheet(w, h, mode, corners=True)
+    return ink.doc(w, h, page + "".join(body), label(), mode, defs=defs)
 
 
 def record_phone_svg() -> str:
-    w = ink.WP
+    """Phones get this dark file in both themes, so it carries its own ground."""
+    k = PHONE
+    w, x0 = k["W"], k["x0"]
+    x1 = w - x0
+    body = [eyebrow(x0, k["eyebrow"], 22, 11, x1 - x0)]
+    nums, _ = numbers(x0, k["base"], k["big"], k["small"], 11)
+    body.append(nums)
+    q, last = quote(x1, k["base"] + 44, x1 - x0, k["quote"], k["quote_lh"], 11, 22)
+    body.append(q)
     per_row = -(-ink.ENTERED // 2)
-    height, gap = 44, 12
-    y_rack = 52
-    y_caption = y_rack + 2 * height + gap + 6 + 24
-    h = y_caption + 16
-    body = [ink.plate(0, 0, w, h, corner=0)]
-    runs, _ = headline(16, 38, 26, 12, 0, sep="·")
-    body += runs
-    svg, css = rack(16, y_rack, w - 32, per_row, height, gap, True, 7)
-    body.append(svg)
-    body.append(ink.text(16, y_caption, CAPTION, 12, "body", "mu"))
-    return ink.doc(w, h, "".join(body), label(), "dark", extra_css=css)
+    y_rack = last + 24
+    body.append(rack(x0, y_rack, x1 - x0, per_row, k["sword_h"], k["row_gap"], True, k["sword_w"]))
+    h = int(y_rack + 2 * k["sword_h"] + k["row_gap"] + 6 + 22)
+    h += h % 2
+    defs, page = art_journal.sheet(w, h, "dark", corners=True)
+    return ink.doc(w, h, page + "".join(body), label(), "dark", defs=defs)
+
+
+def check_readme_alt(readme: Path = Path("README.md")) -> None:
+    """The README's alt for the plate is hand-written; say so when it no longer
+    matches the words the plate draws."""
+    if not readme.exists():
+        return
+    m = re.search(r'<img src="assets/arena/record\.svg"[^>]*alt="([^"]*)"', readme.read_text(encoding="utf-8"))
+    if not m:
+        print("arena: WARNING: no <img> for assets/arena/record.svg in the README")
+    elif html.unescape(m.group(1)) != label():
+        print("arena: WARNING: the README's alt for the record plate differs from label(); paste this:\n"
+              + html.escape(label(), quote=True))
 
 
 def main() -> None:
@@ -112,6 +195,7 @@ def main() -> None:
              "record-phone.svg": record_phone_svg()}
     changed = sum(ink.write_svg(OUT / name, svg) for name, svg in files.items())
     print(f"arena: {changed} of {len(files)} file(s) changed in {OUT.as_posix()}")
+    check_readme_alt()
 
 
 if __name__ == "__main__":

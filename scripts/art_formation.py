@@ -41,6 +41,15 @@ RAIL_TITLES = {"cols": ("81 squares", "mu"), "cols-panic": ("game over", "dg"), 
 TILE_NAMES = ("hidden", "c0", *(f"c{n}" for n in range(1, 9)), "panic", "mine", *RAIL_TITLES,
               *(f"r{r}" for r in ROWS), "edge", "base")
 
+
+def rail_label(name: str) -> str:
+    """The words on the board's top rail (also its alt text in the README)."""
+    return f"护宗大阵, the sect's guard formation (the board): {RAIL_TITLES[name][0]}, columns A to I"
+
+
+def row_label(row: str) -> str:
+    return f"row {row}"
+
 RESULT_LABELS = {
     "ok": "safe",
     "dup": "already open",
@@ -142,12 +151,12 @@ def tile_svg(name: str, mode: str) -> str:
                 + ink.text(w - 20, 18, state, 11, "medium", cls, anchor="end", tracking=0.04)
                 + "".join(ink.text(RAIL_L + i * TILE + MID, 31, col, 9.5, "mono", "mu", anchor="middle")
                           for i, col in enumerate(COLS)))
-        label = f"护宗大阵, the sect's guard formation (the board): {state}, columns A to I"
+        label = rail_label(name)
     elif re.fullmatch(r"r[1-9]", name):
         w = RAIL_L
         body = (_slab(w, h) + f'<path d="{_frame_d(w, h, "l")}" class="ln" stroke-width="1"/>'
                 + ink.text(5.6, MID + 3.4, name[1], 9.5, "mono", "mu", anchor="middle"))
-        label = f"row {name[1]}"
+        label = row_label(name[1])
     elif name == "edge":
         w = RAIL_R
         body = _slab(w, h) + f'<path d="{_frame_d(w, h, "r")}" class="ln" stroke-width="1"/>'

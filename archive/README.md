@@ -18,6 +18,9 @@ fake operating system. Each folder is one older version, kept as it was.
 - [calling-card-v3/](calling-card-v3/): the four plain project cards and the
   plain section headings, which the journal pages replaced later on
   2026-10-24, and the scripts that drew them.
+- [calling-card-v4/](calling-card-v4/): the plain row of swords under
+  Shipped, which the record plate replaced later on 2026-10-24, and the
+  script that drew it.
 
 Nothing in here runs, and no script writes to this folder. To see the
 operating-system version exactly as it was, browse the repo at

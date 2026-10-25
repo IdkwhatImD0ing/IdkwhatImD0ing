@@ -563,10 +563,12 @@ def render_cell(state: dict, cell: str, mines: set[str] | None) -> str:
 def render_board(state: dict, salt: str) -> str:
     mines = board_mines(state, salt) if state["status"] != "active" else None
     rail = {"panicked": "cols-panic", "cleaned": "cols-clean"}.get(state["status"], "cols")
-    rows = [tile_pic(rail, af.BOARD_W, af.RAIL_TOP, "")]
+    # the rail and the row numbers are words, so they get alt text; the edges are not
+    rows = [tile_pic(rail, af.BOARD_W, af.RAIL_TOP, html.escape(af.rail_label(rail)))]
     for row in ROWS:
         cells = "".join(render_cell(state, f"{col}{row}", mines) for col in COLS)
-        rows.append(tile_pic(f"r{row}", af.RAIL_L, af.TILE, "") + cells + tile_pic("edge", af.RAIL_R, af.TILE, ""))
+        rows.append(tile_pic(f"r{row}", af.RAIL_L, af.TILE, af.row_label(row)) + cells
+                    + tile_pic("edge", af.RAIL_R, af.TILE, ""))
     rows.append(tile_pic("base", af.BOARD_W, af.RAIL_BOTTOM, ""))
     return "<br>\n".join(rows)
 

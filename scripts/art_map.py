@@ -503,7 +503,8 @@ def alt(name: str) -> str:
         return (f"{ink.NAME} {NAME_LINE}. The gold key says Enter art3m1s.me, my site. Behind the name are the "
                 f"gate of {ink.SECT_ZH} (the {ink.SECT_EN}) and the moon, from the site.")
     if name == "foot":
-        return "Click a place on the map to jump to it. On art3m1s.me, press M for this map."
+        # the desk drawing says "Click", the phone drawing "Tap"
+        return "Click or tap a place on the map to jump to it. On art3m1s.me, press M for this map."
     sid, n, zh, en, section, fact, _href, _rank = next(s for s in STOPS if s[0] == name)
     start = f"The map of {ink.SECT_ZH} from my site, top to bottom. " if n == 11 else ""
     if name == RING_STOP:

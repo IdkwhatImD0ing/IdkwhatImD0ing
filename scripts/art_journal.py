@@ -154,7 +154,10 @@ def spoken_when(quote: dict, long: bool) -> str:
     if not t:
         return "My commit"
     day = f"{MONTHS_LONG[t.month - 1]} {t.day}, {t.year}"
-    return f"My commit at {clock(t)} on {day}" if long else f"My commit on {day}"
+    sha = get(quote, "sha")[:7]
+    if long:   # the spread prints the short hash too
+        return f"My commit {sha} at {clock(t)} on {day}" if sha else f"My commit at {clock(t)} on {day}"
+    return f"My commit on {day}"
 
 
 # --- alt text (the same words the picture shows) ----------------------------------------------
