@@ -592,11 +592,16 @@ def picture(name: str) -> str:
 
 
 def href(name: str) -> str | None:
+    """Where a tile links. In-page targets use the id GitHub really writes
+    (`<a id="now">` becomes id="user-content-now"): on a repo page GitHub's
+    script maps "#now" to it, but on the profile page nothing does, so a plain
+    "#now" changes the address and does not scroll (checked live, 2026-10-24)."""
     if name == "head":
         return ink.SITE
     if name == "foot":
         return None
-    return next(s[6] for s in STOPS if s[0] == name)
+    link = next(s[6] for s in STOPS if s[0] == name)
+    return f"#user-content-{link[1:]}" if link.startswith("#") else link
 
 
 def readme_block() -> str:
