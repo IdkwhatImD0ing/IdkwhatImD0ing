@@ -18,8 +18,10 @@ never runs this; scripts/art_journal.py embeds the JPEGs it writes.
 
 How a print is made from a capture: the forge ring's glowing orbit line runs
 through every object (they ride on it), so its cyan pixels are found and filled
-in from the pixels just above and below them (the line runs across). Then the
-object is kept at full strength, the courtyard behind it fades toward paper,
+in from the pixels just above and below them (the line runs across). An object
+that leans across the line sets `slant` (degrees) and the fill runs along its
+lean instead (the flag's pole); `keep` circles shield cyan parts of an object
+(the bamboo slips' glowing text). Then the object is kept at full strength, the courtyard behind it fades toward paper,
 edges get an ink line, and the edge of the print bleeds into the paper.
 
 Captures (re-take them after a new scene bake): open
@@ -116,6 +118,28 @@ def fill_across(a: np.ndarray, m: np.ndarray, max_run: int = 120) -> np.ndarray:
     return out.astype(np.float32)
 
 
+def fill_along(a: np.ndarray, m: np.ndarray, slant: float) -> np.ndarray:
+    """fill_across for an upright thing that leans (`slant` degrees, > 0 when its
+    foot is right of its top, like the flag's pole): each row slides sideways by
+    whole pixels until the lean stands straight, the line is filled down the
+    columns, and the rows slide back. Whole pixels, so nothing else is resampled."""
+    if not slant:
+        return fill_across(a, m)
+    h, w = m.shape
+    k = np.tan(np.radians(slant))
+    pad = int(abs(k) * h) + 2
+    shifts = [round(-k * (y - h / 2)) for y in range(h)]
+    sa = np.pad(a, ((0, 0), (pad, pad), (0, 0)), mode="edge")
+    sm = np.pad(m, ((0, 0), (pad, pad)))
+    for y, s in enumerate(shifts):
+        sa[y] = np.roll(sa[y], s, axis=0)
+        sm[y] = np.roll(sm[y], s)
+    out = fill_across(sa, sm)
+    for y, s in enumerate(shifts):
+        out[y] = np.roll(out[y], -s, axis=0)
+    return out[:, pad:pad + w]
+
+
 # --- 2. the print -------------------------------------------------------------------------
 
 
@@ -168,7 +192,7 @@ def make_print(cap: Image.Image, spec: dict, kind: str, frame_css: tuple[int, in
     rng = np.random.default_rng(spec.get("seed", 7))
     a = np.asarray(cap.convert("RGB")).astype(np.float32) / 255.0
     line = orbit_mask(a, spec.get("keep", []), spec.get("grow", 9))
-    a = fill_across(a, line)
+    a = fill_along(a, line, spec.get("slant", 0))
     filled = Image.fromarray((a * 255).astype(np.uint8))
     om = object_mask(a.shape[:2], spec).filter(ImageFilter.GaussianBlur(spec.get("feather", 10)))
     inside = Image.new("L", cap.size, 255)

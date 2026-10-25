@@ -1,5 +1,5 @@
 {
-  "about": "The journal's prints (scripts/generate_prints.py). Captures of the live art3m1s.me forge hold, ?frame=352&ui=0&tier=high, 2560x1600 at device scale 1.5, one screenshot every 1.5 s as the ring turns. Taken 2026-10-24, before that night's scene bake: re-take them after it (CLAUDE.md, Recapture).",
+  "about": "The journal's prints (scripts/generate_prints.py). Captures of the live art3m1s.me forge hold, ?frame=352&ui=0&tier=high, 2560x1600 at device scale 1.5, taken by scripts/capture_forge.cjs as the ring turns: run a, 40 shots 1.5 s apart; run b, 80 shots 0.6 s apart. Taken 2026-10-24, after that night's final scene bake (PortfolioV5 aa8c760).",
   "frames": {
     "spread": [
       292,
@@ -16,11 +16,11 @@
         "令旗",
         "Command Flag"
       ],
-      "capture": "loop_f352_16.png",
+      "capture": "b/loop_f352_51.png",
       "box": [
-        1000,
+        988,
         1300,
-        1650,
+        1638,
         2050
       ],
       "poly": [
@@ -56,6 +56,7 @@
           20
         ]
       ],
+      "slant": 8.6,
       "place": {
         "spread": {
           "x": 300,
@@ -80,11 +81,11 @@
         "聚宝盆",
         "Treasure Bowl"
       ],
-      "capture": "loop_f352_0.png",
+      "capture": "a/loop_f352_0.png",
       "box": [
-        1750,
+        1752,
         1300,
-        2500,
+        2502,
         2000
       ],
       "ell": [
@@ -144,60 +145,139 @@
         "竹简",
         "Bamboo Slips"
       ],
-      "capture": "loop_f352_3.png",
+      "capture": "b/loop_f352_9.png",
       "box": [
-        1380,
+        1312,
         1040,
-        2140,
+        2072,
         1900
       ],
       "poly": [
         [
           [
-            163,
-            462
-          ],
-          [
-            230,
-            446
-          ],
-          [
-            420,
-            440
-          ],
-          [
-            600,
-            425
-          ],
-          [
-            662,
-            432
-          ],
-          [
-            664,
-            765
-          ],
-          [
-            230,
-            815
+            170,
+            472
           ],
           [
             195,
-            812
+            458
+          ],
+          [
+            245,
+            462
+          ],
+          [
+            300,
+            468
+          ],
+          [
+            365,
+            465
+          ],
+          [
+            430,
+            458
+          ],
+          [
+            485,
+            452
+          ],
+          [
+            530,
+            446
+          ],
+          [
+            600,
+            440
+          ],
+          [
+            645,
+            442
+          ],
+          [
+            660,
+            745
+          ],
+          [
+            540,
+            760
+          ],
+          [
+            420,
+            778
+          ],
+          [
+            300,
+            795
+          ],
+          [
+            205,
+            795
+          ],
+          [
+            180,
+            780
           ]
+        ]
+      ],
+      "keep": [
+        [
+          572,
+          490,
+          32
+        ],
+        [
+          572,
+          545,
+          32
+        ],
+        [
+          572,
+          595,
+          32
+        ],
+        [
+          613,
+          485,
+          32
+        ],
+        [
+          616,
+          535,
+          32
+        ],
+        [
+          619,
+          585,
+          32
+        ],
+        [
+          624,
+          630,
+          30
+        ],
+        [
+          634,
+          668,
+          28
+        ],
+        [
+          645,
+          702,
+          26
         ]
       ],
       "place": {
         "spread": {
-          "x": 412,
-          "y": 625,
+          "x": 413,
+          "y": 618,
           "cx": 0.42,
           "cy": 0.46,
           "scale": 0.476
         },
         "leaf": {
-          "x": 412,
-          "y": 622,
+          "x": 413,
+          "y": 616,
           "cx": 0.43,
           "cy": 0.42,
           "scale": 0.235
@@ -209,12 +289,12 @@
         "风火轮",
         "Wind Fire Wheel"
       ],
-      "capture": "loop_f352_15.png",
+      "capture": "b/loop_f352_48.png",
       "box": [
-        1350,
-        1250,
-        2150,
-        1950
+        1348,
+        1252,
+        2148,
+        1952
       ],
       "ell": [
         [
