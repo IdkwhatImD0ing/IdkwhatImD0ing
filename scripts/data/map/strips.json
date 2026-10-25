@@ -1,0 +1,98 @@
+{
+ "source": "PortfolioV5 client/public/sect/map/map_full.webp and poster/landscape.webp",
+ "quality": 84,
+ "rows": {
+  "desk": {
+   "summit": {
+    "px0": 0,
+    "px1": 146
+   },
+   "abode": {
+    "px0": 134,
+    "px1": 260
+   },
+   "formation": {
+    "px0": 248,
+    "px1": 370
+   },
+   "scroll": {
+    "px0": 358,
+    "px1": 478
+   },
+   "steles": {
+    "px0": 466,
+    "px1": 584
+   },
+   "library": {
+    "px0": 572,
+    "px1": 690
+   },
+   "mission": {
+    "px0": 678,
+    "px1": 796
+   },
+   "arena": {
+    "px0": 784,
+    "px1": 904
+   },
+   "forge": {
+    "px0": 892,
+    "px1": 1018
+   },
+   "mirror": {
+    "px0": 1006,
+    "px1": 1144
+   },
+   "gate": {
+    "px0": 1132,
+    "px1": 1331
+   }
+  },
+  "phone": {
+   "summit": {
+    "px0": 0,
+    "px1": 180
+   },
+   "abode": {
+    "px0": 162,
+    "px1": 324
+   },
+   "formation": {
+    "px0": 306,
+    "px1": 459
+   },
+   "scroll": {
+    "px0": 441,
+    "px1": 594
+   },
+   "steles": {
+    "px0": 576,
+    "px1": 726
+   },
+   "library": {
+    "px0": 708,
+    "px1": 858
+   },
+   "mission": {
+    "px0": 840,
+    "px1": 987
+   },
+   "arena": {
+    "px0": 969,
+    "px1": 1125
+   },
+   "forge": {
+    "px0": 1107,
+    "px1": 1263
+   },
+   "mirror": {
+    "px0": 1245,
+    "px1": 1422
+   },
+   "gate": {
+    "px0": 1404,
+    "px1": 1651
+   }
+  }
+ }
+}

@@ -19,17 +19,22 @@ Type     glyph outlines, never <text>: scripts/ink_glyphs/<face>.json holds
            medium   Geist 500           emphasis
            mono     Geist Mono 400      numbers, dates, missions
          Chinese inside a Latin run is set in the serif automatically.
-Colour   gold = lit, won, active. jade = you can act here (and qi).
+Colour   gold = the site's accent: the one filled key, the map's labels,
+         lit, won. jade = inside the Play fold only (a key you can act on).
          danger = the formation's backlash, a qi deviation, nothing else.
-         seal red = seals only. Everything else is paper, ink and muted.
+         seal red = the map's one ink ring; the seals carry the logo's own
+         colours. Everything else is paper, ink and muted.
 Light    the same drawing with mode="light". Served only through
          <picture><source media="(prefers-color-scheme: light)">.
-Stills   nothing on the profile moves: doc() refuses @keyframes and <animate>
-         in every mode (CLAUDE.md, "Stills only"). The reduced-motion rule in
-         css() stays as a harmless guard.
+Stills   nothing on the profile moves, with one exception: doc() refuses
+         @keyframes and <animate> unless motion="once", which allows the
+         map's ink ring to draw itself one time (check_once; CLAUDE.md,
+         "Stills, and one ink ring"). The reduced-motion rule in css() stays
+         as a harmless guard; the still twin comes from the README.
 Ornament the site's own path data (app/sect/sect.css, ornaments.tsx,
-         lib/sect/logo.ts): cloud corners, brush strokes, the ink ring, the
-         worn seal and the sun-and-moon logo.
+         lib/sect/logo.ts, map-emblems.tsx): cloud corners, brush strokes,
+         the ink ring, the worn 神 seal, the carved logo seal and the map's
+         scroll (MAP_COLORS).
 """
 
 from __future__ import annotations
@@ -77,6 +82,17 @@ FILLS = {"bg": "ground", "rs": "raised", "tk": "track", "lnf": "line", "tx": "te
 STROKES = {"ln": "line", "bg-s": "ground", "tk-s": "track", "tx-s": "text", "mu-s": "muted",
            "au-s": "gold", "em-s": "ember", "jd-s": "jade", "sl-s": "seal", "dg-s": "danger",
            "ct-s": "cut"}
+
+# The site's map scroll (app/sect/sect.css .sect-map-*): the painting, its mount,
+# the rods and the stop medallions. They sit on the painted paper, so they are
+# the same by day and night, like the logo.
+MAP_COLORS = {
+    "mount": "#2a1f18", "mount_edge": "#281c12", "gold": "#e9c77e",
+    "rod": ("#6a4c36", "#2c1d14", "#43301f"), "cap": ("#f3dca2", "#b98a42", "#e9c77e"),
+    "face": ("#2c2233", "#15101b", "#0d0a11"), "face_here": ("#f6dfa6", "#e9c77e", "#c99b52"),
+    "halo": "#0e0a12", "emblem_here": "#1a1306", "route_ink": "#1e140c", "leader_ink": "#2e2b1e",
+    "mask": "#ffffff",
+}
 
 REDUCED_MOTION = "@media (prefers-reduced-motion: reduce){*{animation:none!important}}"
 GLOW = ('<filter id="inkglow" x="-40%" y="-40%" width="180%" height="180%">'
@@ -292,18 +308,46 @@ def glyph_defs(markup: str) -> str:
 
 
 def doc(w: float, h: float, body: str, label: str, mode: str = "dark", defs: str = "",
-        extra_css: str = "") -> str:
+        extra_css: str = "", motion: str = "") -> str:
     """A complete SVG. `label` is the accessible description (aria-label and
     <title>): the same facts a sighted visitor gets. Stills only: a document
-    that tries to animate raises ValueError."""
+    that tries to animate raises ValueError, unless motion="once" (the map's
+    ink ring, the one moving thing on the page): then it may hold exactly one
+    CSS animation that plays one time and stops (see check_once)."""
     glow = GLOW if "glow" in body and mode == "dark" else ""
     out = (f'<svg xmlns="http://www.w3.org/2000/svg" width="{fmt(w)}" height="{fmt(h)}" '
            f'viewBox="0 0 {fmt(w)} {fmt(h)}" role="img" aria-label="{attr(label)}">'
            f"<title>{escape(label)}</title>{css(mode, extra_css)}"
            f"<defs>{glyph_defs(body + defs)}{glow}{defs}</defs>{body}</svg>\n")
-    if "@keyframes" in out or "<animate" in out:
+    moves = "@keyframes" in out or re.search(r"<(animate|set)\b", out)
+    if moves and motion != "once":
         raise ValueError("stills only: no SVG on the profile animates")
+    if motion == "once":
+        check_once(out)
     return out
+
+
+ONCE_DECL = re.compile(r"animation\s*:\s*([^;}]+)")
+
+
+def check_once(svg: str) -> None:
+    """The one exception to "stills only" (Bill's call, 2026-10-24): one CSS
+    animation that runs one time and holds its last frame. No SMIL, no loop,
+    no second animation. Every README <picture> that shows such a file also
+    has a still twin under (prefers-reduced-motion: reduce)."""
+    if re.search(r"<(animate|animateTransform|animateMotion|set)\b", svg):
+        raise ValueError("motion once: SMIL animation is not allowed")
+    if svg.count("@keyframes") != 1:
+        raise ValueError("motion once: exactly one @keyframes")
+    if "infinite" in svg or "iteration-count" in svg or "alternate" in svg:
+        raise ValueError("motion once: nothing may loop")
+    # the reduced-motion guard in css() says "animation:none!important"; it is not an animation
+    decls = [d for d in ONCE_DECL.findall(svg) if d.strip() != "none!important"]
+    if len(decls) != 1:
+        raise ValueError("motion once: exactly one animation declaration")
+    words = decls[0].split()
+    if "1" not in words or "both" not in words:
+        raise ValueError("motion once: the animation must say it runs 1 time and holds (both)")
 
 
 def write_svg(path: str | Path, content: str) -> bool:
@@ -449,84 +493,128 @@ def glyph_centred(ch: str, cx: float, cy: float, size: float, face: str = "brush
             f'<use href="#{glyph_id(f, ch)}"/></g>')
 
 
-# --- the sect's logo (PortfolioV5 client/src/lib/sect/logo.ts) ---------------------------
-# A sun cradled in a crescent moon on the cinnabar seal: 日月, sun and moon. The
+# --- the sect's logo: the carved seal ------------------------------------------------------
+# A paper crescent cradling a gold sun, cut out of a cinnabar seal the way a
+# 白文 (white-character) seal is carved. Picked by Bill on 2026-10-24 (design r53
+# "B, carved"); the site's lib/sect/logo.ts draws the same geometry. Every size
+# comes from one module, R/16 (R is the moon's radius), on a face 41 modules
+# across; the red border equals the gap between the sun and the crescent. The
 # colours are the site's own and the same by day and night (it is a stamp).
 
 LOGO_COLORS = {"ink": "#0e0c14", "cinnabar": "#b8412d", "paper": "#f5ecdc", "gold": "#e9c77e"}
-LOGO_GEOMETRY = {
-    "bold": {"moon": (28.6, 35.4, 21.2), "bite": (37.4, 26.6, 17.4), "sun": (41.2, 22.9, 7.6)},
-    "full": {"moon": (29.6, 34.4, 16.6), "bite": (36.6, 27.4, 13.6), "sun": (39.4, 24.6, 5)},
+LOGO_GRID = 41
+LOGO_MASTER = {
+    "moon": ((20.5, 20.0), 16.0),   # centred across, lifted half a module
+    "bite": (6.0, 13.0),            # (offset along the 45 degree axis, radius), in modules
+    "sun": (4.0, 6.0),
+}
+# The big drawing's edge: a hand-ground stone face. Corner radii (tl, tr, br, bl)
+# and, per side (top, right, bottom, left, clockwise), [where along it, how deep]
+# in units of the 64-unit box; > 0 is into the stone. The belly's corner
+# (bottom left) is the most worn, the mouth's (top right) the crispest.
+LOGO_WEAR = {
+    "inset": 0.6,
+    "radii": (1.8, 1.3, 2.0, 2.5),
+    "sides": (((21, -0.35), (44, 0.4)), ((30, 0.45),), ((25, -0.4), (47, 0.6)), ((17, 0.75), (41, -0.3))),
 }
 
 
 def _f(n: float) -> str:
-    return str(round(n * 100) / 100).removesuffix(".0")
+    s = f"{round(n * 1000) / 1000:.3f}".rstrip("0").rstrip(".")
+    return "0" if s in ("-0", "") else s
 
 
-def logo_seal_path(reach: float) -> str:
-    k = 64 * reach / 34.8
-    return "M" + "L".join(f"{_f(32 + (x - 20) * k)} {_f(32 + (y - 20) * k)}" for x, y in SEAL_40) + "Z"
+def logo_circles(side: float = 64.0) -> dict[str, tuple[float, float, float]]:
+    """The moon, the bite cut out of it and the sun, as (x, y, r) in a box of `side`."""
+    k = side / LOGO_GRID
+    (mx, my), mr = LOGO_MASTER["moon"]
+    ax, ay = math.sqrt(0.5), -math.sqrt(0.5)   # the axis points up and right
+
+    def at(off: float, r: float) -> tuple[float, float, float]:
+        return (mx + off * ax) * k, (my + off * ay) * k, r * k
+
+    return {"moon": (mx * k, my * k, mr * k), "bite": at(*LOGO_MASTER["bite"]), "sun": at(*LOGO_MASTER["sun"])}
+
+
+def _arc_flags(c: tuple[float, float], p0: tuple[float, float], p1: tuple[float, float], via: float) -> str:
+    """large-arc and sweep flags for the arc on the circle at c from p0 to p1 that passes the angle `via`."""
+    tau = 2 * math.pi
+    a0 = math.atan2(p0[1] - c[1], p0[0] - c[0])
+    a1 = math.atan2(p1[1] - c[1], p1[0] - c[0])
+    d1 = (a1 - a0) % tau
+    sweep = 1 if (via - a0) % tau < d1 else 0
+    length = d1 if sweep else tau - d1
+    return f"{1 if length > math.pi else 0} {sweep}"
 
 
 def crescent_path(moon: tuple[float, float, float], bite: tuple[float, float, float]) -> str:
-    x1, y1, r1 = moon
-    x2, y2, r2 = bite
-    dx, dy = x2 - x1, y2 - y1
-    d = math.hypot(dx, dy)
-    a = (r1 * r1 - r2 * r2 + d * d) / (2 * d)
-    h = math.sqrt(max(0.0, r1 * r1 - a * a))
-    px, py = x1 + a * dx / d, y1 + a * dy / d
-    ax, ay = px + h * -dy / d, py + h * dx / d
-    bx, by = px - h * -dy / d, py - h * dx / d
-    return (f"M{_f(ax)} {_f(ay)}A{_f(r1)} {_f(r1)} 0 1 1 {_f(bx)} {_f(by)}"
-            f"A{_f(r2)} {_f(r2)} 0 0 0 {_f(ax)} {_f(ay)}Z")
+    """The crescent left when `bite` is cut out of `moon`, as one path. The arc
+    flags come from the geometry: with the carved seal's bite the inner arc is
+    the long way round, so a hard-coded flag would bulge the wrong way."""
+    mx, my, r = moon
+    bx, by, rb = bite
+    d = math.hypot(bx - mx, by - my)
+    ax, ay = (bx - mx) / d, (by - my) / d        # the mouth's axis
+    horn = math.acos((r * r - rb * rb + d * d) / (2 * d * r))
+
+    def point(s: float) -> tuple[float, float]:
+        ux, uy = ax * math.cos(s) - ay * math.sin(s), ax * math.sin(s) + ay * math.cos(s)
+        return mx + ux * r, my + uy * r
+
+    tip_a, tip_b = point(horn), point(-horn)
+    belly = math.atan2(-ay, -ax)
+    outer = f"A{_f(r)} {_f(r)} 0 {_arc_flags((mx, my), tip_a, tip_b, belly)} {_f(tip_b[0])} {_f(tip_b[1])}"
+    inner = f"A{_f(rb)} {_f(rb)} 0 {_arc_flags((bx, by), tip_b, tip_a, belly)} {_f(tip_a[0])} {_f(tip_a[1])}"
+    return f"M{_f(tip_a[0])} {_f(tip_a[1])}{outer}{inner}Z"
 
 
-def _sunburst(sun: tuple[float, float, float], r0: float = 6.4, r1: float = 10.2, half: float = 0.13) -> str:
-    sx, sy, _ = sun
+def logo_edge(worn: bool = True, side: float = 64.0) -> str:
+    """The seal's outline: the ground stone face (worn) or a straight square
+    with 2-unit corners (for small rasters)."""
+    if not worn:
+        r, s = 2 * side / 64, side
+        return (f"M{_f(r)} 0H{_f(s - r)}A{_f(r)} {_f(r)} 0 0 1 {_f(s)} {_f(r)}V{_f(s - r)}"
+                f"A{_f(r)} {_f(r)} 0 0 1 {_f(s - r)} {_f(s)}H{_f(r)}A{_f(r)} {_f(r)} 0 0 1 0 {_f(s - r)}"
+                f"V{_f(r)}A{_f(r)} {_f(r)} 0 0 1 {_f(r)} 0Z")
+    k = side / 64
+    tl, tr, br, bl = (v * k for v in LOGO_WEAR["radii"])
+    lo, hi = LOGO_WEAR["inset"] * k, side - LOGO_WEAR["inset"] * k
+    n = hi - lo
+    frames = (
+        (n - tr, lambda a, o: (lo + a, lo + o)),   # top, left to right
+        (n - br, lambda a, o: (hi - o, lo + a)),   # right, top to bottom
+        (n - bl, lambda a, o: (hi - a, hi - o)),   # bottom, right to left
+        (n - tl, lambda a, o: (lo + o, hi - a)),   # left, bottom to top
+    )
+    ends = ((tr, hi, lo + tr), (br, hi - br, hi), (bl, lo, hi - bl), (tl, lo + tl, lo))
+    d = f"M{_f(lo + tl)} {_f(lo)}"
+    for (a1, at), side_wear, (r, ex, ey) in zip(frames, LOGO_WEAR["sides"], ends):
+        for a, o in sorted(side_wear):
+            px, py = at(a * k, o * k)
+            d += f"L{_f(px)} {_f(py)}"
+        px, py = at(a1, 0)
+        d += f"L{_f(px)} {_f(py)}A{_f(r)} {_f(r)} 0 0 1 {_f(ex)} {_f(ey)}"
+    return d + "Z"
 
-    def p(a: float, r: float) -> str:
-        return f"{_f(sx + math.cos(a) * r)} {_f(sy + math.sin(a) * r)}"
 
-    d = ""
-    for i in range(12):
-        a = i / 12 * math.pi * 2
-        length = r1 * 0.86 if i % 2 else r1
-        d += f"M{p(a - half, r0)}L{p(a, length)}L{p(a + half, r0)}Z"
-    return d
-
-
-def logo_markup(bold: bool = False, reach: float | None = None) -> str:
-    """The logo's inner markup in its 64-unit box (logo.ts logoMarkup)."""
+def logo_markup(variant: str = "dark", worn: bool = True) -> str:
+    """The seal's inner markup in its 64-unit box. "dark": the crescent is cut
+    and filled with paper. "light": the crescent is a hole, so the page shows
+    through it, like a real seal print on paper."""
     c = LOGO_COLORS
-    reach = reach if reach is not None else (1.0 if bold else 0.96)
-    g = LOGO_GEOMETRY["bold" if bold else "full"]
-    parts = []
-    if bold:
-        parts.append(f'<path d="{logo_seal_path(reach)}" fill="{c["cinnabar"]}"/>')
-    else:
-        parts.append(f'<path d="{logo_seal_path(reach)}" fill="{c["cinnabar"]}" stroke="{c["cinnabar"]}" '
-                     'stroke-width=".9" stroke-linejoin="round"/>')
-        inset = 32 - 32 * reach + 64 * reach * 0.105
-        side = 64 - 2 * inset
-        parts.append(f'<rect x="{_f(inset)}" y="{_f(inset)}" width="{_f(side)}" height="{_f(side)}" fill="none" '
-                     f'stroke="{c["paper"]}" stroke-opacity=".5" stroke-width="1.1"/>')
-    s = reach / (1.0 if bold else 0.96)
-    emblem = (f'<path d="{crescent_path(g["moon"], g["bite"])}" fill="{c["paper"]}"/>'
-              f'<circle cx="{_f(g["sun"][0])}" cy="{_f(g["sun"][1])}" r="{_f(g["sun"][2])}" fill="{c["gold"]}"/>'
-              + ("" if bold else f'<path d="{_sunburst(g["sun"])}" fill="{c["gold"]}"/>'))
-    if abs(s - 1) < 1e-9:
-        parts.append(emblem)
-    else:
-        parts.append(f'<g transform="translate(32 32) scale({round(s * 1000) / 1000}) translate(-32 -32)">'
-                     f"{emblem}</g>")
-    return "".join(parts)
+    g = logo_circles()
+    edge = logo_edge(worn)
+    crescent = crescent_path(g["moon"], g["bite"])
+    sx, sy, sr = g["sun"]
+    sun = f'<circle cx="{_f(sx)}" cy="{_f(sy)}" r="{_f(sr)}" fill="{c["gold"]}"/>'
+    if variant == "light":
+        return f'<path d="{edge}{crescent}" fill="{c["cinnabar"]}" fill-rule="evenodd"/>{sun}'
+    return f'<path d="{edge}" fill="{c["cinnabar"]}"/><path d="{crescent}" fill="{c["paper"]}"/>{sun}'
 
 
-def logo(x: float, y: float, size: float, bold: bool = True, extra: str = "") -> str:
+def logo(x: float, y: float, size: float, variant: str = "dark", worn: bool = True, extra: str = "") -> str:
     return (f'<g transform="translate({fmt(x)} {fmt(y)}) scale({fmt_k(size / 64)})"{extra}>'
-            f"{logo_markup(bold=bold)}</g>")
+            f"{logo_markup(variant, worn)}</g>")
 
 
 # --- the moon ----------------------------------------------------------------------------

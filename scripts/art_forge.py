@@ -8,8 +8,8 @@ Each card: the name in Instrument Serif, the one-liner, and one small line
 with the award, the event and the month. The award words are gold when the
 build won (gold means won, nowhere else) and plain text when it shipped. The
 card links to its repo in the README, so it does not repeat the address. No
-seals, cloud corners, runes, glow or star counts: detail lives in the hero and
-the footer. A missing one-liner says so plainly; it is never invented.
+seals, cloud corners, runes, glow or star counts: detail lives in the map screen
+and the footer. A missing one-liner says so plainly; it is never invented.
 """
 
 from __future__ import annotations

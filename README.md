@@ -4,10 +4,23 @@
   if you email me, put MOON GATE in the subject so I know you read this far.
 -->
 
-<p><a href="https://art3m1s.me"><picture><source media="(max-width: 600px)" srcset="assets/gate/hero-phone-still.webp"><source media="(prefers-color-scheme: light)" srcset="assets/gate/hero-light.webp"><img src="assets/gate/hero-still.webp" width="100%" align="top" alt="Bill Zhang builds voice-first LLM agents at Pinterest. Behind the name is the red and blue gate of 日月神教 (the Sun Moon Divine Sect) under a full moon, from his site art3m1s.me."></picture></a></p>
+<!-- MAP:START -->
+<p><a href="https://art3m1s.me"><picture><source media="(max-width: 600px)" srcset="assets/map/head-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/map/head-light.svg"><img src="assets/map/head.svg" width="100%" align="top" alt="Bill Zhang builds voice-first LLM agents at Pinterest. The gold key says Enter art3m1s.me, my site. Behind the name are the gate of 日月神教 (the Sun Moon Divine Sect) and the moon, from the site."></picture></a><br>
+<a href="#contact"><picture><source media="(max-width: 600px)" srcset="assets/map/summit-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/map/summit-light.svg"><img src="assets/map/summit.svg" width="100%" align="top" alt="The map of 日月神教 from my site, top to bottom. Stop 11, 望月台 (Moon-Gazing Terrace): Contact. billzhangsc@gmail.com."></picture></a><br>
+<a href="#now"><picture><source media="(max-width: 600px)" srcset="assets/map/abode-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/map/abode-light.svg"><img src="assets/map/abode.svg" width="100%" align="top" alt="Stop 10, 洞府 (Cave Abode): Now. 3 repos I'm working on."></picture></a><br>
+<a href="#play"><picture><source media="(max-width: 600px)" srcset="assets/map/formation-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/map/formation-light.svg"><img src="assets/map/formation.svg" width="100%" align="top" alt="Stop 09, 护宗大阵 (Grand Sect-Protecting Formation): Play. Minesweeper on GitHub issues."></picture></a><br>
+<a href="https://art3m1s.me/resume.pdf"><picture><source media="(max-width: 600px)" srcset="assets/map/scroll-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/map/scroll-light.svg"><img src="assets/map/scroll.svg" width="100%" align="top" alt="Stop 08, 玉简阁 (Jade Slip Pavilion): Résumé. PDF."></picture></a><br>
+<a href="#tools"><picture><source media="(max-width: 600px)" srcset="assets/map/steles-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/map/steles-light.svg"><img src="assets/map/steles.svg" width="100%" align="top" alt="Stop 07, 碑林 (Stele Forest): Tools. TypeScript and Python."></picture></a><br>
+<a href="#school"><picture><source media="(max-width: 600px)" srcset="assets/map/library-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/map/library-light.svg"><img src="assets/map/library.svg" width="100%" align="top" alt="Stop 06, 藏经阁 (Scripture Pavilion): School. USC, UC Santa Cruz."></picture></a><br>
+<a href="#work"><picture><source media="(max-width: 600px)" srcset="assets/map/mission-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/map/mission-light.svg"><img src="assets/map/mission.svg" width="100%" align="top" alt="Stop 05, 任务殿 (Mission Hall): Work. Pinterest, Scale AI, RingCentral."></picture></a><br>
+<a href="#hackathons"><picture><source media="(max-width: 600px)" srcset="assets/map/arena-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/map/arena-light.svg"><img src="assets/map/arena.svg" width="100%" align="top" alt="Stop 04, 论剑台 (Sword-Discussion Arena): Hackathons. 36 won of 59."></picture></a><br>
+<a href="#shipped"><picture><source media="(max-width: 600px)" srcset="assets/map/forge-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/map/forge-light.svg"><img src="assets/map/forge.svg" width="100%" align="top" alt="Stop 03, 炼器峰 (Artifact Forge Peak): Shipped. 4 builds, 3 of them won."></picture></a><br>
+<a href="#about"><picture><source media="(max-width: 600px)" srcset="assets/map/mirror-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/map/mirror-light.svg"><img src="assets/map/mirror.svg" width="100%" align="top" alt="Stop 02, 心镜台 (Heart-Mirror Terrace): About."></picture></a><br>
+<a href="https://art3m1s.me"><picture><source media="(max-width: 600px) and (prefers-reduced-motion: reduce)" srcset="assets/map/gate-phone-still.svg"><source media="(max-width: 600px)" srcset="assets/map/gate-phone.svg"><source media="(prefers-reduced-motion: reduce) and (prefers-color-scheme: light)" srcset="assets/map/gate-light-still.svg"><source media="(prefers-color-scheme: light)" srcset="assets/map/gate-light.svg"><source media="(prefers-reduced-motion: reduce)" srcset="assets/map/gate-still.svg"><img src="assets/map/gate.svg" width="100%" align="top" alt="Stop 01, 山门 (Mountain Gate): you are here. A red ink ring circles the gate."></picture></a><br>
+<picture><source media="(max-width: 600px)" srcset="assets/map/foot-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/map/foot-light.svg"><img src="assets/map/foot.svg" width="100%" align="top" alt="Click a place on the map to jump to it. On art3m1s.me, press M for this map."></picture></p>
+<!-- MAP:END -->
 
-<p><a href="https://art3m1s.me"><picture><source media="(prefers-color-scheme: light)" srcset="assets/keys/site-light.svg"><img src="assets/keys/site.svg" width="168" height="40" align="top" alt="Enter art3m1s.me, my portfolio site"></picture></a><a href="mailto:billzhangsc@gmail.com"><picture><source media="(prefers-color-scheme: light)" srcset="assets/keys/mail-light.svg"><img src="assets/keys/mail.svg" width="104" height="40" align="top" alt="Email: billzhangsc@gmail.com"></picture></a><a href="https://linkedin.com/in/bill-zhang1"><picture><source media="(prefers-color-scheme: light)" srcset="assets/keys/linkedin-light.svg"><img src="assets/keys/linkedin.svg" width="104" height="40" align="top" alt="LinkedIn: bill-zhang1"></picture></a><a href="https://art3m1s.me/resume.pdf"><picture><source media="(prefers-color-scheme: light)" srcset="assets/keys/resume-light.svg"><img src="assets/keys/resume.svg" width="104" height="40" align="top" alt="Résumé (PDF)"></picture></a></p>
-
+<a id="about"></a>
 <p>I build voice-first LLM agents at Pinterest, and I've won 36 of the 59 hackathons I've entered. Before that I shipped a multi-agent claims system at Scale AI that handled up to 20K claims a week.</p>
 
 <a id="shipped"></a>
@@ -18,6 +31,7 @@
 <a href="https://github.com/IdkwhatImD0ing/AdaptEd"><picture><source media="(max-width: 600px)" srcset="assets/forge/adapted-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/forge/adapted-light.svg"><img src="assets/forge/adapted.svg" width="414" align="top" alt="AdaptEd: Gemini Challenge 1st at LA Hacks 2024, April 2024. A voice tutor that rebuilds its slides as it lectures."></picture></a><a href="https://github.com/SlugLoop/SlugLoop"><picture><source media="(max-width: 600px)" srcset="assets/forge/slugloop-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/forge/slugloop-light.svg"><img src="assets/forge/slugloop.svg" width="414" align="top" alt="SlugLoop: Top 10 Global at GDSC Solution Challenge, February 2023. Real-time campus bus tracker, UCSC-approved."></picture></a></p>
 <!-- HACKLOG:END -->
 
+<a id="hackathons"></a>
 <p><picture><source media="(max-width: 600px)" srcset="assets/arena/record-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/arena/record-light.svg"><img src="assets/arena/record.svg" width="100%" alt="36 hackathons won out of 59 entered (61%). One sword for each hackathon, gold for a win."></picture></p>
 
 <p>Most of the wins were in college. I still enter a few a year, and I judged LA Hacks 2026. What I learned is in <a href="https://thehackathonplaybook.dev">The Hackathon Playbook</a> and on <a href="https://www.youtube.com/@hackable-projects">YouTube</a>, and all the builds are on <a href="https://devpost.com/IdkwhatImD0ing">Devpost</a>.</p>
@@ -32,9 +46,11 @@
 <b>SlugLoop</b>, Founder, 2023–2024. UCSC's real-time bus tracker, 20,000+ users.<br>
 <b>X-Camp</b>, Instructor, 2022–2023. Taught Python and coached USACO students.</p>
 
+<a id="school"></a>
 <p><b>USC</b>, M.S. Computer Science, AI specialization, 2023–2025.<br>
 <b>UC Santa Cruz</b>, B.S. Computer Science in 2.5 years, 2020–2023.</p>
 
+<a id="tools"></a>
 <p>I work in TypeScript and Python, with React, Next.js, FastAPI and Postgres, and Retell, ElevenLabs, Hume and Twilio for voice.</p>
 
 <a id="now"></a>
@@ -1428,6 +1444,7 @@ Halleujeuah, MODEL WORKS FROM SEPERATE DATASET, using mobile net.
 
 <p>&nbsp;</p>
 
-<p>Email me at <a href="mailto:billzhangsc@gmail.com">billzhangsc@gmail.com</a>.</p>
+<a id="contact"></a>
+<p>Email me at <a href="mailto:billzhangsc@gmail.com">billzhangsc@gmail.com</a>, or find me on <a href="https://linkedin.com/in/bill-zhang1">LinkedIn</a>.</p>
 
 <p align="center"><picture><source media="(max-width: 600px)" srcset="assets/seal/emblem.svg"><source media="(prefers-color-scheme: light)" srcset="assets/seal/emblem-light.svg"><img src="assets/seal/emblem.svg" width="64" height="64" alt="The 日月 (sun and moon) seal from my site"></picture></p>
