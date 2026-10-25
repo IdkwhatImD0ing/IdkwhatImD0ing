@@ -30,7 +30,7 @@ jobs:
           python-version: "3.x"
 
       # OpenAI-independent renders run first so a bad LLM day cannot block them.
-      - name: "Redraw the four Shipped cards (hackathon log)"
+      - name: "Redraw the Shipped journal (hackathon log; quotes checked against their commits)"
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: python scripts/render_hacklog.py
@@ -65,5 +65,5 @@ jobs:
         with:
           commit_message: "${{ steps.build.outputs.msg || 'Update the profile (steward)' }}"
           # Every pathspec must exist, or git add fails and nothing commits.
-          # The directory pathspec also stages pruned (retired) card files.
-          file_pattern: "README.md assets/status.json assets/forge bill.ansi"
+          # The directory pathspec also stages pruned (retired) journal pages.
+          file_pattern: "README.md assets/status.json assets/journal var/lib/quotes-checked.json bill.ansi"

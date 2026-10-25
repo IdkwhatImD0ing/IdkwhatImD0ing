@@ -33,8 +33,8 @@ Stills   nothing on the profile moves, with one exception: doc() refuses
          as a harmless guard; the still twin comes from the README.
 Ornament the site's own path data (app/sect/sect.css, ornaments.tsx,
          lib/sect/logo.ts, map-emblems.tsx): cloud corners, brush strokes,
-         the ink ring, the worn 神 seal, the carved logo seal and the map's
-         scroll (MAP_COLORS).
+         the ink ring, the worn 神 seal, the carved logo seal, the map's
+         scroll (MAP_COLORS) and the journal's prints (PRINT_COLORS).
 """
 
 from __future__ import annotations
@@ -93,6 +93,12 @@ MAP_COLORS = {
     "halo": "#0e0a12", "emblem_here": "#1a1306", "route_ink": "#1e140c", "leader_ink": "#2e2b1e",
     "mask": "#ffffff",
 }
+
+# The journal's prints (art_journal.py): the forge's objects printed on paper and
+# mounted like the map's scroll. A print is paper, so it is the same by day and
+# night: its printed border and glosses use the print's own ink, and the photo
+# tipped into it sits on its own white card.
+PRINT_COLORS = {"ink": "#2a211c", "grey": "#6d5d4c", "card": "#f6f1e6", "shadow": "#000000"}
 
 REDUCED_MOTION = "@media (prefers-reduced-motion: reduce){*{animation:none!important}}"
 GLOW = ('<filter id="inkglow" x="-40%" y="-40%" width="180%" height="180%">'

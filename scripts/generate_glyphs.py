@@ -16,8 +16,9 @@ Faces (all SIL Open Font License 1.1, from github.com/google/fonts):
   mono      Geist Mono, wght 400     numbers, dates, missions
 
 Which characters: printable ASCII, a few marks, and every Chinese character
-that appears in any scripts/*.py file (the copy deck lives in the renderers,
-so a new Chinese label only needs a re-run of this script).
+that appears in any scripts/*.py file or in scripts/data/journal/*.json (the
+copy deck lives in the renderers, the forge objects' names in the journal's
+prints.json, so a new Chinese label only needs a re-run of this script).
 
 The fonts are downloaded files: keep them in their own folder and run this
 isolated, with fontTools found through an explicit path, e.g.
@@ -62,7 +63,8 @@ EXTRA_CJK = "日月神教山门心镜台炼器峰论剑任务殿藏经阁碑林�
 
 def cjk_chars(repo: Path) -> str:
     found = set(EXTRA_CJK)
-    for path in sorted((repo / "scripts").glob("*.py")):
+    sources = sorted((repo / "scripts").glob("*.py")) + sorted((repo / "scripts" / "data" / "journal").glob("*.json"))
+    for path in sources:
         found.update(CJK_RE.findall(path.read_text(encoding="utf-8", errors="replace")))
     # Only ideographs and real punctuation: a regex range like [　-〿]
     # written with literal characters must not smuggle its endpoints in.

@@ -4,27 +4,67 @@
     "payload": "sorts 911 calls by severity for understaffed call centers",
     "lang": "TypeScript",
     "stars": 10,
-    "forks": 4
+    "forks": 4,
+    "quote": {
+      "text": "TRNASFERS WPORKSASDASDASDASDASAD",
+      "sha": "75485b726a305eb47246623883a653b766cbb7f7",
+      "when": "2024-06-23T05:23:05-07:00"
+    },
+    "spread": {
+      "rows": [
+        [
+          "After",
+          "Became Dispatch AI, $50K in funding"
+        ],
+        [
+          "Built with",
+          "Mistral, Twilio, Hume, Retell"
+        ],
+        [
+          "My part",
+          "Fine-tuning and the voice agent"
+        ]
+      ],
+      "rows_from": "PortfolioV5 portfolio-data: experience.ts (Dispatch AI; $50K in investment: the $25K Berkeley SkyDeck grand prize and $25K from AIC), projects.ts (stack; role: model fine-tuning + agent runtime)",
+      "words": "Critical details such as location, time of emergency, and caller's emotions are collected from the live call.",
+      "words_from": "our Devpost write-up, 'What it does', as copied into the repo README in Bill's commit 45d28b5 (2025-03-06)",
+      "photo": "dispatchai"
+    }
   },
   "TalkTuahBank": {
     "repo": "aurelisajuan/TalkTuahBank",
     "payload": "banking over a phone call, no app or internet needed",
     "lang": "TypeScript",
     "stars": 18,
-    "forks": 7
+    "forks": 7,
+    "quote": {
+      "text": "Yay frontend works",
+      "sha": "73afb44a02b09413b288b065d4ed3cb2a77106ab",
+      "when": "2024-11-17T11:08:26-06:00"
+    }
   },
   "SlugLoop": {
     "repo": "SlugLoop/SlugLoop",
     "payload": "real-time campus bus tracker, UCSC-approved",
     "lang": "JavaScript",
     "stars": 9,
-    "forks": 4
+    "forks": 4,
+    "quote": {
+      "text": "Server compiles!",
+      "sha": "a61016b6928ccdff61c2b53e99fe9aa05ea5acd2",
+      "when": "2023-02-03T21:55:55-08:00"
+    }
   },
   "AdaptEd": {
     "repo": "IdkwhatImD0ing/AdaptEd",
     "payload": "a voice tutor that rebuilds its slides as it lectures",
     "lang": "Jupyter Notebook",
     "stars": 20,
-    "forks": 4
+    "forks": 4,
+    "quote": {
+      "text": "Well theoretically works",
+      "sha": "10e103cc8f294c92c70dea09da212c31a15f8a0e",
+      "when": "2024-04-20T12:22:17-07:00"
+    }
   }
 }

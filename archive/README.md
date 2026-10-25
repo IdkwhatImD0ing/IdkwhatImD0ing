@@ -15,6 +15,9 @@ fake operating system. Each folder is one older version, kept as it was.
 - [calling-card-v2/](calling-card-v2/): the still header picture and the four
   buttons under it (site, email, LinkedIn, résumé), which the map replaced
   later on 2026-10-24, and the two scripts that drew them.
+- [calling-card-v3/](calling-card-v3/): the four plain project cards and the
+  plain section headings, which the journal pages replaced later on
+  2026-10-24, and the scripts that drew them.
 
 Nothing in here runs, and no script writes to this folder. To see the
 operating-system version exactly as it was, browse the repo at

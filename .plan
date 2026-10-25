@@ -18,3 +18,7 @@
 2026-10-24  Put the map from my site at the top. It's the same map you
             get by pressing M on art3m1s.me, and each place on it jumps
             to that part of this page.
+
+2026-10-24  Made Shipped look like the journal in Black Myth: Wukong.
+            Each build gets a print of its object from my site's forge
+            and one of my real commit messages from that build.

@@ -1,0 +1,262 @@
+{
+  "about": "The journal's prints (scripts/generate_prints.py). Captures of the live art3m1s.me forge hold, ?frame=352&ui=0&tier=high, 2560x1600 at device scale 1.5, one screenshot every 1.5 s as the ring turns. Taken 2026-10-24, before that night's scene bake: re-take them after it (CLAUDE.md, Recapture).",
+  "frames": {
+    "spread": [
+      292,
+      326
+    ],
+    "leaf": [
+      244,
+      136
+    ]
+  },
+  "prints": {
+    "dispatchai": {
+      "artifact": [
+        "令旗",
+        "Command Flag"
+      ],
+      "capture": "loop_f352_16.png",
+      "box": [
+        1000,
+        1300,
+        1650,
+        2050
+      ],
+      "poly": [
+        [
+          [
+            236,
+            314
+          ],
+          [
+            444,
+            316
+          ],
+          [
+            352,
+            412
+          ],
+          [
+            272,
+            474
+          ],
+          [
+            242,
+            454
+          ]
+        ]
+      ],
+      "stroke": [
+        [
+          229,
+          238,
+          291,
+          650,
+          20
+        ]
+      ],
+      "place": {
+        "spread": {
+          "x": 300,
+          "y": 446,
+          "cx": 0.4,
+          "cy": 0.5,
+          "scale": 0.641
+        },
+        "leaf": {
+          "x": 330,
+          "y": 444,
+          "cx": 0.4,
+          "cy": 0.42,
+          "scale": 0.22
+        }
+      },
+      "halo": 34,
+      "bleed": 34
+    },
+    "talktuahbank": {
+      "artifact": [
+        "聚宝盆",
+        "Treasure Bowl"
+      ],
+      "capture": "loop_f352_0.png",
+      "box": [
+        1750,
+        1300,
+        2500,
+        2000
+      ],
+      "ell": [
+        [
+          357,
+          410,
+          230,
+          168
+        ]
+      ],
+      "poly": [
+        [
+          [
+            270,
+            236
+          ],
+          [
+            450,
+            236
+          ],
+          [
+            450,
+            300
+          ],
+          [
+            270,
+            300
+          ]
+        ]
+      ],
+      "keep": [
+        [
+          360,
+          298,
+          32
+        ]
+      ],
+      "place": {
+        "spread": {
+          "x": 357,
+          "y": 410,
+          "cx": 0.42,
+          "cy": 0.46,
+          "scale": 0.513
+        },
+        "leaf": {
+          "x": 357,
+          "y": 407,
+          "cx": 0.43,
+          "cy": 0.42,
+          "scale": 0.272
+        }
+      }
+    },
+    "adapted": {
+      "artifact": [
+        "竹简",
+        "Bamboo Slips"
+      ],
+      "capture": "loop_f352_3.png",
+      "box": [
+        1380,
+        1040,
+        2140,
+        1900
+      ],
+      "poly": [
+        [
+          [
+            163,
+            462
+          ],
+          [
+            230,
+            446
+          ],
+          [
+            420,
+            440
+          ],
+          [
+            600,
+            425
+          ],
+          [
+            662,
+            432
+          ],
+          [
+            664,
+            765
+          ],
+          [
+            230,
+            815
+          ],
+          [
+            195,
+            812
+          ]
+        ]
+      ],
+      "place": {
+        "spread": {
+          "x": 412,
+          "y": 625,
+          "cx": 0.42,
+          "cy": 0.46,
+          "scale": 0.476
+        },
+        "leaf": {
+          "x": 412,
+          "y": 622,
+          "cx": 0.43,
+          "cy": 0.42,
+          "scale": 0.235
+        }
+      }
+    },
+    "slugloop": {
+      "artifact": [
+        "风火轮",
+        "Wind Fire Wheel"
+      ],
+      "capture": "loop_f352_15.png",
+      "box": [
+        1350,
+        1250,
+        2150,
+        1950
+      ],
+      "ell": [
+        [
+          330,
+          413,
+          238,
+          238
+        ]
+      ],
+      "keep": [
+        [
+          330,
+          405,
+          106
+        ]
+      ],
+      "place": {
+        "spread": {
+          "x": 330,
+          "y": 413,
+          "cx": 0.42,
+          "cy": 0.46,
+          "scale": 0.504
+        },
+        "leaf": {
+          "x": 330,
+          "y": 413,
+          "cx": 0.36,
+          "cy": 0.42,
+          "scale": 0.195
+        }
+      }
+    }
+  },
+  "photos": {
+    "dispatchai": {
+      "poster": "public/project-posters/dispatchai.webp",
+      "size": [
+        150,
+        84
+      ],
+      "caption": "The dispatcher screen"
+    }
+  }
+}
