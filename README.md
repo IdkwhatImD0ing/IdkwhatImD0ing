@@ -57,14 +57,14 @@
 <p><picture><source media="(max-width: 600px)" srcset="assets/banners/now-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/banners/now-light.svg"><img src="assets/banners/now.svg" width="100%" align="top" alt="Stop 10 of 11 on the map, 洞府 (Cave Abode): Now"></picture></p>
 
 <!-- NOW:START -->
-<p><b><a href="https://github.com/IdkwhatImD0ing/PortfolioV5">PortfolioV5</a></b> · Oct 24 · Grew the forest canopy around the pillars in the sect scene.<br>
-<b><a href="https://github.com/IdkwhatImD0ing/hackathonstarterkit">hackathonstarterkit</a></b> · Oct 14 · Replace homepage MCP prompt with agent install dropdown.<br>
+<p><b><a href="https://github.com/IdkwhatImD0ing/PortfolioV5">PortfolioV5</a></b> · Oct 26 · Updated the loading screen to wait for Enter key.<br>
+<b><a href="https://github.com/IdkwhatImD0ing/hackathonstarterkit">hackathonstarterkit</a></b> · Oct 14 · Replaced homepage MCP prompt with agent install dropdown.<br>
 <b><a href="https://github.com/IdkwhatImD0ing/claude-music-videos">claude-music-videos</a></b> · Oct 4 · Link the video on YouTube.</p>
 <!-- NOW:END -->
 
 <p><sub>An LLM writes these from my public commits, twice a week. <a href=".github/workflows/profile-summary.yaml">How it works</a></sub></p>
 <!-- BUILD_PLATE:START -->
-<!-- steward run 0, from local -->
+<!-- steward run 57, from 5271991 -->
 <!-- BUILD_PLATE:END -->
 
 <p>&nbsp;</p>
