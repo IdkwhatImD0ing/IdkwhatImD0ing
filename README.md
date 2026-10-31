@@ -57,7 +57,7 @@
 <p><picture><source media="(max-width: 600px)" srcset="assets/banners/now-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/banners/now-light.svg"><img src="assets/banners/now.svg" width="100%" align="top" alt="Stop 10 of 11 on the map, 洞府 (Cave Abode): Now"></picture></p>
 
 <!-- NOW:START -->
-<p><b><a href="https://github.com/IdkwhatImD0ing/hackathonstarterkit">hackathonstarterkit</a></b> · Oct 27 · Rebuilt the embedding index for the table-judging lessons.<br>
+<p><b><a href="https://github.com/IdkwhatImD0ing/hackathonstarterkit">hackathonstarterkit</a></b> · Oct 28 · Rebuilt the embedding index for the table-judging lessons.<br>
 <b><a href="https://github.com/IdkwhatImD0ing/PortfolioV5">PortfolioV5</a></b> · Oct 26 · Reworked the background for section round 48 at production...<br>
 <b><a href="https://github.com/IdkwhatImD0ing/claude-music-videos">claude-music-videos</a></b> · Oct 4 · Link the video on YouTube.</p>
 <!-- NOW:END -->
