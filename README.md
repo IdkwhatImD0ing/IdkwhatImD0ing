@@ -57,14 +57,14 @@
 <p><picture><source media="(max-width: 600px)" srcset="assets/banners/now-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/banners/now-light.svg"><img src="assets/banners/now.svg" width="100%" align="top" alt="Stop 10 of 11 on the map, 洞府 (Cave Abode): Now"></picture></p>
 
 <!-- NOW:START -->
-<p><b><a href="https://github.com/IdkwhatImD0ing/hackathonstarterkit">hackathonstarterkit</a></b> · Oct 28 · Rebuilt the embedding index for the table-judging lessons.<br>
-<b><a href="https://github.com/IdkwhatImD0ing/PortfolioV5">PortfolioV5</a></b> · Oct 26 · Reworked the background for section round 48.<br>
-<b><a href="https://github.com/IdkwhatImD0ing/claude-music-videos">claude-music-videos</a></b> · Oct 4 · Added PARANOIA to the collection of music videos.</p>
+<p><b><a href="https://github.com/IdkwhatImD0ing/PortfolioV5">PortfolioV5</a></b> · Nov 4 · Checked the year-long cache header on art3m1s.me.<br>
+<b><a href="https://github.com/IdkwhatImD0ing/hackathonstarterkit">hackathonstarterkit</a></b> · Oct 28 · Replaced homepage MCP prompt with agent install dropdown.<br>
+<b><a href="https://github.com/IdkwhatImD0ing/FireTrace">FireTrace</a></b> · Nov 3 · Updated the Next.js dashboard for better performance.</p>
 <!-- NOW:END -->
 
 <p><sub>An LLM writes these from my public commits, twice a week. <a href=".github/workflows/profile-summary.yaml">How it works</a></sub></p>
 <!-- BUILD_PLATE:START -->
-<!-- steward run 59, from 602e5f2 -->
+<!-- steward run 60, from d7c0c32 -->
 <!-- BUILD_PLATE:END -->
 
 <p>&nbsp;</p>
