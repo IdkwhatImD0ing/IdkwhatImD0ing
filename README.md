@@ -57,14 +57,14 @@
 <p><picture><source media="(max-width: 600px)" srcset="assets/banners/now-phone.svg"><source media="(prefers-color-scheme: light)" srcset="assets/banners/now-light.svg"><img src="assets/banners/now.svg" width="100%" align="top" alt="Stop 10 of 11 on the map, 洞府 (Cave Abode): Now"></picture></p>
 
 <!-- NOW:START -->
-<p><b><a href="https://github.com/IdkwhatImD0ing/PortfolioV5">PortfolioV5</a></b> · Nov 6 · Reworked the background for the sect round 48.<br>
-<b><a href="https://github.com/IdkwhatImD0ing/hackathonstarterkit">hackathonstarterkit</a></b> · Nov 6 · Replaced homepage MCP prompt with agent install dropdown.<br>
-<b><a href="https://github.com/IdkwhatImD0ing/FireTrace">FireTrace</a></b> · Nov 3 · Updated the Next.js dashboard for better performance.</p>
+<p><b><a href="https://github.com/IdkwhatImD0ing/PortfolioV5">PortfolioV5</a></b> · Nov 11 · Updated the loading screen buttons to match the Map button.<br>
+<b><a href="https://github.com/IdkwhatImD0ing/nutritiontracker">nutritiontracker</a></b> · Nov 11 · Removed the Oura demo GIF due to personal data concerns.<br>
+<b><a href="https://github.com/IdkwhatImD0ing/hackathonstarterkit">hackathonstarterkit</a></b> · Nov 6 · Replaced the homepage MCP prompt with an install dropdown.</p>
 <!-- NOW:END -->
 
 <p><sub>An LLM writes these from my public commits, twice a week. <a href=".github/workflows/profile-summary.yaml">How it works</a></sub></p>
 <!-- BUILD_PLATE:START -->
-<!-- steward run 61, from 5edd316 -->
+<!-- steward run 62, from b04e78f -->
 <!-- BUILD_PLATE:END -->
 
 <p>&nbsp;</p>

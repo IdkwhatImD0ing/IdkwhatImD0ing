@@ -2,19 +2,19 @@
   "missions": [
     {
       "repo": "IdkwhatImD0ing/PortfolioV5",
-      "pushed": "2026-11-06",
-      "line": "Reworked the background for the sect round 48."
+      "pushed": "2026-11-11",
+      "line": "Updated the loading screen buttons to match the Map button."
+    },
+    {
+      "repo": "IdkwhatImD0ing/nutritiontracker",
+      "pushed": "2026-11-11",
+      "line": "Removed the Oura demo GIF due to personal data concerns."
     },
     {
       "repo": "IdkwhatImD0ing/hackathonstarterkit",
       "pushed": "2026-11-06",
-      "line": "Replaced homepage MCP prompt with agent install dropdown."
-    },
-    {
-      "repo": "IdkwhatImD0ing/FireTrace",
-      "pushed": "2026-11-03",
-      "line": "Updated the Next.js dashboard for better performance."
+      "line": "Replaced the homepage MCP prompt with an install dropdown."
     }
   ],
-  "updated": "2026-11-09T23:46:15Z"
+  "updated": "2026-11-12T21:50:22Z"
 }
