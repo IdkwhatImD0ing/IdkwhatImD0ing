@@ -58,13 +58,13 @@
 
 <!-- NOW:START -->
 <p><b><a href="https://github.com/IdkwhatImD0ing/PortfolioV5">PortfolioV5</a></b> · Nov 22 · Adjusted the waterfall display for better visual flow.<br>
-<b><a href="https://github.com/IdkwhatImD0ing/nutritiontracker">nutritiontracker</a></b> · Nov 16 · Updated README to reflect real test Deploy button steps.<br>
+<b><a href="https://github.com/IdkwhatImD0ing/nutritiontracker">nutritiontracker</a></b> · Nov 16 · Updated README to reflect real test deployment steps.<br>
 <b><a href="https://github.com/IdkwhatImD0ing/hackathonstarterkit">hackathonstarterkit</a></b> · Nov 6 · Replaced homepage MCP prompt with agent install dropdown.</p>
 <!-- NOW:END -->
 
 <p><sub>An LLM writes these from my public commits, twice a week. <a href=".github/workflows/profile-summary.yaml">How it works</a></sub></p>
 <!-- BUILD_PLATE:START -->
-<!-- steward run 65, from 76de922 -->
+<!-- steward run 66, from 3d4dcaf -->
 <!-- BUILD_PLATE:END -->
 
 <p>&nbsp;</p>
